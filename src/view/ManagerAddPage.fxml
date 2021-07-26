@@ -419,7 +419,7 @@
                   <ComboBox fx:id="delAreaDelPersons" layoutX="14.0" layoutY="180.0" prefHeight="26.0" prefWidth="173.0" promptText="Delivery Persons" />
                   <ComboBox fx:id="delAreaHoods" layoutX="212.0" layoutY="180.0" prefHeight="26.0" prefWidth="173.0" promptText="Neighborhoods" />
                   <ComboBox fx:id="delAreaDeliveries" layoutX="424.0" layoutY="180.0" prefHeight="26.0" prefWidth="172.0" promptText="Deliveries" />
-                  <Button fx:id="addDeliveryArea" layoutX="215.0" layoutY="517.0" mnemonicParsing="false" onAction="#addDeliveryArea" prefHeight="39.0" prefWidth="166.0" text="Add Delivery Area" textFill="#00a650">
+                  <Button fx:id="addDeliveryArea" layoutX="47.0" layoutY="504.0" mnemonicParsing="false" onAction="#addDeliveryArea" prefHeight="39.0" prefWidth="166.0" text="Add Delivery Area" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -437,6 +437,14 @@
                   <TextArea fx:id="hoodList" layoutX="212.0" layoutY="251.0" prefHeight="200.0" prefWidth="173.0" />
                   <TextArea fx:id="deliveriesList" layoutX="423.0" layoutY="251.0" prefHeight="200.0" prefWidth="173.0" />
                   <Button layoutX="259.0" layoutY="215.0" mnemonicParsing="false" text="delete" />
+                  <ComboBox fx:id="deliveryAreasByID" layoutX="407.0" layoutY="466.0" prefHeight="26.0" prefWidth="169.0" promptText="Delivery Area to replace" />
+                  <Button fx:id="areaToReplace" layoutX="407.0" layoutY="543.0" mnemonicParsing="false" onAction="#replaceDeliveryArea" prefHeight="40.0" prefWidth="188.0" text="Replace Delivery Area" textFill="RED">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="oldAreaID" layoutX="300.0" layoutY="504.0" prefHeight="26.0" prefWidth="106.0" promptText="ID old area" />
+                  <TextField fx:id="newAreaID" layoutX="427.0" layoutY="505.0" promptText="ID new area" />
                </children></AnchorPane>
          </content>
       </Tab>

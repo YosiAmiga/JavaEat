@@ -17,8 +17,36 @@ import javafx.collections.ObservableList;
 
 
 public class PrimaryController {
+	/**
+	 * a method to replace a given delivery area with a new one, both of them has to exist in the system!
+	 * @param oldAreaID
+	 * @param newAreaID
+	 * @return true if added successfully, false if not
+	 * @throws IllegelInputException
+	 */
+	public boolean replaceDeliveryAreaGUI(int oldAreaID,int newAreaID) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(oldAreaID) && requireNotZeroOrNegative(newAreaID));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+
+		DeliveryArea newArea = Restaurant.getInstance().getRealDeliveryArea(newAreaID);
+		DeliveryArea oldArea = Restaurant.getInstance().getRealDeliveryArea(oldAreaID);
+		System.out.println(oldArea);
+		return Restaurant.getInstance().removeDeliveryArea(oldArea, newArea);
+	}
 	
-	public boolean addDeliveryArea(int id,String aName,ArrayList<String> hoods, int deliveryTime) {
+	/**
+	 * a method to add add a delivery area from GUI
+	 * @param id - the id of the delivery area
+	 * @param aName - the name of the delivery area
+	 * @param hoods - the neighborhoods in the delivery area
+	 * @param deliveryTime - the delivery time of the delivery area
+	 * @return true if added successfully, false if not
+	 */
+	public boolean addDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods, int deliveryTime) {
+		//create a HashSet of neighborhoods to set in the delivery area, convert the ArrayList of strings into HashSet of Neighberhood
+		boolean validate = (require(id, aName,deliveryTime) && requireNotZeroOrNegative(id));
 		HashSet<Neighberhood> aHoods = new HashSet<>();
 
 		for(String h : hoods) {
@@ -29,14 +57,14 @@ public class PrimaryController {
 				
 			}
 		}
-		System.out.println(aHoods);
+
 		DeliveryArea da = new DeliveryArea(id,aName,aHoods,deliveryTime);
 		return Restaurant.getInstance().addDeliveryArea(da);	
 	}
 	
 	public boolean removeDeliveryPersonGUI(int id) throws IllegelInputException {
-		boolean isOk = requireNotZeroOrNegative(id);
-		if(!isOk) {
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
 			throw new IllegelInputException();
 		}
 		DeliveryPerson dp = Restaurant.getInstance().getRealDeliveryPerson(id);
@@ -59,8 +87,8 @@ public class PrimaryController {
 //		public DeliveryPerson(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Vehicle vehicle,
 //		DeliveryArea area)
 		
-		boolean isOk = (require(id, fName, lName, bDay, g, v,da) && requireNotZeroOrNegative(id));
-		if(!isOk) {
+		boolean validate = (require(id, fName, lName, bDay, g, v,da) && requireNotZeroOrNegative(id));
+		if(!validate) {
 			throw new IllegelInputException();
 		}
 		//TODO ADD DELIVERY AREA!!!
@@ -85,8 +113,8 @@ public class PrimaryController {
 	 * @return true if success, false if failed.
 	 */
 	public boolean removeComponentGUI(int id) throws IllegelInputException{
-		boolean isOk = requireNotZeroOrNegative(id);
-		if(!isOk) {
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
 			throw new IllegelInputException();
 		}
 		Component componentdDel = Restaurant.getInstance().getRealComponent(id);
@@ -95,8 +123,8 @@ public class PrimaryController {
 //	public Component(int id, String componentName, boolean hasLactose, boolean hasGluten, double price)
 
 	public boolean addComponentGUI(int id, String cName, boolean lactose, boolean gluten, double price) throws IllegelInputException {
-		boolean isOk = (require(id,cName,lactose,gluten,price) && requireNotZeroOrNegative(id));
-		if(!isOk) {
+		boolean validate = (require(id,cName,lactose,gluten,price) && requireNotZeroOrNegative(id));
+		if(!validate) {
 			throw new IllegelInputException();
 		}
 		Component compToAdd = new Component(id,cName,lactose,gluten,price);
@@ -111,8 +139,8 @@ public class PrimaryController {
 	 * @throws IllegelInputException 
 	 */
 	public boolean removeCustomerGUI(int id) throws IllegelInputException {
-		boolean isOk = requireNotZeroOrNegative(id);
-		if(!isOk) {
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
 			throw new IllegelInputException();			
 		}
 		Customer customerDel = Restaurant.getInstance().getRealCustomer(id);

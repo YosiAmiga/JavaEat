@@ -203,6 +203,15 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button addDeliveryArea;
 	
+	@FXML
+	private ComboBox<String> deliveryAreasByID;
+	@FXML
+	private TextField oldAreaID;
+	@FXML
+	private TextField newAreaID;
+	
+	@FXML
+	private Button areaToReplace;
 	
 	/**************************************Delivery Person Page****************************************/
 //	public DeliveryPerson(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Vehicle vehicle,
@@ -494,16 +503,16 @@ public class ManagerAddPageController implements Initializable {
 		comboDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(comboDelPersons);
 		
-//		delPersonDelete
+
 		/***************list of delivery areas*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
-			areasDB.add(da.getAreaName());
+			areasDB.add("Area ID: " + da.getId()+ " Name: " +da.getAreaName());
 		}
 		ObservableList<String> comboAreas = FXCollections.observableArrayList();
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
-		
+		deliveryAreasByID.setItems(comboAreas);
 		
 		/***************list of components to delete***************/
 		ArrayList<String> componentsDB = new ArrayList<>();
@@ -614,15 +623,26 @@ public class ManagerAddPageController implements Initializable {
 
 	}
 	
-	/**************Remove a Delivery Area*********/
+	/**************replace a Delivery Area*********/
 	//TODO Finish method + in PrimaryController
-	public void removeDeliveryArea(ActionEvent e) {
+	public void replaceDeliveryArea(ActionEvent e) {
 		String section = "Delivery Area";
 		try {
-			
+			int idOldArea = Integer.parseInt(oldAreaID.getText());
+			int idNewArea = Integer.parseInt(newAreaID.getText());
+
+			if(control.replaceDeliveryAreaGUI(idOldArea, idNewArea)){
+				successSound();
+				successRemove(section, "Success");
+				Restaurant.save(Input);	
+			}
+			else {
+				fail(section, "Could not replace old area with new one!");
+			}
 		}catch(Exception e1) {
 			System.out.println("hey in del area");
 		}
+		
 	}
 	/**************Add a Delivery Area************/
 	public void addDeliveryArea(ActionEvent e) {
@@ -635,7 +655,7 @@ public class ManagerAddPageController implements Initializable {
 			int deliveryTime = Integer.parseInt(delAreaTime.getText());
 			String aHood = delAreaHoods.getValue();
 
-			if(control.addDeliveryArea(id, aName, hoodsInDeliveryArea, deliveryTime)) {
+			if(control.addDeliveryAreaGUI(id, aName, hoodsInDeliveryArea, deliveryTime)) {
 				successSound();
 				successAdded(section,"Success");
 				Restaurant.save(Input);	

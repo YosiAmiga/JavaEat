@@ -49,7 +49,8 @@ public class ManagerMainController implements Initializable {
 
 	}
 
-
+	/*enter the manager adding,removing,updating page*/
+	//works
 	public void loadAdd(ActionEvent e)
 	{
 		try {
@@ -70,6 +71,7 @@ public class ManagerMainController implements Initializable {
 		}
 	}
 
+	//works, TODO show all data
 	public void loadDB(ActionEvent e)
 	{
 		try {
@@ -78,7 +80,7 @@ public class ManagerMainController implements Initializable {
 				manage.setSelected(false);
 				queries.setSelected(false);
 				add.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("AdminDataBasePage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("ManagerDataBasePage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);

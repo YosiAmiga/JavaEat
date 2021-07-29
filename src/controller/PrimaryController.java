@@ -108,6 +108,50 @@ public class PrimaryController {
 	}
 	
 	/**
+	 * a method to update the data of an existing component
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateComponentGUI(int id, String cName, boolean lactose, boolean gluten, double price, int newID) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id) && requireNotZeroOrNegative(newID));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		//get the current component by its id from the database
+		Component componentUpdate = Restaurant.getInstance().getRealComponent(id);
+		//check each non empty parameter to update
+		//if new id is different AND does not exist in the database for a different component, update it
+		if(newID != componentUpdate.getId() && Restaurant.getInstance().getComponenets().containsKey(newID) && require(newID)) {
+			componentUpdate.setId(newID);
+		}
+		//if new component name is different, update it
+		if(cName != componentUpdate.getComponentName() && require(cName)) {
+			componentUpdate.setComponentName(cName);
+		}
+		//if new has / not has lactose is different, update it
+		if(lactose != componentUpdate.isHasLactose() && require(lactose)) {
+			componentUpdate.setHasLactose(lactose);
+		}
+		//if new has / not has gluten is different, update it
+		if(gluten != componentUpdate.isHasGluten() && require(gluten)) {
+			componentUpdate.setHasGluten(gluten);
+		}
+		//if new component price is different, update it
+		if(price != componentUpdate.getPrice() && require(price)) {
+			componentUpdate.setPrice(price);
+		}
+		
+		//after all changes were checked, update the component in the database
+		return Restaurant.getInstance().getComponenets().put(componentUpdate.getId(), componentUpdate) == null;
+	}
+	
+	
+	/**
 	 * This method is used to remove a component from the database.
 	 * @param id - id of the component.
 	 * @return true if success, false if failed.
@@ -120,10 +164,19 @@ public class PrimaryController {
 		Component componentdDel = Restaurant.getInstance().getRealComponent(id);
 		return Restaurant.getInstance().removeComponent(componentdDel);
 	}
-//	public Component(int id, String componentName, boolean hasLactose, boolean hasGluten, double price)
 
+	/**
+	 * a method to add a component to the system
+	 * @param id - id of the component
+	 * @param cName - name of the component
+	 * @param lactose - does it contains lactose
+	 * @param gluten - does it contains gluten
+	 * @param price - price of the component
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean addComponentGUI(int id, String cName, boolean lactose, boolean gluten, double price) throws IllegelInputException {
-		boolean validate = (require(id,cName,lactose,gluten,price) && requireNotZeroOrNegative(id));
+		boolean validate = (require(id,cName,lactose,gluten,price) && requireNotZeroOrNegative(id) && requireNotZeroOrNegative(price));
 		if(!validate) {
 			throw new IllegelInputException();
 		}

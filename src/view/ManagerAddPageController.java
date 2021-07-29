@@ -265,6 +265,13 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private TextField delComponentID;
 	
+	
+	@FXML
+	private Button updateComponentData;
+	@FXML
+	private TextField newComponentId;
+	
+	
 	/**************************************Customer Page*****************************************/
 	@FXML
 	private TextField customerId;
@@ -632,7 +639,6 @@ public class ManagerAddPageController implements Initializable {
 			int idNewArea = Integer.parseInt(newAreaID.getText());
 
 			if(control.replaceDeliveryAreaGUI(idOldArea, idNewArea)){
-				successSound();
 				successRemove(section, "Success");
 				Restaurant.save(Input);	
 			}
@@ -656,7 +662,6 @@ public class ManagerAddPageController implements Initializable {
 			String aHood = delAreaHoods.getValue();
 
 			if(control.addDeliveryAreaGUI(id, aName, hoodsInDeliveryArea, deliveryTime)) {
-				successSound();
 				successAdded(section,"Success");
 				Restaurant.save(Input);	
 			}
@@ -677,7 +682,6 @@ public class ManagerAddPageController implements Initializable {
 		try {
 			int id = Integer.parseInt(deleteDelPersonID.getText());
 			if(control.removeDeliveryPersonGUI(id)) {
-				successSound();
 				successRemove(section, "Success");
 				Restaurant.save(Input);
 			}
@@ -720,7 +724,6 @@ public class ManagerAddPageController implements Initializable {
 			}
 			//add method in primary controller
 			if(control.addDeliveryPersonGUI(id, fName, lName, localDate, selectedG, selectedV,dArea)) {
-				successSound();
 				successAdded(section,"Success");
 				System.out.println(Restaurant.getInstance().getDeliveryPersons().values());
 				Restaurant.save(Input);								
@@ -734,6 +737,36 @@ public class ManagerAddPageController implements Initializable {
 		}
 		refreshGui();
 	}
+	
+	/**************Update a component*************/
+	public void updateComponent(ActionEvent e) {
+		String section = "Component";
+		try {
+			int id = Integer.parseInt(componentID.getText());
+			String cName = componentName.getText();
+			boolean lactose = hasLactose.isSelected();
+			boolean gluten = hasGluten.isSelected();
+			double price = Double.parseDouble(componentPrice.getText());
+			//if a new id was entered to be updated
+			
+			if(!newComponentId.getText().isBlank()) {
+				int newID = Integer.parseInt(newComponentId.getText());
+				if(control.updateComponentGUI(id, cName, lactose, gluten, price, newID)) {
+					successUpdate(section, "Success");
+					Restaurant.save(Input);
+				}
+			}
+			//if no new id, use the same id to be updated as the "new id"
+			if(control.updateComponentGUI(id, cName, lactose, gluten, price, id)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		refreshGui();
+	}
+	
 	/**************Delete a component*************/
 	public void delComponent(ActionEvent e) {
 		String section = "Component";
@@ -750,7 +783,6 @@ public class ManagerAddPageController implements Initializable {
 			System.out.println(Restaurant.getInstance().getComponenets());
 			refreshGui();
 		}catch (Exception e1) {
-			badSound();
 			fail(section, e1.toString());
 		}
 		refreshGui();
@@ -768,7 +800,6 @@ public class ManagerAddPageController implements Initializable {
 			double price = Double.parseDouble(componentPrice.getText());
 			//add method in primary controller
 			if(control.addComponentGUI(id, cName, lactose, gluten, price)) {
-				successSound();
 				successAdded(section,"Success");
 				System.out.println(Restaurant.getInstance().getComponenets());
 				Restaurant.save(Input);				
@@ -790,7 +821,6 @@ public class ManagerAddPageController implements Initializable {
 		try {
 			int id = Integer.parseInt(delCustomerID.getText());
 			if(control.removeCustomerGUI(id)) {
-				successSound();
 				successRemove(section, "Success");
 				Restaurant.save(Input);
 			}
@@ -802,7 +832,6 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch (Exception e1) {
-			badSound();
 			fail(section, e1.toString());
 		}
 		refreshGui();
@@ -851,13 +880,11 @@ public class ManagerAddPageController implements Initializable {
 			boolean gluten = customerGluten.isSelected();
 
 			if(control.addCustomerFromGUI(id,firstName, LastName, localDate, selectedG, password, passwordVerify, selectedN, lactose, gluten)) {
-				successSound();
 				successAdded(section, "Success");
 				Restaurant.save(Input);				
 			}
 			//if could not add customer
 			else {
-				badSound();
 				fail(section,"This id already exists in the customer database!");
 			}
 //			Customer custToAdd = new Customer(firstName,LastName,localDate,selectedG,selectedN,lactose,gluten);
@@ -1668,7 +1695,18 @@ public class ManagerAddPageController implements Initializable {
 //		}
 	}
 
+	public void successUpdate(String content, String header) {
+		successSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText(content+" Updated Successfully");
+		al.setHeaderText(header);
+		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
 	public void successRemove(String content, String header) {
+		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);
 		al.setContentText(content+" Removed Successfully");
 		al.setHeaderText(header);
@@ -1678,6 +1716,7 @@ public class ManagerAddPageController implements Initializable {
 	}
 	
 	public void successAdded(String content, String header) {
+		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);
 		al.setContentText(content+" Added Successfully");
 		al.setHeaderText(header);
@@ -1686,6 +1725,16 @@ public class ManagerAddPageController implements Initializable {
 		al.showAndWait();
 	}
 
+	public void failUpdate(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to update : " + content);
+		al.setHeaderText(header);
+		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
 	public void fail(String content, String header) {
 		badSound();
 		Alert al = new Alert(Alert.AlertType.ERROR);

@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +8,11 @@ import java.util.List;
 import Utils.DishType;
 import Utils.MyFileLogWriter;
 
-public class Dish {
+public class Dish implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private static int idCounter = 1;
 	private int id;
@@ -18,6 +23,16 @@ public class Dish {
 	private int timeToMake;
 	
 	// constructors 
+	/*constructor for GUI*/
+	public Dish(int id, String dishName, DishType type, ArrayList<Component> componenets, int timeToMake) {
+		super();
+		this.id = id;
+		this.dishName = dishName;
+		this.type = type;
+		this.componenets = componenets;
+		this.timeToMake = timeToMake;
+		price = calcDishPrice();
+	}
 	
 	public Dish(String dishName, DishType type, ArrayList<Component> componenets, int timeToMake) {
 		super();
@@ -119,7 +134,7 @@ public class Dish {
 			price += c.getPrice();
 		}
 		price = price*3;
-		MyFileLogWriter.println(this+" Price is "+price);
+//		MyFileLogWriter.println(this+" Price is "+price);
 		return price;
 	}
 	

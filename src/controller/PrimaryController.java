@@ -17,6 +17,49 @@ import javafx.collections.ObservableList;
 
 
 public class PrimaryController {
+	
+	public boolean removeDishFromGUI(int id) throws IllegelInputException{
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		Dish dishDelete = Restaurant.getInstance().getRealDish(id);		
+		return Restaurant.getInstance().removeDish(dishDelete);
+	}
+	
+	/**
+	 * a method to add a dish to the database
+	 * @param id - the id of the dish
+	 * @param dName - the name of the dish
+	 * @param type - the type of the dish
+	 * @param componentsInDishList - the components of the dish
+	 * @param toMake - time to make the dish
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean addDishFromGUI(int id, String dName,DishType type, ArrayList<Integer> componentsInDishList, int toMake) throws IllegelInputException {
+		boolean validate = (require(id, dName,type) && requireNotZeroOrNegative(id) && requireNotZeroOrNegative(toMake));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+
+		ArrayList<Component> components = new ArrayList<>();
+		for(int compID : componentsInDishList) {
+			//if the id of the component in componentsInDishList from user exist in system, add the component to the dish
+			if(Restaurant.getInstance().getComponenets().containsKey(compID)){
+				//get the component data by his id
+				Component temp = Restaurant.getInstance().getRealComponent(compID);
+				System.out.println(temp);
+				//add it to the ArrayList of components in the dish
+				components.add(temp);
+			}
+		}
+				
+		Dish newDish = new Dish(id,dName,type,components,toMake);	
+		System.out.println(newDish);
+		return Restaurant.getInstance().addDish(newDish);
+	}
+	
 	/**
 	 * a method to replace a given delivery area with a new one, both of them has to exist in the system!
 	 * @param oldAreaID
@@ -43,12 +86,15 @@ public class PrimaryController {
 	 * @param hoods - the neighborhoods in the delivery area
 	 * @param deliveryTime - the delivery time of the delivery area
 	 * @return true if added successfully, false if not
+	 * @throws IllegelInputException 
 	 */
-	public boolean addDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods, int deliveryTime) {
+	public boolean addDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods, int deliveryTime) throws IllegelInputException {
 		//create a HashSet of neighborhoods to set in the delivery area, convert the ArrayList of strings into HashSet of Neighberhood
 		boolean validate = (require(id, aName,deliveryTime) && requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
 		HashSet<Neighberhood> aHoods = new HashSet<>();
-
 		for(String h : hoods) {
 			for(Neighberhood n : Neighberhood.values()) {
 				if(n.toString().equals(h)) {
@@ -72,7 +118,7 @@ public class PrimaryController {
 	}
 
 	/**
-	 * 
+	 * a method to add a delivery person to the database
 	 * @param id - the id of the delivery person
 	 * @param fName - first name of the delivery person
 	 * @param lName - last name of the delivery person
@@ -96,8 +142,6 @@ public class PrimaryController {
 		int areaID = 0;
 		for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
 			if(d.getAreaName().equals(da)) {
-//				public DeliveryArea(int id, String areaName, HashSet<Neighberhood> neighberhoods, int deliverTime) 
-//				tempArea =new DeliveryArea(d.getId(),d.getAreaName(),(HashSet)d.getNeighberhoods(),d.getDeliverTime());
 				areaID = d.getId();
 			}
 		}
@@ -166,7 +210,7 @@ public class PrimaryController {
 	}
 
 	/**
-	 * a method to add a component to the system
+	 * a method to add a component to the database
 	 * @param id - id of the component
 	 * @param cName - name of the component
 	 * @param lactose - does it contains lactose
@@ -196,11 +240,51 @@ public class PrimaryController {
 		if(!validate) {
 			throw new IllegelInputException();			
 		}
-		Customer customerDel = Restaurant.getInstance().getRealCustomer(id);
-		
+		Customer customerDel = Restaurant.getInstance().getRealCustomer(id);		
 		return Restaurant.getInstance().removeCustomer(customerDel);
 	}
 	
+	/**
+	 * This method is used to remove a cook from the database.
+	 * @param id - the id of the cook.
+	 * @return true if success, false if failed.
+	 * @throws IllegelInputException 
+	 */
+	public boolean removeCookFromGUI(int id) throws IllegelInputException {
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
+			throw new IllegelInputException();			
+		}
+		Cook cookDelete = Restaurant.getInstance().getRealCook(id);		
+		return Restaurant.getInstance().removeCook(cookDelete);
+	}
+	
+	/**
+	 * a method to add a cook to the database
+	 * @param id - the id of the cook
+	 * @param firstName - first name of the cook
+	 * @param LastName - last name of the cook
+	 * @param birthday - birth date of the cook
+	 * @param gender - gender of the cook
+	 * @param expert - expertise of the cook
+	 * @param isChef - is the cook a chef
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean addCookFromGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender, Expertise expert,boolean isChef) throws Exception{
+
+		//check for parameters of class cook and validate id
+		boolean isOk = (require(id,firstName,LastName,birthday,gender,expert,isChef)) && (requireNotZeroOrNegative(id));
+
+		// if not valid throw exception
+		if(!isOk) {
+			throw new IllegelInputException();			
+		}
+
+		// create a new cook instance with the data we got from GUI
+		Cook cook = new Cook(id,firstName,LastName,birthday,gender,expert,isChef);
+		return Restaurant.getInstance().addCook(cook);
+	}
 	
 //	public boolean addLocation(String country,String city) throws Exception{
 //		//TODO: Complete this method
@@ -1079,6 +1163,9 @@ public class PrimaryController {
 		}
 		return true;
 	}
+
+
+
 
 
 

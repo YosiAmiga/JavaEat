@@ -14,6 +14,14 @@ public class Cook extends Person{
 	private Expertise expert;
 	private boolean isChef;
 	
+	/*constructor for GUI*/
+	public Cook(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Expertise expert,
+			boolean isChef) {
+		super(id, firstName, lastName, birthDay, gender);
+		this.expert = expert;
+		this.isChef = isChef;
+	}
+	
 	public Cook(String firstName, String lastName, LocalDate birthDay, Gender gender, Expertise expert,
 			boolean isChef) {
 		super(idCounter++, firstName, lastName, birthDay, gender);

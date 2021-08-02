@@ -107,57 +107,27 @@
          <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="guideId" layoutX="14.0" layoutY="21.0" prefHeight="24.0" prefWidth="348.0" promptText="id">
+                  <TextField fx:id="cookId" layoutX="40.0" layoutY="84.0" prefHeight="24.0" prefWidth="348.0" promptText="id">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="guideFirst" layoutX="14.0" layoutY="54.0" prefHeight="24.0" prefWidth="348.0" promptText="First Name">
+                  <TextField fx:id="cookFirstName" layoutX="40.0" layoutY="116.0" prefHeight="24.0" prefWidth="348.0" promptText="First Name">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="guideLast" layoutX="14.0" layoutY="87.0" prefHeight="24.0" prefWidth="348.0" promptText="Last Name">
+                  <TextField fx:id="cookLastName" layoutX="40.0" layoutY="150.0" prefHeight="24.0" prefWidth="348.0" promptText="Last Name">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="guideEmail" layoutX="14.0" layoutY="119.0" prefHeight="24.0" prefWidth="348.0" promptText="Email">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guideCountry" layoutX="14.0" layoutY="153.0" prefHeight="24.0" prefWidth="348.0" promptText="Country">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guideCity" layoutX="14.0" layoutY="187.0" prefHeight="24.0" prefWidth="348.0" promptText="City">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guideStreet" layoutX="14.0" layoutY="220.0" prefHeight="24.0" prefWidth="348.0" promptText="Street">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guideHouse" layoutX="14.0" layoutY="253.0" prefHeight="24.0" prefWidth="348.0" promptText="House Number">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guidePhone" layoutX="14.0" layoutY="286.0" prefHeight="24.0" prefWidth="348.0" promptText="Phone Number">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <DatePicker fx:id="guideBirth" layoutX="14.0" layoutY="319.0" prefHeight="25.0" prefWidth="348.0" promptText="Birth Date">
+                  <DatePicker fx:id="cookDate" layoutX="40.0" layoutY="188.0" prefHeight="25.0" prefWidth="348.0" promptText="Birth Date">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </DatePicker>
-                  <Button fx:id="addGuide" layoutX="241.0" layoutY="550.0" mnemonicParsing="false" onAction="#addGuide" prefHeight="39.0" prefWidth="138.0" text="Add Cook" textFill="#00a650">
+                  <Button fx:id="addCook" layoutX="46.0" layoutY="398.0" mnemonicParsing="false" onAction="#addCook" prefHeight="39.0" prefWidth="138.0" text="Add Cook" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -165,30 +135,19 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <TextField fx:id="guidePass" layoutX="14.0" layoutY="353.0" prefHeight="24.0" prefWidth="348.0" promptText="Password">
+                  <ComboBox fx:id="cookGender" layoutX="40.0" layoutY="265.0" prefWidth="150.0" promptText="Gender" />
+                  <ComboBox fx:id="cookExpertise" layoutX="40.0" layoutY="232.0" prefWidth="150.0" promptText="Expertise" />
+                  <CheckBox fx:id="isChef" layoutX="51.0" layoutY="303.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="73.0" text="is chef?" />
+                  <Button fx:id="removeCookBtn" layoutX="388.0" layoutY="398.0" mnemonicParsing="false" onAction="#removeCook" prefHeight="39.0" prefWidth="138.0" text="Remove Cook" textFill="#e4401b">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guidePassVerify" layoutX="14.0" layoutY="387.0" prefHeight="24.0" prefWidth="348.0" promptText="Veify Password">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="guideQuestion" layoutX="14.0" layoutY="421.0" prefHeight="24.0" prefWidth="348.0" promptText="What is your birth City?">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <DatePicker fx:id="startDate" layoutX="14.0" layoutY="454.0" prefHeight="25.0" prefWidth="348.0" promptText="startDate">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </DatePicker>
-                  <ComboBox fx:id="guideDestinations" layoutX="391.0" layoutY="265.0" prefHeight="26.0" prefWidth="218.0" promptText="Add Experienced Destinations" />
-                  <Button fx:id="guideAddtoList" layoutX="398.0" layoutY="299.0" mnemonicParsing="false" onAction="#addToExpList" prefHeight="36.0" prefWidth="75.0" text="Add to List" />
-                  <Button fx:id="guideClearList" layoutX="507.0" layoutY="299.0" mnemonicParsing="false" onAction="#ClearExpList" prefHeight="36.0" prefWidth="75.0" text="Clear List" />
-                  <TextArea fx:id="guideListOfExpDestinations" layoutX="388.0" layoutY="19.0" prefHeight="214.0" prefWidth="221.0" />
+                  </Button>
+                  <ComboBox fx:id="cooksInSys" layoutX="382.0" layoutY="278.0" prefWidth="150.0" promptText="Cooks in system" />
+                  <TextField fx:id="cookIDtoDelete" layoutX="383.0" layoutY="327.0" promptText="Cook ID to delete" />
                </children></AnchorPane>
       </content>
       </Tab>
@@ -196,7 +155,7 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addHotel" layoutX="231.0" layoutY="529.0" mnemonicParsing="false" onAction="#addHotel" prefHeight="39.0" prefWidth="138.0" text="Add Dish" textFill="#00a650">
+                  <Button fx:id="addDish" layoutX="64.0" layoutY="498.0" mnemonicParsing="false" onAction="#addDish" prefHeight="39.0" prefWidth="138.0" text="Add Dish" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -204,48 +163,40 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <TextField fx:id="hotelStars" layoutX="146.0" layoutY="326.0" prefHeight="24.0" prefWidth="348.0" promptText="Number of Stars">
+                  <TextField fx:id="timeToMake" layoutX="58.0" layoutY="116.0" prefHeight="24.0" prefWidth="348.0" promptText="Time to make">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="hotelId" layoutX="146.0" layoutY="86.0" prefHeight="24.0" prefWidth="348.0" promptText="Hotel id">
+                  <TextField fx:id="dishId" layoutX="58.0" layoutY="45.0" prefHeight="24.0" prefWidth="348.0" promptText="Dish ID">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="hotelName" layoutX="146.0" layoutY="119.0" prefHeight="24.0" prefWidth="348.0" promptText="Hotel Name">
+                  <ComboBox fx:id="TypeOfTheDish" layoutX="58.0" layoutY="156.0" onAction="#showCitiesHotel" prefHeight="26.0" prefWidth="347.0" promptText="Dish type" />
+                  <TextField fx:id="dishName" layoutX="58.0" layoutY="80.0" prefHeight="24.0" prefWidth="348.0" promptText="Dish name">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="hotelRooms" layoutX="146.0" layoutY="153.0" prefHeight="24.0" prefWidth="348.0" promptText="Number of Rooms">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="hotelPeoplePerRoom" layoutX="146.0" layoutY="188.0" prefHeight="24.0" prefWidth="348.0" promptText="Number of People Per Room">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="hotelPrice" layoutX="146.0" layoutY="291.0" prefHeight="24.0" prefWidth="348.0" promptText="Price Per Person">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <CheckBox fx:id="hotelPool" layoutX="394.0" layoutY="385.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="102.0" text="Has Pool">
+                  <ComboBox fx:id="componentsInDish" layoutX="58.0" layoutY="194.0" prefWidth="150.0" promptText="Components to add" />
+                  <Button fx:id="addComponentToList" layoutX="248.0" layoutY="194.0" mnemonicParsing="false" onAction="#addComponentToList" text="add" />
+                  <Button fx:id="clearComponentsList" layoutX="293.0" layoutY="194.0" mnemonicParsing="false" onAction="#clearComponentsInDishesList" text="Clear list" />
+                  <TextArea fx:id="componentsList" layoutX="224.0" layoutY="226.0" prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="removeDish" layoutX="457.0" layoutY="498.0" mnemonicParsing="false" onAction="#removeDish" prefHeight="39.0" prefWidth="138.0" text="Remove Dish" textFill="RED">
                      <font>
-                        <Font name="Arial Bold Italic" size="16.0" />
+                        <Font name="Arial Bold" size="15.0" />
                      </font>
-                  </CheckBox>
-                  <CheckBox fx:id="HotelBreakfast" layoutX="146.0" layoutY="385.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="160.0" text="Serves Breakfast">
-                     <font>
-                        <Font name="Arial Bold Italic" size="16.0" />
-                     </font>
-                  </CheckBox>
-                  <ComboBox fx:id="hotelCountry" layoutX="146.0" layoutY="222.0" onAction="#showCitiesHotel" prefHeight="26.0" prefWidth="347.0" promptText="Country" />
-                  <ComboBox fx:id="hotelCity" layoutX="146.0" layoutY="257.0" prefHeight="26.0" prefWidth="347.0" promptText="City" />
+                     <opaqueInsets>
+                        <Insets top="5.0" />
+                     </opaqueInsets>
+                  </Button>
+                  <ComboBox fx:id="dishIDToDelete" layoutX="457.0" layoutY="226.0" prefWidth="150.0" promptText="Dishes in system" />
+                  <TextField fx:id="deleteDishTextField" layoutX="457.0" layoutY="276.0" prefHeight="26.0" prefWidth="115.0" promptText="Dish ID to delete">
+                     <opaqueInsets>
+                        <Insets top="5.0" />
+                     </opaqueInsets>
+                  </TextField>
                </children></AnchorPane>
             
          </content>

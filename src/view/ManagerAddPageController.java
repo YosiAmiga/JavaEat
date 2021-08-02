@@ -214,8 +214,7 @@ public class ManagerAddPageController implements Initializable {
 	private Button areaToReplace;
 	
 	/**************************************Delivery Person Page****************************************/
-//	public DeliveryPerson(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Vehicle vehicle,
-//			DeliveryArea area)
+
 	@FXML 
 	private TextField delPersonId;
 	@FXML 
@@ -255,7 +254,7 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private ComboBox<String> genderCombo;
 	@FXML
-	private ComboBox<String> componentsDelete;
+	private ComboBox<Integer> componentsDelete;
 	
 	@FXML
 	private Button addComponent;
@@ -303,6 +302,90 @@ public class ManagerAddPageController implements Initializable {
 	private ComboBox<String> customerDelete;	
 	@FXML
 	private Button delCustomer;	
+	
+	/**************************************Cook Page*****************************************/
+	@FXML
+	private TextField cookId;
+		
+	@FXML
+	private TextField cookFirstName;
+		
+	@FXML
+	private TextField cookLastName;
+		
+	@FXML
+	private DatePicker cookDate;
+		
+	@FXML
+	private ComboBox<String> cookGender;
+		
+	@FXML
+	private ComboBox<String> cookExpertise;
+		
+	@FXML
+	private CheckBox isChef;
+		
+	@FXML
+	private Button addCook;
+	
+	@FXML
+	private ComboBox<String> cooksInSys;
+	@FXML
+	private TextField cookIDtoDelete;
+	@FXML
+	private Button removeCookBtn;
+	/**************************************Dish Page*****************************************/
+	
+	@FXML
+	private TextField dishId;
+	
+	@FXML
+	private TextField dishName;
+	
+	@FXML
+	private TextField timeToMake;
+	
+	@FXML
+	private ComboBox<String> TypeOfTheDish;
+		
+	@FXML
+	private ComboBox<Integer> componentsInDish;
+	
+	@FXML
+	private TextArea componentsList;
+	@FXML
+	private Button addComponentToList;
+	@FXML
+	private Button clearComponentsList;
+	@FXML
+	private Button addDish;
+	
+	@FXML
+	private ComboBox<String> dishIDToDelete;
+	@FXML
+	private TextField deleteDishTextField;
+	@FXML
+	private Button removeDish;
+	
+	/**************************************Order Page*****************************************/
+	
+	@FXML
+	private TextField orderId;
+	
+	@FXML
+	private ComboBox<String> customersForOrder ;
+	
+	@FXML
+	private ComboBox<String> dishesInOrder ;// multiple choice 
+	
+	@FXML
+	private ComboBox<String> deliveriesInOrder ;
+	
+	@FXML
+	private Button addOrder ;
+
+	@FXML
+	private Button removeOrder ;
 	/*******************************************************************************/
 
 	@FXML
@@ -439,23 +522,7 @@ public class ManagerAddPageController implements Initializable {
 
 	@FXML
 	private Button addPackage;
-//
-//	@FXML
-//	private ComboBox<Long> guideExpId;
 
-
-
-//	@FXML
-//	private ComboBox<String> guideExpCountry;
-//
-//	@FXML
-//	private ComboBox<String> guideExpCity;
-
-//	@FXML
-//	private Button expCertificate;
-//
-//	@FXML
-//	private Label expCertificateLabel;
 	@FXML
 	private TextField flightNum;
 
@@ -498,40 +565,67 @@ public class ManagerAddPageController implements Initializable {
 	ArrayList<Integer> packageTripList=new ArrayList<Integer>();
 	ArrayList<Long> packageAccommodationList=new ArrayList<Long>();
 	ArrayList<String> hoodsInDeliveryArea = new ArrayList<>();
+	ArrayList<Integer> componentsInDishList = new ArrayList<>();
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
-		/***************list of delivery persons to delete*********/
+		/**************list of dishes in system*********/
+		ArrayList<String> dishesDB = new ArrayList<>();
+		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
+			dishesDB.add(d.getDishName());
+		}
+		ObservableList<String> ObservableListDishes = FXCollections.observableArrayList();
+		ObservableListDishes.addAll(dishesDB);
+		dishIDToDelete.setItems(ObservableListDishes);
+		
+		/***************list of cooks in system*********/
+		ArrayList<String> cooksDB = new ArrayList<>();
+		for(Cook c :  Restaurant.getInstance().getCooks().values()) {
+			cooksDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
+		}
+		ObservableList<String> ObservableListCooks = FXCollections.observableArrayList();
+		ObservableListCooks.addAll(cooksDB);
+		cooksInSys.setItems(ObservableListCooks);
+		/***************list of delivery persons in system*********/
 		ArrayList<String> delPersonDB = new ArrayList<>();
 		for(DeliveryPerson dp :  Restaurant.getInstance().getDeliveryPersons().values()) {
 			delPersonDB.add(dp.getFirstName() + " " + dp.getLastName());
 		}
-		ObservableList<String> comboDelPersons = FXCollections.observableArrayList();
-		comboDelPersons.addAll(delPersonDB);
-		delPersonDelete.setItems(comboDelPersons);
-		
+		ObservableList<String> ObservableListDelPersons = FXCollections.observableArrayList();
+		ObservableListDelPersons.addAll(delPersonDB);
+		delPersonDelete.setItems(ObservableListDelPersons);
+		delAreaDelPersons.setItems(ObservableListDelPersons);
 
-		/***************list of delivery areas*********************/
+		/***************list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
-			areasDB.add("Area ID: " + da.getId()+ " Name: " +da.getAreaName());
+			areasDB.add(da.getAreaName());
 		}
 		ObservableList<String> comboAreas = FXCollections.observableArrayList();
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
 		deliveryAreasByID.setItems(comboAreas);
 		
-		/***************list of components to delete***************/
-		ArrayList<String> componentsDB = new ArrayList<>();
+		/***************list of components in the system***************/
+		//will be only the id of the component
+		ArrayList<Integer> componentsDB = new ArrayList<>();
 		for(Component c : Restaurant.getInstance().getComponenets().values()) {
-			componentsDB.add("ID: " + c.getId() + " Name: " + c.getComponentName() + " Price: " + c.getPrice());
+			componentsDB.add(c.getId());
 		}
-		ObservableList<String> comboComponents = FXCollections.observableArrayList();
-		comboComponents.addAll(componentsDB);
-		componentsDelete.setItems(comboComponents);
+		ObservableList<Integer> ObservableListComponents = FXCollections.observableArrayList();
+		ObservableListComponents.addAll(componentsDB);
+		componentsDelete.setItems(ObservableListComponents);
+		componentsInDish.setItems(ObservableListComponents);
 		
-		
-		
+		/***************list of dish types*********/
+		ArrayList<String> dishTypes = new ArrayList<>();
+		for(DishType dt : DishType.values() ) {
+			dishTypes.add(String.valueOf(dt));
+		}
+		ObservableList<String> observationListDishType=FXCollections.observableArrayList();
+		observationListDishType.addAll(dishTypes);
+		TypeOfTheDish.setItems(observationListDishType);
+				
 		/***************list of customers to delete***************/
 		ArrayList<String> customerDB = new ArrayList<>();
 		for(Customer c : Restaurant.getInstance().getCustomers().values()) {
@@ -540,7 +634,8 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> comboCustomers = FXCollections.observableArrayList();
 		comboCustomers.addAll(customerDB);
 		customerDelete.setItems(comboCustomers);
-		/************WORKS*********/
+		
+		/******************Load Neighborhood enum****************/
 		ArrayList<String> neighberhoodsDB=new ArrayList<String>();
 		for(Neighberhood n : Neighberhood.values()) {
 
@@ -551,18 +646,29 @@ public class ManagerAddPageController implements Initializable {
 		comboNeighborhoods.addAll(neighberhoodsDB);
 		customerHoodCombo.setItems(comboNeighborhoods);
 		delAreaHoods.setItems(comboNeighborhoods);
-		/************WORKS*********/
+		
+		/******************Load genders enum****************/
 		ArrayList<String> gendersDB=new ArrayList<String>();
 		for(Gender g : Gender.values()) {
 
 			gendersDB.add(String.valueOf(g));
+		}		
+		ObservableList<String> observableListGenders=FXCollections.observableArrayList();
+		observableListGenders.addAll(gendersDB);
+		customerGenderCombo.setItems(observableListGenders);
+		genderCombo.setItems(observableListGenders);
+		cookGender.setItems(observableListGenders);
+		
+		/******************Load Expertise enum****************/
+		ArrayList<String> cookExpertiseAL = new ArrayList<>();
+		for(Expertise exp: Expertise.values()){
+			cookExpertiseAL.add(String.valueOf(exp));
 		}
+		ObservableList<String> observableExpertise=FXCollections.observableArrayList();
+		observableExpertise.addAll(cookExpertiseAL);
+		cookExpertise.setItems(observableExpertise);
 
-		ObservableList<String> comboGenders=FXCollections.observableArrayList();
-		comboGenders.addAll(gendersDB);
-		customerGenderCombo.setItems(comboGenders);
-		genderCombo.setItems(comboGenders);
-		/**********WORKS************/
+		/******************Load Vehicle enum****************/
 		ArrayList<String> vehicleDB = new ArrayList<>();
 		
 		for(Vehicle v : Vehicle.values()) {
@@ -571,7 +677,18 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> comboVehicles=FXCollections.observableArrayList();
 		comboVehicles.addAll(vehicleDB);
 		delPersonVehicle.setItems(comboVehicles);
-		/*********************/
+		/************customers in orders*********/
+//		ArrayList<String> CustomersCurrently = new ArrayList<>();
+//		for(Customer cust : Restaurant.getInstance().getCustomers().values()) {
+//			CustomersCurrently.add(cust.getFirstName()+ " " +cust.getLastName());
+//		}
+//		System.out.println(CustomersCurrently);		
+//		ObservableList<String> customersInOrder = FXCollections.observableArrayList();
+//		customersInOrder.addAll(CustomersCurrently);
+//		customersForOrder.setItems(customersInOrder);
+	
+		
+		
 		
 //		expCertificateLabel.setFont(new Font(20));
 //		expCertificateLabel.setText("Add Destination Certificate to procceed");	
@@ -630,6 +747,68 @@ public class ManagerAddPageController implements Initializable {
 
 	}
 	
+	/*************Remove a Dish**********/
+	public void removeDish(ActionEvent e) {
+		String section = "Dish";
+		try {
+			int id = Integer.parseInt(deleteDishTextField.getText());
+			if(control.removeDishFromGUI(id)) {
+				successRemove(section, "Success");
+				Restaurant.save(Input);
+			}
+			else {
+				fail(section, "This id does not exists in the dishes database!");
+			}
+			
+		}catch(Exception e1) {
+			e1.printStackTrace();
+		}
+		refreshGui();
+	}
+	
+	
+	/**************Add a Dish************/
+	public void addDish(ActionEvent e) {
+		String section = "Dish";
+		try {
+//			public Dish(int id, String dishName, DishType type, ArrayList<Component> componenets, int timeToMake) {
+//				super();
+//				this.id = id;
+//				this.dishName = dishName;
+//				this.type = type;
+//				this.componenets = componenets;
+//				this.timeToMake = timeToMake;
+//				price = calcDishPrice();
+//			}
+			
+			int id = Integer.parseInt(dishId.getText());
+			String dName = dishName.getText();
+			String type = TypeOfTheDish.getValue();
+			DishType selectedD = null;
+			int toMake = Integer.parseInt(timeToMake.getText());
+			for(DishType g : DishType.values()) {
+				if(g.toString().equals(type)) {
+					selectedD = g;
+				}
+			}
+			
+			if(control.addDishFromGUI(id, dName,selectedD, componentsInDishList, toMake)) {
+				successAdded(section,"Success");
+				Restaurant.save(Input);	
+			}
+			else {
+				fail(section, "This id already exists in the dishes database!");
+			}			
+			System.out.println(Restaurant.getInstance().getDishes().values());
+		}catch(IllegelInputException e1) {
+			System.out.println("IllegelInputException()");
+		}
+		catch(Exception e1) {
+			e1.printStackTrace();
+		}
+		refreshGui();
+	}
+	
 	/**************replace a Delivery Area*********/
 	//TODO Finish method + in PrimaryController
 	public void replaceDeliveryArea(ActionEvent e) {
@@ -648,7 +827,7 @@ public class ManagerAddPageController implements Initializable {
 		}catch(Exception e1) {
 			System.out.println("hey in del area");
 		}
-		
+		refreshGui();
 	}
 	/**************Add a Delivery Area************/
 	public void addDeliveryArea(ActionEvent e) {
@@ -673,7 +852,7 @@ public class ManagerAddPageController implements Initializable {
 		}catch(Exception e1) {
 			System.out.println("hey in del area");
 		}
-		
+		refreshGui();
 	}
 
 	/**************Remove a Delivery Person*******/
@@ -729,7 +908,7 @@ public class ManagerAddPageController implements Initializable {
 				Restaurant.save(Input);								
 			}
 			else {
-				fail(section,"This id already exists in the customer database!");
+				fail(section,"This id already exists in the delivery persons database!");
 			}
 								
 		}catch(Exception e1) {
@@ -843,13 +1022,7 @@ public class ManagerAddPageController implements Initializable {
 	{
 		String section = "Customer";
 		try {
-//			public Customer(String firstName, String lastName, LocalDate birthDay, Gender gender,
-//					Neighberhood neighberhood,	boolean isSensitiveToLactose, boolean isSensitiveToGluten) {
-//				super(idCounter++, firstName, lastName, birthDay, gender);
-//				this.neighberhood = neighberhood;
-//				this.isSensitiveToLactose = isSensitiveToLactose;
-//				this.isSensitiveToGluten = isSensitiveToGluten;
-//			}
+
 			int id=Integer.parseInt(customerId.getText());
 			String password=customerPass.getText();
 			String passwordVerify=customerPassVerify.getText();
@@ -925,6 +1098,86 @@ public class ManagerAddPageController implements Initializable {
 //			badSound();
 //			fail(a, "Person"+e1.toString());
 //		}
+		catch(NumberFormatException e1) {
+			badSound();
+			fail(section, "Wrong Input!");
+		}
+		catch (Exception e1) {
+			badSound();
+			fail(section, e1.toString());
+		}
+	}
+	
+	
+	/**************Remove a Cook*************/
+	public void removeCook(ActionEvent e) {
+		String section = "Cook";
+		try {
+			int id = Integer.parseInt(cookIDtoDelete.getText());
+			if(control.removeCookFromGUI(id)) {
+				successRemove(section, "Success");
+				Restaurant.save(Input);
+			}
+			//if the id is not in the cook database, we can't delete it
+			else {
+				fail(section,"This id does not exists in the customer database!");
+			}
+			
+		}
+		catch (Exception e1) {
+			fail(section, e1.toString());
+		}
+		refreshGui();
+	}
+	
+	/**************Add a Cook*************/
+	public void addCook(ActionEvent e)
+	{
+		String section = "Cook";
+		try {
+			int id=Integer.parseInt(cookId.getText());// get id
+			String firstName=cookFirstName.getText();//get the first name
+			String LastName=cookLastName.getText();// get the last name
+			LocalDate localDate =cookDate.getValue();
+			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));// get the date
+			Date date = Date.from(instant);
+			String gender = cookGender.getValue();
+			Gender selectedG = null;
+			String expertise = cookExpertise.getValue();
+			Expertise selectedN = null;
+			boolean isChef=false;// create an option to choose if chef or not
+			
+			for(Gender g : Gender.values()) {
+				if(g.toString().equals(gender)) {
+					selectedG = g;
+				}
+			}
+			for(Expertise n : Expertise.values()) {
+				if(n.toString().equals(expertise)) {
+					selectedN = n;
+				}
+			}
+
+			if(control.addCookFromGUI(id,firstName, LastName, localDate, selectedG,selectedN, isChef)) {
+				successAdded(section, "Success");
+				Restaurant.save(Input);				
+			}
+			//if could not add customer
+			else {
+				fail(section,"This id already exists in the customer database!");
+			}
+			System.out.println("cooks: " + Restaurant.getInstance().getCooks());
+			refreshGui();
+
+		}
+		catch(IllegelInputException e1) {
+			badSound();
+			fail(section, e1.toString());
+		}
+		catch(SimilarIDInSystemException e1) {
+			badSound();
+			fail(section,e1.toString());
+		}
 		catch(NumberFormatException e1) {
 			badSound();
 			fail(section, "Wrong Input!");
@@ -1367,112 +1620,38 @@ public class ManagerAddPageController implements Initializable {
 	//working
 	public void addGuideExp(ActionEvent e)
 	{
-//		String a = "Guide Experience";
-//		try {
-//			String country=guideExpCountry.getValue();
-//			String city=guideExpCity.getValue();
-//			Long id=guideExpId.getValue();
-//			control.addExperiencedDestinationsforGuide(id, country, city);
-//			if(!expCertificateLabel.getText().equals("Destination Certificate Was Added!"))
-//				throw new GuideCertificationException();
-//			goodSound();
-//			success(a, "Success");
-//			Shared.save(Input);
-//			refreshGui();
-//
-//
-//			//pop up with success
-//			//exception-exp adding failed, already exists/illegal input	
-//		}
-//		catch(IllegelInputException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(NumberFormatException e1) {
-//			badSound();
-//			fail(a, "Wrong Input!");
-//		}
-//		catch(GuideNotExist e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(IllegelCountryException e1) {
-//			badSound();
-//			fail(a,e1.toString());
-//		}
-//		catch(GuideCertificationException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(GuideExperienceMismatchException e1) {
-//			badSound();
-//			fail(a,e1.toString());
-//		}
-//		catch(LocationNotExistException e1) {
-//			badSound();
-//			fail(a,e1.toString());
-//		}
-//		catch (Exception e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
+
 	}
 
 
 	public void addPackage(ActionEvent e)
 	{
-//		String a = "Package";
-//		try {
-//			int numberOfPeople=Integer.parseInt(packageNumOfPeople.getText());
-//			double price=Double.parseDouble(packagePrice.getText());
-//			String name=packageName.getText();
-//			String[] codesTicket=new String[packageFlightList.size()+packageAccommodationList.size()+packageTripList.size()];
-//			int ticketStart=Shared.getInstance().getCount();
-//			for(int i=0;i<codesTicket.length;i++)
-//			{
-//				codesTicket[i]=String.valueOf(ticketStart++);
-//				Shared.getInstance().boostCount();
-//			}
-//
-//
-//			control.addTravelPackage(name, numberOfPeople, price, codesTicket,packageFlightList.toArray(new String[packageFlightList.size()]), packageAccommodationList.toArray(new Long[packageAccommodationList.size()]),packageTripList.toArray(new Integer[packageTripList.size()]));
-//			goodSound();
-//			success(a, "Success");
-//			Shared.save(Input);
-//			packageFlightList.removeAll(packageFlightList);
-//			packageAccommodationList.removeAll(packageAccommodationList);
-//			packageTripList.removeAll(packageTripList);
-//			refreshGui();
-//
-//			//pop up with success
-//			//exception-trip adding failed, already exists/illegal input	
-//		}
-//		catch(IllegelInputException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(ObjectExistException e1) {
-//			badSound();
-//			fail(a, a+e1.toString());
-//		}
-//		catch(NegativNumberException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(NegativeNumberNotPriceException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(NumberFormatException e1) {
-//			badSound();
-//			fail(a, "Wrong Input!");
-//		}
-//		catch (Exception e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
+
 	}
 
+	/**
+	 * a method to show all the components in the dish
+	 * @param e
+	 */
+	public void addComponentToList(ActionEvent e) {
+		//dish can have several components
+		
+		componentsInDishList.add(componentsInDish.getValue());
+		String list="";
+		for(int s : componentsInDishList) {
+			list += s+"\n";
+		}
+		componentsList.setText(list);
+	}
+	/**
+	 * a method to clear the list of neighborhoods in the list view
+	 * @param e
+	 */
+	public void clearComponentsInDishesList(ActionEvent e) {
+		componentsInDishList.removeAll(componentsInDishList);
+		componentsList.setText("");
+	}
+	
 	/**
 	 * a method to show all the neighborhoods in the delivery area
 	 * @param e
@@ -1798,6 +1977,14 @@ public class ManagerAddPageController implements Initializable {
 		customerGluten.setSelected(false);
 		delCustomerID.setText("");
 		
+		/**Reseting the Cook**/
+		cookId.setText("");		
+		cookFirstName.setText("");
+		cookLastName.setText("");
+		/*TODO cookDate reset*/
+		isChef.setSelected(false);;
+		cookIDtoDelete.setText("");
+
 		
 //		/************WORKS*********/
 //		ArrayList<String> neighberhoodsDB=new ArrayList<String>();

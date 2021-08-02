@@ -443,38 +443,17 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="flightNum" layoutX="137.0" layoutY="48.0" prefHeight="24.0" prefWidth="348.0" promptText="Flight Number">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="flightSeats" layoutX="137.0" layoutY="88.0" prefHeight="24.0" prefWidth="348.0" promptText="Number of Seats">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <TextField fx:id="flightPrice" layoutX="137.0" layoutY="289.0" prefHeight="24.0" prefWidth="348.0" promptText="Price">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
-                  <DatePicker fx:id="flightDate" layoutX="137.0" layoutY="330.0" prefHeight="25.0" prefWidth="348.0" promptText="Date">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </DatePicker>
-                  <Button fx:id="addCustomer1" layoutX="231.0" layoutY="529.0" mnemonicParsing="false" onAction="#addFlight" prefHeight="39.0" prefWidth="138.0" text="Add Flight">
+                  <Button fx:id="addToBlackList" layoutX="221.0" layoutY="369.0" mnemonicParsing="false" onAction="#addCustomerToBlacklist" prefHeight="39.0" prefWidth="179.0" text="Add to blacklist" textFill="#00a650">
                      <font>
-                        <Font name="Arial Bold" size="15.0" />
+                        <Font name="Arial Bold" size="16.0" />
                      </font>
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="flightFromCountry" layoutX="137.0" layoutY="128.0" onAction="#showFromCitiesFlight" prefHeight="26.0" prefWidth="347.0" promptText="From Country" />
-                  <ComboBox fx:id="flightFromCity" layoutX="137.0" layoutY="169.0" prefHeight="26.0" prefWidth="347.0" promptText="From City" />
-                  <ComboBox fx:id="flightToCountry" layoutX="137.0" layoutY="209.0" onAction="#showToCitiesFlight" prefHeight="26.0" prefWidth="347.0" promptText="To Country" />
-                  <ComboBox fx:id="flightToCity" layoutX="137.0" layoutY="249.0" prefHeight="26.0" prefWidth="347.0" promptText="To City" />
+                  <ComboBox fx:id="customerList" layoutX="283.0" layoutY="75.0" prefHeight="26.0" prefWidth="221.0" promptText="Current customer list" />
+                  <TextField fx:id="customerToBlacklist" layoutX="236.0" layoutY="320.0" promptText="enter id to blacklist" />
+                  <ComboBox fx:id="blacklistList" layoutX="22.0" layoutY="136.0" prefHeight="26.0" prefWidth="147.0" promptText="Current blacklist " />
                </children>
             </AnchorPane>
          </content>

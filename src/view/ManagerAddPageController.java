@@ -301,7 +301,17 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private ComboBox<String> customerDelete;	
 	@FXML
-	private Button delCustomer;	
+	private Button delCustomer;
+	/*************************************Blacklist Page*************************************/
+	@FXML
+	private TextField customerToBlacklist;
+	@FXML
+	private ComboBox<String> customerList;
+	@FXML
+	private ComboBox<String> blacklistList;
+	@FXML
+	private Button addToBlackList;
+
 	
 	/**************************************Cook Page*****************************************/
 	@FXML
@@ -569,7 +579,7 @@ public class ManagerAddPageController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
-		/**************list of dishes in system*********/
+		/**************Load list of dishes in system*********/
 		ArrayList<String> dishesDB = new ArrayList<>();
 		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
 			dishesDB.add(d.getDishName());
@@ -578,7 +588,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListDishes.addAll(dishesDB);
 		dishIDToDelete.setItems(ObservableListDishes);
 		
-		/***************list of cooks in system*********/
+		/***************Load list of cooks in system*********/
 		ArrayList<String> cooksDB = new ArrayList<>();
 		for(Cook c :  Restaurant.getInstance().getCooks().values()) {
 			cooksDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
@@ -586,7 +596,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListCooks = FXCollections.observableArrayList();
 		ObservableListCooks.addAll(cooksDB);
 		cooksInSys.setItems(ObservableListCooks);
-		/***************list of delivery persons in system*********/
+		/***************Load list of delivery persons in system*********/
 		ArrayList<String> delPersonDB = new ArrayList<>();
 		for(DeliveryPerson dp :  Restaurant.getInstance().getDeliveryPersons().values()) {
 			delPersonDB.add(dp.getFirstName() + " " + dp.getLastName());
@@ -596,7 +606,7 @@ public class ManagerAddPageController implements Initializable {
 		delPersonDelete.setItems(ObservableListDelPersons);
 		delAreaDelPersons.setItems(ObservableListDelPersons);
 
-		/***************list of delivery areas in system*********************/
+		/***************Load list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
 			areasDB.add(da.getAreaName());
@@ -606,7 +616,7 @@ public class ManagerAddPageController implements Initializable {
 		delPersonArea.setItems(comboAreas);
 		deliveryAreasByID.setItems(comboAreas);
 		
-		/***************list of components in the system***************/
+		/***************Load list of components in the system***************/
 		//will be only the id of the component
 		ArrayList<Integer> componentsDB = new ArrayList<>();
 		for(Component c : Restaurant.getInstance().getComponenets().values()) {
@@ -617,24 +627,34 @@ public class ManagerAddPageController implements Initializable {
 		componentsDelete.setItems(ObservableListComponents);
 		componentsInDish.setItems(ObservableListComponents);
 		
-		/***************list of dish types*********/
+		/***************Load list of dish types*********/
 		ArrayList<String> dishTypes = new ArrayList<>();
 		for(DishType dt : DishType.values() ) {
 			dishTypes.add(String.valueOf(dt));
 		}
-		ObservableList<String> observationListDishType=FXCollections.observableArrayList();
-		observationListDishType.addAll(dishTypes);
-		TypeOfTheDish.setItems(observationListDishType);
+		ObservableList<String> ObservableListDishType=FXCollections.observableArrayList();
+		ObservableListDishType.addAll(dishTypes);
+		TypeOfTheDish.setItems(ObservableListDishType);
 				
-		/***************list of customers to delete***************/
+		/***************Load list of customers in the system***************/
 		ArrayList<String> customerDB = new ArrayList<>();
 		for(Customer c : Restaurant.getInstance().getCustomers().values()) {
 			customerDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
 		}
-		ObservableList<String> comboCustomers = FXCollections.observableArrayList();
-		comboCustomers.addAll(customerDB);
-		customerDelete.setItems(comboCustomers);
-		
+		ObservableList<String> ObservableListCustomers = FXCollections.observableArrayList();
+		ObservableListCustomers.addAll(customerDB);
+		customerDelete.setItems(ObservableListCustomers);
+		customerList.setItems(ObservableListCustomers);
+
+		/***************Load the Blacklist in the system***************/
+		ArrayList<String> blacklistDB = new ArrayList<>();
+		for(Customer c : Restaurant.getInstance().getBlackList()) {
+			blacklistDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
+		}
+		ObservableList<String> ObservableListBlacklist = FXCollections.observableArrayList();
+		ObservableListBlacklist.addAll(blacklistDB);
+		blacklistList.setItems(ObservableListBlacklist);
+
 		/******************Load Neighborhood enum****************/
 		ArrayList<String> neighberhoodsDB=new ArrayList<String>();
 		for(Neighberhood n : Neighberhood.values()) {
@@ -642,10 +662,10 @@ public class ManagerAddPageController implements Initializable {
 			neighberhoodsDB.add(String.valueOf(n));
 		}
 
-		ObservableList<String> comboNeighborhoods=FXCollections.observableArrayList();
-		comboNeighborhoods.addAll(neighberhoodsDB);
-		customerHoodCombo.setItems(comboNeighborhoods);
-		delAreaHoods.setItems(comboNeighborhoods);
+		ObservableList<String> ObservableListNeighborhoods=FXCollections.observableArrayList();
+		ObservableListNeighborhoods.addAll(neighberhoodsDB);
+		customerHoodCombo.setItems(ObservableListNeighborhoods);
+		delAreaHoods.setItems(ObservableListNeighborhoods);
 		
 		/******************Load genders enum****************/
 		ArrayList<String> gendersDB=new ArrayList<String>();
@@ -664,9 +684,9 @@ public class ManagerAddPageController implements Initializable {
 		for(Expertise exp: Expertise.values()){
 			cookExpertiseAL.add(String.valueOf(exp));
 		}
-		ObservableList<String> observableExpertise=FXCollections.observableArrayList();
-		observableExpertise.addAll(cookExpertiseAL);
-		cookExpertise.setItems(observableExpertise);
+		ObservableList<String> ObservableListExpertise=FXCollections.observableArrayList();
+		ObservableListExpertise.addAll(cookExpertiseAL);
+		cookExpertise.setItems(ObservableListExpertise);
 
 		/******************Load Vehicle enum****************/
 		ArrayList<String> vehicleDB = new ArrayList<>();
@@ -674,9 +694,10 @@ public class ManagerAddPageController implements Initializable {
 		for(Vehicle v : Vehicle.values()) {
 			vehicleDB.add(String.valueOf(v));
 		}
-		ObservableList<String> comboVehicles=FXCollections.observableArrayList();
-		comboVehicles.addAll(vehicleDB);
-		delPersonVehicle.setItems(comboVehicles);
+		ObservableList<String> ObservableListVehicles=FXCollections.observableArrayList();
+		ObservableListVehicles.addAll(vehicleDB);
+		delPersonVehicle.setItems(ObservableListVehicles);
+		
 		/************customers in orders*********/
 //		ArrayList<String> CustomersCurrently = new ArrayList<>();
 //		for(Customer cust : Restaurant.getInstance().getCustomers().values()) {
@@ -746,6 +767,27 @@ public class ManagerAddPageController implements Initializable {
 //
 
 	}
+	/*************Add to Blacklist*******/
+	public void addCustomerToBlacklist(ActionEvent e) {
+		String section = "Customer";
+		try {
+			int id = Integer.parseInt(customerToBlacklist.getText());
+			if(control.addToBlacklistFromGUI(id)) {
+				successAdded(section,"Success");
+				Restaurant.save(Input);
+			}
+			else {
+				fail(section, "This id does not exists in the customers database!");
+			}
+			
+		}catch(Exception e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(Restaurant.getInstance().getBlackList());
+		refreshGui();
+	}
+	
+	
 	
 	/*************Remove a Dish**********/
 	public void removeDish(ActionEvent e) {
@@ -771,15 +813,6 @@ public class ManagerAddPageController implements Initializable {
 	public void addDish(ActionEvent e) {
 		String section = "Dish";
 		try {
-//			public Dish(int id, String dishName, DishType type, ArrayList<Component> componenets, int timeToMake) {
-//				super();
-//				this.id = id;
-//				this.dishName = dishName;
-//				this.type = type;
-//				this.componenets = componenets;
-//				this.timeToMake = timeToMake;
-//				price = calcDishPrice();
-//			}
 			
 			int id = Integer.parseInt(dishId.getText());
 			String dName = dishName.getText();

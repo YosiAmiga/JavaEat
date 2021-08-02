@@ -18,6 +18,22 @@ import javafx.collections.ObservableList;
 
 public class PrimaryController {
 	
+	public boolean addToBlacklistFromGUI(int id) throws IllegelInputException{
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		Customer customerToBlacklist = Restaurant.getInstance().getRealCustomer(id);		
+		return Restaurant.getInstance().addCustomerToBlackList(customerToBlacklist);
+	}
+	
+	
+	/**
+	 * a method to remove a dish from the database
+	 * @param id
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean removeDishFromGUI(int id) throws IllegelInputException{
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {
@@ -108,6 +124,12 @@ public class PrimaryController {
 		return Restaurant.getInstance().addDeliveryArea(da);	
 	}
 	
+	/**
+	 * a method to remove a delivery person from the database
+	 * @param id
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean removeDeliveryPersonGUI(int id) throws IllegelInputException {
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {
@@ -196,7 +218,7 @@ public class PrimaryController {
 	
 	
 	/**
-	 * This method is used to remove a component from the database.
+	 * a method to remove a component from the database.
 	 * @param id - id of the component.
 	 * @return true if success, false if failed.
 	 */

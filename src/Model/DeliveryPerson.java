@@ -53,7 +53,7 @@ public class DeliveryPerson extends Person {
 	}
 	@Override
 	public String toString() {
-		return super.toString()+" DeliveryPerson, ID: " +getId()+" [vehicle=" + vehicle +" delivery Area " + getArea()+ "]";
+		return super.toString()+" DeliveryPerson, ID: " +getId()+"\nVehicle: " + vehicle +"\nArea " + getArea()+ "\n";
 	}
 
 }

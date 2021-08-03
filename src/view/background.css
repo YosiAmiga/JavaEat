@@ -1,19 +1,18 @@
 
- .AnchorPane{
-                 -fx-background-size: 100% 100%;
-                
-           }
+.AnchorPane{
+	-fx-background-size: 100% 100%;
+}
            
-.StackPane
-{
-                 -fx-background-size: 100% 100%;
-                
-   }
-           
-           
+.StackPane{
+	-fx-background-size: 100% 100%;                
+}
+   
+  /*fix */         
+.VBox{
+	-fx-background-color:#4db8ff ;
+}          
            
 .button{
-
   -fx-background-color: 
         #c3c4c4,
         linear-gradient(#d6d6d6 50%, white 100%),
@@ -83,7 +82,10 @@
    
 }
 
-
+/*fix */
+.togglebutton:selected {
+	-fx-background-color:#4db8ff ;
+}
 
 .tab
 {
@@ -102,10 +104,11 @@
     -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+    
 }
 
 .tab:selected {
-    -fx-background-color:gray ;
+    -fx-background-color:#4db8ff ;
     -fx-background-radius:30;
      -fx-border-color: gray;
 	  -fx-border-radius:30;

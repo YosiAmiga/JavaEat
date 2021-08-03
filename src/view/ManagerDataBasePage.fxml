@@ -8,73 +8,57 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="684.0" prefWidth="871.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerDataBaseController">
   <tabs>
-    <Tab text="Cooks">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <TableView fx:id="orders" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columns>
-                      <TableColumn fx:id="ordersID" prefWidth="64.79998624324799" text="ID" />
-                      <TableColumn fx:id="ordersOwner" minWidth="7.99993896484375" prefWidth="117.60000610351562" text="Owner" />
-                        <TableColumn fx:id="ordersQuantity" prefWidth="120.79998779296875" text="Quantity" />
-                        <TableColumn fx:id="ordersPrice" prefWidth="108.79998779296875" text="Price" />
-                        <TableColumn fx:id="OrdersFlights" prefWidth="124.800048828125" text="Flights" />
-                        <TableColumn fx:id="OrderAccom" prefWidth="184.800048828125" text="Accommodations" />
-                        <TableColumn fx:id="ordersTrips" prefWidth="134.39996337890625" text="Trips" />
-                    </columns>
-                  </TableView>
-               </children></AnchorPane>
-      </content>
-    </Tab>
     <Tab text="Customers">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="packages" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="customersTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="packageName" prefWidth="125.60003662109375" text="Name" />
-                        <TableColumn fx:id="packageQuantity" prefWidth="110.39996337890625" text="Quantity" />
-                        <TableColumn fx:id="packagePrice" prefWidth="131.20001220703125" text="Price" />
-                        <TableColumn fx:id="packageFlights" prefWidth="159.199951171875" text="Flights" />
-                        <TableColumn fx:id="packageAccom" prefWidth="184.80010986328125" text="Accommodations" />
-                        <TableColumn fx:id="packageTrips" prefWidth="148.800048828125" text="Trips" />
+                        <TableColumn fx:id="theCustomerID" prefWidth="40.00002896785736" text="ID" />
+                        <TableColumn fx:id="customerFirstName" prefWidth="106.39999389648438" text="First Name" />
+                        <TableColumn fx:id="customerLastName" prefWidth="109.60003662109375" text="Last Name" />
+                        <TableColumn fx:id="customerBD" prefWidth="74.39996337890625" text="Birth Date" />
+                        <TableColumn fx:id="customerPassword" prefWidth="92.0" text="Password" />
+                        <TableColumn fx:id="customerGender" prefWidth="95.99993896484375" text="Gender" />
+                        <TableColumn fx:id="customerNeighborhood" prefWidth="123.2000732421875" text="Neighborhood" />
+                        <TableColumn fx:id="customerLactose" prefWidth="99.99993896484375" text="Lactose sen." />
+                        <TableColumn fx:id="customerGluten" prefWidth="124.79998779296875" text="Gluten sen." />
                      </columns>
                   </TableView>
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Delivery Person">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+    <Tab text="Delivery Persons">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="flights" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="deliveryPersonsTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="flightNumber" prefWidth="107.20001220703125" text="Number" />
-                        <TableColumn fx:id="flightNumofSeats" prefWidth="176.0" text="Number of Seats" />
-                        <TableColumn fx:id="flightFrom" prefWidth="188.0" text="From" />
-                        <TableColumn fx:id="FlightTo" prefWidth="118.4000244140625" text="To" />
-                        <TableColumn fx:id="FlightDate" prefWidth="135.9998779296875" text="Date" />
-                        <TableColumn fx:id="FlightsPrice" prefWidth="150.4000244140625" text="Price" />
+                        <TableColumn fx:id="deliveryPersonID" prefWidth="54.4000244140625" text="ID" />
+                        <TableColumn fx:id="deliveryPersonFirstName" prefWidth="164.79998779296875" text="First Name" />
+                        <TableColumn fx:id="deliveryPersonLastName" prefWidth="140.80001831054688" text="Last Name" />
+                        <TableColumn fx:id="deliveryPersonBD" prefWidth="112.0" text="Birth Date" />
+                        <TableColumn fx:id="deliveryPersonGender" prefWidth="129.60003662109375" text="Gender" />
+                        <TableColumn fx:id="deliveryPersonVehicle" prefWidth="107.199951171875" text="Vehicle" />
+                        <TableColumn fx:id="deliveryPersonArea" prefWidth="170.39996337890625" text="Delivery Area" />
                      </columns>
                   </TableView>
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab text="Delivery Area">
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="Cooks">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="accommodations" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="cooksTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="accID" prefWidth="47.19998013973236" text="ID" />
-                        <TableColumn fx:id="accName" prefWidth="105.60000610351562" text="Name" />
-                        <TableColumn fx:id="accRooms" prefWidth="160.0" text="Number of Rooms" />
-                        <TableColumn fx:id="accPeople" prefWidth="145.5999755859375" text="People Per Room" />
-                        <TableColumn fx:id="accPrice" prefWidth="96.0" text="Price" />
-                        <TableColumn fx:id="accLocation" prefWidth="99.199951171875" text="Location" />
-                        <TableColumn fx:id="accType" prefWidth="92.79998779296875" text="Type" />
-                        <TableColumn fx:id="accOccupied" prefWidth="123.2000732421875" text="Occupied" />
+                        <TableColumn fx:id="cookID" prefWidth="51.199981689453125" text="ID" />
+                        <TableColumn fx:id="cookFirstName" prefWidth="111.199951171875" text="First name" />
+                        <TableColumn fx:id="cookLastName" prefWidth="112.0" text="Last Name" />
+                        <TableColumn fx:id="cookBD" prefWidth="122.4000244140625" text="Birth Date" />
+                        <TableColumn fx:id="cookGender" prefWidth="83.20001220703125" text="Gender" />
+                        <TableColumn fx:id="cookIsChef" minWidth="0.0" prefWidth="72.0" text="Chef" />
+                        <TableColumn fx:id="cookExpertise" minWidth="0.0" prefWidth="416.79998779296875" text="Expertise" />
                      </columns>
                   </TableView>
                </children>
@@ -85,10 +69,13 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="destinations" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="componentTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="destCountry" prefWidth="430.4000244140625" text="Country" />
-                        <TableColumn fx:id="destCity" prefWidth="440.7999267578125" text="City" />
+                        <TableColumn fx:id="componentID" prefWidth="85.60000610351562" text="ID" />
+                        <TableColumn fx:id="componentName" prefWidth="120.0" text="Name" />
+                        <TableColumn fx:id="componentLactose" prefWidth="149.5999755859375" text="Has lactose" />
+                        <TableColumn fx:id="componentGluten" prefWidth="136.0" text="Has gluten" />
+                        <TableColumn fx:id="componentPrice" prefWidth="610.39990234375" text="Price" />
                      </columns>
                   </TableView>
                </children>
@@ -99,17 +86,13 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="customers" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="dishesTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="customerID" prefWidth="40.00002896785736" text="ID" />
-                        <TableColumn fx:id="customerFirst" prefWidth="106.39999389648438" text="First Name" />
-                        <TableColumn fx:id="customerLast" prefWidth="109.60003662109375" text="Last Name" />
-                        <TableColumn fx:id="customerBirth" prefWidth="74.39996337890625" text="BirthDate" />
-                        <TableColumn fx:id="customerPass" prefWidth="92.0" text="Password" />
-                        <TableColumn fx:id="customerAnswer" prefWidth="95.99993896484375" text="Answer" />
-                        <TableColumn fx:id="customerEmail" prefWidth="99.99993896484375" text="Email" />
-                        <TableColumn fx:id="customerAdd" prefWidth="123.2000732421875" text="Address" />
-                        <TableColumn fx:id="customerOrders" prefWidth="124.79998779296875" text="Orders" />
+                        <TableColumn fx:id="dishID" prefWidth="40.00002896785736" text="ID" />
+                        <TableColumn fx:id="dishName" prefWidth="96.79998779296875" text="Dish Name" />
+                        <TableColumn fx:id="dishType" prefWidth="127.19998168945312" text="Dish Type" />
+                        <TableColumn fx:id="dishComponents" prefWidth="446.4000244140625" text="Dish Components" />
+                        <TableColumn fx:id="dishTime" prefWidth="143.20001220703125" text="Time to make" />
                      </columns>
                   </TableView>
                </children>
@@ -179,21 +162,39 @@
             </AnchorPane>
          </content>
       </Tab>
+      <Tab text="Delivery Area">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="deliveryAreaTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TableColumn fx:id="deliveryAreaID" prefWidth="47.19998013973236" text="ID" />
+                        <TableColumn fx:id="deliveryAreaName" prefWidth="105.60000610351562" text="Name" />
+                        <TableColumn fx:id="deliveryAreaDelPersons" prefWidth="188.00003051757812" text="Delivery Persons" />
+                        <TableColumn fx:id="deliveryAreaHoods" prefWidth="196.0" text="Neighborhoods" />
+                        <TableColumn prefWidth="152.0" text="TODO deliveries" />
+                        <TableColumn fx:id="deliveryAreaTime" prefWidth="165.5999755859375" text="Delivery time" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
       <Tab text="Blacklist">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="customers1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="blacklistTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="customerID1" prefWidth="40.00002896785736" text="ID" />
-                        <TableColumn fx:id="customerFirst1" prefWidth="106.39999389648438" text="First Name" />
-                        <TableColumn fx:id="customerLast1" prefWidth="109.60003662109375" text="Last Name" />
-                        <TableColumn fx:id="customerBirth1" prefWidth="74.39996337890625" text="BirthDate" />
-                        <TableColumn fx:id="customerPass1" prefWidth="92.0" text="Password" />
-                        <TableColumn fx:id="customerAnswer1" prefWidth="95.99993896484375" text="Answer" />
-                        <TableColumn fx:id="customerEmail1" prefWidth="99.99993896484375" text="Email" />
-                        <TableColumn fx:id="customerAdd1" prefWidth="123.2000732421875" text="Address" />
-                        <TableColumn fx:id="customerOrders1" prefWidth="124.79998779296875" text="Orders" />
+                        <TableColumn fx:id="blacklistID" prefWidth="40.00002896785736" text="ID" />
+                        <TableColumn fx:id="blacklistFirstName" prefWidth="106.39999389648438" text="First Name" />
+                        <TableColumn fx:id="blacklistLastName" prefWidth="109.60003662109375" text="Last Name" />
+                        <TableColumn fx:id="blacklistBD" prefWidth="74.39996337890625" text="Birth date" />
+                        <TableColumn fx:id="blacklistPassword" prefWidth="92.0" text="Password" />
+                        <TableColumn fx:id="blacklistGender" prefWidth="95.99993896484375" text="Gender" />
+                        <TableColumn fx:id="blacklistNeighborhood" prefWidth="123.2000732421875" text="Neighborhood" />
+                        <TableColumn fx:id="blacklistLactose" prefWidth="99.99993896484375" text="Lactose sen." />
+                        <TableColumn fx:id="blacklistGluten" prefWidth="124.79998779296875" text="Gluten sen." />
                      </columns>
                   </TableView>
                </children>

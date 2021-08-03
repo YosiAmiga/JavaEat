@@ -113,7 +113,7 @@ public class Component implements Comparable<Component>, Serializable {
 	
 	@Override
 	public String toString() {
-		return "Component [id=" + id + ", componentName=" + componentName + ", price=" + price + "]";
+		return "Component ID: " + id + "\nName: " + componentName + "\nPrice: " + price;
 	}
 
 

@@ -78,14 +78,19 @@ public class Customer extends Person{
 	public void setSensitiveToGluten(boolean isSensitiveToGluten) {
 		this.isSensitiveToGluten = isSensitiveToGluten;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Customer [neighberhood=" + neighberhood + ", isSensitiveToLactose=" + isSensitiveToLactose
-				+ ", isSensitiveToGluten=" + isSensitiveToGluten + ", getId()=" + getId() + ", getFirstName()="
-				+ getFirstName() + ", getLastName()=" + getLastName() + ", getBirthDay()=" + getBirthDay()
-				+ ", getGender()=" + getGender() + ", getPassword()=" + getPassword() + "]";
+		return "Customer ID: " + getId() + "\n Full Name : " + getFirstName() + " " +getLastName() ;
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Customer [neighberhood=" + neighberhood + ", isSensitiveToLactose=" + isSensitiveToLactose
+//				+ ", isSensitiveToGluten=" + isSensitiveToGluten + ", getId()=" + getId() + ", getFirstName()="
+//				+ getFirstName() + ", getLastName()=" + getLastName() + ", getBirthDay()=" + getBirthDay()
+//				+ ", getGender()=" + getGender() + ", getPassword()=" + getPassword() + "]";
+//	}
 
 //	@Override
 //	public String toString() {

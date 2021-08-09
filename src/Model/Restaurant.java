@@ -581,7 +581,8 @@ public class Restaurant implements Serializable {
 	}
 
 
-	/*QUEREIES*/
+	/***********************QUEREIES****************************/
+	
 	public Collection<Dish> getReleventDishList(Customer c){
 		ArrayList<Dish> dishList = new ArrayList<>();
 		if(!c.isSensitiveToGluten() && !c.isSensitiveToLactose())
@@ -630,7 +631,12 @@ public class Restaurant implements Serializable {
 		return cooks;
 	}
 	
-	/*NEW QUERIES*/
+	/**
+	 *  Sort the deliveries of the Delivery person in the month that was given
+	 * @param dp - the given month
+	 * @param month - the given delivery person
+	 * @return
+	 */
 	public TreeSet<Delivery> getDeliveriesByPerson(DeliveryPerson dp , int month){
 		TreeSet<Delivery> delivered = new TreeSet<>(new Comparator<Delivery>() {
 
@@ -650,6 +656,9 @@ public class Restaurant implements Serializable {
 		return delivered;
 	}
 	
+	
+	/**Count how many RegularDelivery and ExpressDelivery are in the restaurant*/
+
 	public HashMap<String,Integer> getNumberOfDeliveriesPerType(){
 		HashMap<String, Integer> deliveriesPerType = new HashMap<>();
 		deliveriesPerType.put("Regular delivery", 0);
@@ -671,6 +680,7 @@ public class Restaurant implements Serializable {
 		return deliveriesPerType;
 	}
 	
+	/*Calculate the revenue from express deliveries*/
 	public double revenueFromExpressDeliveries() {
 		HashSet<Customer> customers = new HashSet<>();
 		double amountOfPostages = 0;
@@ -685,6 +695,8 @@ public class Restaurant implements Serializable {
 		return amountOfPostages;
 	}
 	
+	
+	/*Sort the popular component from most common to least common*/
 	public LinkedList<Component> getPopularComponents(){
 		HashMap<Component, Integer> componentsandAmount = new HashMap<>();
 		for(Dish d: getDishes().values()) {
@@ -714,6 +726,9 @@ public class Restaurant implements Serializable {
 		return popularComponents;
 	}
 	
+	
+	/*Sort all the dishes by their price divided by time to make proportion, using a lambda expression */
+
 	public TreeSet<Dish> getProfitRelation(){
 		TreeSet<Dish> profit = new TreeSet<Dish>((Dish o1, Dish o2) -> {
 			if((o2.getPrice()/o2.getTimeToMake())>(o1.getPrice()/o1.getTimeToMake()))
@@ -728,6 +743,16 @@ public class Restaurant implements Serializable {
 		return profit;
 	}
 	
+	
+	/**
+	 Create an AI Machine, that gets a delivery person, delivery area, and a tree set of orders as parameters 
+	 * it will return a sorted tree set of deliveries, according to the express and regular deliveries in the given tree set of orders.
+	
+	 * @param dp - the delivery person
+	 * @param da - the delivery area
+	 * @param orders - the tree set of orders
+	 * @return sorted tree of deliveries
+	 */
 	public TreeSet<Delivery> createAIMacine(DeliveryPerson dp, DeliveryArea da, TreeSet<Order> orders){
 		TreeSet<Delivery> AIDecision = new TreeSet<>(new Comparator<Delivery>() {
 

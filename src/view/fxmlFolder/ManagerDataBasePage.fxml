@@ -103,19 +103,12 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="guides" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="ordersTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="guideID" prefWidth="37.60000455379486" text="ID" />
-                        <TableColumn fx:id="guideFirst" prefWidth="92.00003814697266" text="First Name" />
-                        <TableColumn fx:id="guideLast" prefWidth="81.5999755859375" text="Last Name" />
-                        <TableColumn fx:id="guideBirth" prefWidth="76.0" text="BirthDate" />
-                        <TableColumn fx:id="guideEmail" prefWidth="60.0" text="Email" />
-                        <TableColumn fx:id="guideAdd" prefWidth="76.0" text="Address" />
-                        <TableColumn fx:id="guidePass" prefWidth="85.59991455078125" text="Password" />
-                        <TableColumn fx:id="guideAnswer" prefWidth="82.39996337890625" text="Answer" />
-                        <TableColumn fx:id="guideExp" prefWidth="99.20001220703125" text="Experience" />
-                        <TableColumn fx:id="guideStart" prefWidth="88.7999267578125" text="StartDate" />
-                        <TableColumn fx:id="guideTrips" prefWidth="81.5999755859375" text="Trips" />
+                        <TableColumn fx:id="orderID" prefWidth="78.4000244140625" text="ID" />
+                        <TableColumn fx:id="orderCustomer" prefWidth="216.79998779296875" text="Customer" />
+                        <TableColumn fx:id="orderDishes" prefWidth="207.20004272460938" text="Dishes" />
+                        <TableColumn prefWidth="340.79998779296875" text="Delivery" />
                      </columns>
                   </TableView>
                </children>

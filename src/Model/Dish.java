@@ -121,8 +121,8 @@ public class Dish implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Dish [id=" + id + ", dishName=" + dishName + ", type=" + type + ", price=" + price + ", timeToMake="
-				+ timeToMake + "]";
+		return "Dish ID: " + id + "\nName: " + dishName + "\nType: " + type + "\nprice: " + price + "\nTime to make: "
+				+ timeToMake;
 	}
 	
 	

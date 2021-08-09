@@ -19,6 +19,15 @@ public class Order implements Comparable<Order>, Serializable{
 	private Delivery delivery;
 	
 	// constructors 
+	/*Constructor for GUI*/
+	public Order(int id,Customer customer, ArrayList<Dish> dishes, Delivery delivery) {
+		super();
+		this.id = id;
+		this.customer = customer;
+		this.dishes = dishes;
+		this.delivery = delivery;
+	}
+	
 	
 	public Order(Customer customer, ArrayList<Dish> dishes, Delivery delivery) {
 		super();
@@ -27,6 +36,9 @@ public class Order implements Comparable<Order>, Serializable{
 		this.dishes = dishes;
 		this.delivery = delivery;
 	}
+	
+	
+
 	
 	public Order(int id) {
 		this.id = id;
@@ -95,7 +107,7 @@ public class Order implements Comparable<Order>, Serializable{
 	
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", customer=" + customer + "]";
+		return "Order ID: " + id + "\nCustomer: " + customer;
 	}
 	
 	// methods

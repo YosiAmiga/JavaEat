@@ -52,14 +52,6 @@ public class SampleController implements Initializable{
 	@FXML
 	private Button backPage;
 	
-	@FXML
-	private Circle myCircle;
-	private double x;
-	private double y;
-	int counter =0;
-	
-	@FXML
-	private Label la;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -77,7 +69,7 @@ public class SampleController implements Initializable{
 			if(username.getText().equals("m") && password.getText().equals("m")) {
 				userType = Manager.getInstance();
 				goodSound();
-				StackPane pane=FXMLLoader.load(getClass().getResource("ManagerMainPage.fxml"));
+				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerMainPage.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 				mainPane.getChildren().removeAll(mainPane.getChildren());
 				mainPane.getChildren().add(pane);
@@ -88,7 +80,7 @@ public class SampleController implements Initializable{
 //			}
 			if(username.getText().equals("User") && password.getText().equals("User")) {
 				goodSound();
-				StackPane pane=FXMLLoader.load(getClass().getResource("CustomerMainPage.fxml"));
+				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 				mainPane.getChildren().removeAll(mainPane.getChildren());
 				mainPane.getChildren().add(pane);
@@ -151,15 +143,7 @@ public class SampleController implements Initializable{
 	}
 	
 	
-    @FXML
-    void clickMe(ActionEvent event) {
-    	goodSound();
-    	counter++;
-    	System.out.println("hey");
-    	la.setText("Clicks: " + counter);
-    	
-//    	img2 = new ImageView(img1);
-    }
+
 //    @FXML
 //    void nextPage(ActionEvent e) {
 //    	Employee emp = new Employee();
@@ -220,26 +204,7 @@ public class SampleController implements Initializable{
 //    	BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
 //    }
     //spin the circle
-    @FXML
-    void up(ActionEvent e) {
-    	myCircle.setCenterY(y -=25);
-    	goodSound();
-    }
-    @FXML
-    void down(ActionEvent e) {
-    	myCircle.setCenterY(y +=25);
-    	goodSound();
-    }
-    @FXML
-    void left(ActionEvent e) {
-    	myCircle.setCenterX(x -=25);
-    	badSound();
-    }
-    @FXML
-    void right(ActionEvent e) {
-    	myCircle.setCenterX(x +=25);
-    	badSound();
-    }
+
     
 //    public void Login(ActionEvent e) throws IOException
 //    {

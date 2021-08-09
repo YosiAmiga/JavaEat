@@ -43,9 +43,9 @@ public class ManagerDataBaseController implements Initializable {
 	@FXML
 	private TableColumn<Customer, Neighberhood> customerNeighborhood;
 	@FXML
-	private TableColumn<Customer, Boolean> customerLactose;
+	private TableColumn<Customer, String> customerLactose;
 	@FXML
-	private TableColumn<Customer, Boolean> customerGluten;
+	private TableColumn<Customer, String> customerGluten;
 	
 	/****************Delivery Persons Table****************/
 
@@ -84,7 +84,7 @@ public class ManagerDataBaseController implements Initializable {
 	@FXML
 	private TableColumn<Cook, Expertise> cookExpertise;
 	@FXML
-	private TableColumn<Cook, Boolean> cookIsChef;
+	private TableColumn<Cook, String> cookIsChef;
 
 	
 	/****************Components Table****************/
@@ -95,9 +95,9 @@ public class ManagerDataBaseController implements Initializable {
 	@FXML
 	private TableColumn<Component, String> componentName;
 	@FXML
-	private TableColumn<Component, Boolean> componentLactose;
+	private TableColumn<Component, String> componentLactose;
 	@FXML
-	private TableColumn<Component, Boolean> componentGluten;
+	private TableColumn<Component, String> componentGluten;
 	@FXML
 	private TableColumn<Component, Double> componentPrice;
 	
@@ -116,6 +116,19 @@ public class ManagerDataBaseController implements Initializable {
 	private TableColumn<Dish, ArrayList<Component>> dishComponents;
 	@FXML
 	private TableColumn<Dish, Integer> dishTime;
+	
+	/*******************Orders Table********************/
+	/*Order(int id,Customer customer, ArrayList<Dish> dishes, Delivery delivery)*/
+	@FXML
+	private TableView<Order> ordersTable;
+	@FXML
+	private TableColumn<Order,Integer> orderID;
+	@FXML
+	private TableColumn<Order, Customer> orderCustomer;
+	@FXML
+	private TableColumn<Order, ArrayList<Dish>> orderDishes;
+	@FXML
+	private TableColumn<Order, Delivery> orderDelivery;
 	
 	/****************Delivery Area Table****************/
 
@@ -154,9 +167,9 @@ public class ManagerDataBaseController implements Initializable {
 	@FXML
 	private TableColumn<Customer, Neighberhood> blacklistNeighborhood;
 	@FXML
-	private TableColumn<Customer, Boolean> blacklistLactose;
+	private TableColumn<Customer, String> blacklistLactose;
 	@FXML
-	private TableColumn<Customer, Boolean> blacklistGluten;
+	private TableColumn<Customer, String> blacklistGluten;
 
 	
 	/***************Initialize all the tables***************/
@@ -172,8 +185,8 @@ public class ManagerDataBaseController implements Initializable {
 		customerGender.setCellValueFactory(new PropertyValueFactory<Customer, Gender>("gender"));
 		customerPassword.setCellValueFactory(new PropertyValueFactory<Customer, String>("password"));
 		customerNeighborhood.setCellValueFactory(new PropertyValueFactory<Customer, Neighberhood>("neighberhood"));
-//		customerLactose.setCellValueFactory(new PropertyValueFactory<Customer, Boolean>("isSensitiveToLactose"));
-//		customerGluten.setCellValueFactory(new PropertyValueFactory<Customer, Boolean>("isSensitiveToGluten"));
+//		customerLactose.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToLactose"));
+//		customerGluten.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToGluten"));
 		customersTable.setItems(getCustomers());
 		
 		
@@ -196,7 +209,7 @@ public class ManagerDataBaseController implements Initializable {
 		cookBD.setCellValueFactory(new PropertyValueFactory<Cook, LocalDate>("birthDay"));
 		cookGender.setCellValueFactory(new PropertyValueFactory<Cook, Gender>("gender"));
 		cookExpertise.setCellValueFactory(new PropertyValueFactory<Cook, Expertise>("expert"));
-//		cookIsChef.setCellValueFactory(new PropertyValueFactory<Cook, Boolean>("isChef()"));
+//		cookIsChef.setCellValueFactory(new PropertyValueFactory<Cook, String>("isChef"));
 		cooksTable.setItems(getCooks());
 
 
@@ -204,8 +217,8 @@ public class ManagerDataBaseController implements Initializable {
 		//TODO FIX BOOLEAN
 		componentID.setCellValueFactory(new PropertyValueFactory<Component, Integer>("id"));
 		componentName.setCellValueFactory(new PropertyValueFactory<Component, String>("componentName"));
-//		componentLactose.setCellValueFactory(new PropertyValueFactory<Component, Boolean>("hasLactose"));
-//		componentGluten.setCellValueFactory(new PropertyValueFactory<Component, Boolean>("hasGluten"));
+		componentLactose.setCellValueFactory(new PropertyValueFactory<Component, String>("hasLactose"));
+		componentGluten.setCellValueFactory(new PropertyValueFactory<Component, String>("hasGluten"));
 		componentPrice.setCellValueFactory(new PropertyValueFactory<Component, Double>("price"));
 		componentTable.setItems(getComponents());
 		
@@ -217,6 +230,15 @@ public class ManagerDataBaseController implements Initializable {
 		dishComponents.setCellValueFactory(new PropertyValueFactory<Dish, ArrayList<Component>>("componenets"));
 		dishTime.setCellValueFactory(new PropertyValueFactory<Dish, Integer>("timeToMake"));
 		dishesTable.setItems(getDishes());
+		
+		/*set in the table all the orders data from database for each of their fields*/
+		orderID.setCellValueFactory(new PropertyValueFactory<Order, Integer>("id"));
+		orderCustomer.setCellValueFactory(new PropertyValueFactory<Order, Customer>("customer"));
+		orderDishes.setCellValueFactory(new PropertyValueFactory<Order, ArrayList<Dish>>("dishes"));
+//		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
+		ordersTable.setItems(getOrders());
+
+
 
 		
 		
@@ -240,8 +262,8 @@ public class ManagerDataBaseController implements Initializable {
 		blacklistGender.setCellValueFactory(new PropertyValueFactory<Customer, Gender>("gender"));
 		blacklistPassword.setCellValueFactory(new PropertyValueFactory<Customer, String>("password"));
 		blacklistNeighborhood.setCellValueFactory(new PropertyValueFactory<Customer, Neighberhood>("neighberhood"));
-//		blacklistLactose.setCellValueFactory(new PropertyValueFactory<Customer, Boolean>("isSensitiveToLactose"));
-//		blacklistGluten.setCellValueFactory(new PropertyValueFactory<Customer, Boolean>("isSensitiveToGluten"));
+//		blacklistLactose.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToLactose"));
+//		blacklistGluten.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToGluten"));
 		blacklistTable.setItems(getBlacklist());
 		
 
@@ -344,13 +366,22 @@ public class ManagerDataBaseController implements Initializable {
 		return components;	
 	}	
 	
-	/*get all the components from the database*/
+	/*get all the dishes from the database*/
 	private ObservableList<Dish> getDishes(){
 		ObservableList<Dish> dishes=FXCollections.observableArrayList();
 		ArrayList<Dish> query=new ArrayList<Dish>(Restaurant.getInstance().getDishes().values());
 		dishes.addAll(query);
 		return dishes;	
-	}	
+	}
+	
+	/*get all the orders from the database*/
+	private ObservableList<Order> getOrders(){
+		ObservableList<Order> orders=FXCollections.observableArrayList();
+		ArrayList<Order> query=new ArrayList<Order>(Restaurant.getInstance().getOrders().values());
+		orders.addAll(query);
+		return orders;	
+	}
+	
 	
 	/*get all the delivery areas from the database*/
 	private ObservableList<DeliveryArea> getDeliveryAreas(){

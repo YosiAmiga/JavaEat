@@ -1,8 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Delivery {
+public abstract class Delivery implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int idCounter = 1;
 	private int id;
 	private DeliveryPerson deliveryPerson;

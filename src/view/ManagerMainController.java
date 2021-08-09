@@ -59,7 +59,7 @@ public class ManagerMainController implements Initializable {
 				manage.setSelected(false);
 				queries.setSelected(false);
 				db.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("ManagerAddPage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerAddPage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);
@@ -80,7 +80,7 @@ public class ManagerMainController implements Initializable {
 				manage.setSelected(false);
 				queries.setSelected(false);
 				add.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("ManagerDataBasePage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerDataBasePage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);
@@ -100,7 +100,7 @@ public class ManagerMainController implements Initializable {
 				add.setSelected(false);
 				queries.setSelected(false);
 				db.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("AdminManageOrders.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\AdminManageOrders.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);
@@ -121,7 +121,7 @@ public class ManagerMainController implements Initializable {
 				add.setSelected(false);
 				manage.setSelected(false);
 				db.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("AdminQueryPage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\AdminQueryPage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);
@@ -146,7 +146,7 @@ public class ManagerMainController implements Initializable {
 		{
 			goodSound();
 			try {
-				AnchorPane pane = FXMLLoader.load(getClass().getResource("JavaEatMain.fxml"));
+				AnchorPane pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 				mainPane.getChildren().removeAll(mainPane.getChildren());
 				mainPane.getChildren().add(pane);

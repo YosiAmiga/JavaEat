@@ -290,16 +290,16 @@ public class PrimaryController {
 	 * @param gender - gender of the cook
 	 * @param expert - expertise of the cook
 	 * @param isChef - is the cook a chef
-	 * @return
+	 * @return  true if success, false if failed.
 	 * @throws Exception
 	 */
 	public boolean addCookFromGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender, Expertise expert,boolean isChef) throws Exception{
 
 		//check for parameters of class cook and validate id
-		boolean isOk = (require(id,firstName,LastName,birthday,gender,expert,isChef)) && (requireNotZeroOrNegative(id));
+		boolean validate = (require(id,firstName,LastName,birthday,gender,expert,isChef)) && (requireNotZeroOrNegative(id));
 
 		// if not valid throw exception
-		if(!isOk) {
+		if(!validate) {
 			throw new IllegelInputException();			
 		}
 
@@ -307,46 +307,91 @@ public class PrimaryController {
 		Cook cook = new Cook(id,firstName,LastName,birthday,gender,expert,isChef);
 		return Restaurant.getInstance().addCook(cook);
 	}
+	/*addCookFromGUI(id,custForOrder, dishesInOrderList, DeliveriesInOrderList)*/
 	
-//	public boolean addLocation(String country,String city) throws Exception{
-//		//TODO: Complete this method
-//
-//		if(!require(country,city)) {
-//			throw new IllegelInputException();
-//		}
-//
-//
-//		Destination destination = new Destination(country,city);
-//		ArrayList<Destination> arrayDes = new ArrayList<>();
-//		
-//		for(String s : Shared.getInstance().getDestinations().keySet())
-//		{
-//			arrayDes.addAll(Shared.getInstance().getDestinations().get(s));
-//		}
-//		if(arrayDes.contains(destination))
-//			throw new ObjectExistException();
-//
-//		//check if location exists 
-//		if(Shared.getInstance().getDestinations().containsKey(country)){
-//			arrayDes = Shared.getInstance().getDestinations().get(country);
-//			if(arrayDes.contains(destination))
-//			{
-//				throw new ObjectExistException();
-//
-//			}else {
-//				arrayDes.add(destination);
-//				Shared.getInstance().getDestinations().put(country, arrayDes);
-//				return true;
-//			}
-//
-//		}
-//
-//		arrayDes = new ArrayList<>();
-//		arrayDes.add(destination);
-//		Shared.getInstance().getDestinations().put(country, arrayDes);
-//		return true;
-//
-//	}
+	
+	/*public Delivery(int id,DeliveryPerson deliveryPerson, DeliveryArea area,
+			boolean isDelivered,LocalDate diliveredDate) {
+		super();
+		this.id = id;
+		this.deliveryPerson = deliveryPerson;
+		this.area = area;
+		this.isDelivered = isDelivered;
+		this.deliveredDate = diliveredDate;
+	}*/
+	
+	
+	
+	public boolean addDeliveryFromGUI(int id, DeliveryPerson deliveryPerson, DeliveryArea area, boolean isDelivered,LocalDate diliveredDate) throws Exception{
+
+		//check for parameters of class cook and validate id
+		boolean validate = (require( id,  deliveryPerson,  area,  isDelivered, diliveredDate)) && (requireNotZeroOrNegative(id));
+
+		// if not valid throw exception
+		if(!validate) {
+			throw new IllegelInputException();			
+		}
+		
+		DeliveryPerson delPer= deliveryPerson;
+		DeliveryArea delAre= area;
+		boolean isDel= isDelivered;
+		LocalDate delDate= diliveredDate;
+
+		// create a new cook instance with the data we got from GUI
+//		Cook cook = new Cook(id,firstName,LastName,birthday,gender,expert,isChef);
+		return false;
+	}
+
+	
+	/**
+	 * a method to add an order to the database
+	 * @param id - the id of the order
+	 * @param custForOrder - the id of the customer in the order
+	 * @param dishesInOrderList - the dishes in the order
+	 * @param DeliveriesInOrderList - the delivery in the order
+	 * @return true if success, false if failed.
+	 * @throws Exception
+	 */
+	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<String> dishesInOrderList,String DeliveriesInOrderList) throws Exception{
+
+		//check for parameters of class order and validate id
+		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
+
+		// if not valid throw exception
+		if(!validate) {
+			throw new IllegelInputException();			
+		}
+
+		// create a new customer instance with the data we got from GUI		
+		Customer c= Restaurant.getInstance().getRealCustomer(custForOrder);
+		
+		ArrayList<Dish> AlDishes=new ArrayList<Dish>();
+			
+		for(Dish d : Restaurant.getInstance().getDishes().values()) {
+			for(String s : dishesInOrderList) {
+				if(d.getDishName().equals(s)) {
+					AlDishes.add(d);
+				}
+			}		
+		}
+		
+		Delivery del=null;		
+		Order order = new Order(id,c,AlDishes,del);
+		
+		return Restaurant.getInstance().addOrder(order);
+	}
+	
+	public boolean removeOrderFromGUI(int id) throws IllegelInputException{
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		Order orderDelete = Restaurant.getInstance().getRealOrder(id);		
+		return Restaurant.getInstance().removeOrder(orderDelete);
+	}
+	
+	
+
 	
 	
 	/**
@@ -354,9 +399,8 @@ public class PrimaryController {
 	 *
 	 * 1) validate parameters.
 	 * 2) check if customer does not exist already.
-	 * 3) create address object.
-	 * 4) create customer object.
-	 * 5) add customer to the system.
+	 * 3) create customer object.
+	 * 4) add customer to the system.
 	 *
 	 * @param id The id of the customer.
 	 * @param firstName The first name of the customer.
@@ -374,9 +418,9 @@ public class PrimaryController {
 	public boolean addCustomerFromGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender,String password,String verifyPass, Neighberhood hood, boolean lactose, boolean gluten) throws Exception{
 
 		//check for parameters
-		boolean isOk = (require(firstName,LastName,birthday,gender,password,hood,lactose,gluten)) && (requireNotZeroOrNegative(id));
+		boolean validate = (require(firstName,LastName,birthday,gender,password,hood,lactose,gluten)) && (requireNotZeroOrNegative(id));
 
-		if(!isOk) {
+		if(!validate) {
 			throw new IllegelInputException();			
 		}
 //		if(id < 0 || houseNumber < 0)

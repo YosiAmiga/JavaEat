@@ -60,6 +60,6 @@ public class Cook extends Person{
 
 	@Override
 	public String toString() {
-		return super.toString()+" Cook [expert=" + expert + "]";
+		return super.toString()+" Cook Expertise: " + expert + " Chef: " + isChef();
 	}
 }

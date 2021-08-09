@@ -25,7 +25,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("JavaEatMain.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 			Scene scene = new Scene(root,1060,700);
 			scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
 			//TODO fix icon 

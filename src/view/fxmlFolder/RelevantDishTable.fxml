@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<TableView fx:id="dishesTable" prefHeight="454.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RelevantDishesQueryController">
+   <columns>
+      <TableColumn fx:id="dishID" prefWidth="55.20004117488861" text="ID" />
+      <TableColumn fx:id="dishName" prefWidth="115.9999771118164" text="dish Name" />
+      <TableColumn fx:id="dishType" prefWidth="99.20001220703125" text="Dish Type" />
+      <TableColumn fx:id="dishComponents" prefWidth="282.3999328613281" text="Components" />
+      <TableColumn fx:id="dishTime" prefWidth="98.39996337890625" text="Time to make" />
+   </columns>
+</TableView>

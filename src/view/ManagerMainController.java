@@ -121,7 +121,7 @@ public class ManagerMainController implements Initializable {
 				add.setSelected(false);
 				manage.setSelected(false);
 				db.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\AdminQueryPage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerQueryPage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);

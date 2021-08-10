@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="779.0" fitWidth="1038.0" layoutX="-7.0" layoutY="-6.0">
          <image>
-            <Image url="@../../img/back.jpg" />
+            <Image url="@../../../img/back.jpg" />
          </image>
       </ImageView>
       <TextField fx:id="username" alignment="CENTER" layoutX="512.0" layoutY="449.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user id" />
@@ -25,7 +25,7 @@
       </Button>
       <ImageView fitHeight="363.0" fitWidth="360.0" layoutX="316.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../img/JavaEatLogo.png" />
+            <Image url="@../../../img/JavaEatLogo.png" />
          </image>
       </ImageView>
       <PasswordField fx:id="password" alignment="CENTER" layoutX="512.0" layoutY="515.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user password" />

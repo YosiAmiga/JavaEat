@@ -103,7 +103,6 @@ public class ManagerDataBaseController implements Initializable {
 	
 	
 	/****************Dishes Table****************/
-//	Dish(int id, String dishName, DishType type, ArrayList<Component> componenets, int timeToMake)
 	@FXML
 	private TableView<Dish> dishesTable;
 	@FXML

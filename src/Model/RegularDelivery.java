@@ -6,6 +6,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class RegularDelivery extends Delivery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TreeSet<Order> orders;
 	
 	public RegularDelivery(DeliveryPerson deliveryPerson, DeliveryArea area,

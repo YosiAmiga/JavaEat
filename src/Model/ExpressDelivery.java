@@ -3,6 +3,10 @@ package Model;
 import java.time.LocalDate;
 
 public class ExpressDelivery extends Delivery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Order order;
 	private double postage;
 	

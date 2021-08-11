@@ -52,14 +52,17 @@
                <children>
                   <TableView fx:id="cooksTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="cookID" prefWidth="51.199981689453125" text="ID" />
-                        <TableColumn fx:id="cookFirstName" prefWidth="111.199951171875" text="First name" />
-                        <TableColumn fx:id="cookLastName" prefWidth="112.0" text="Last Name" />
+                        <TableColumn fx:id="cookID" prefWidth="70.4000244140625" text="ID" />
+                        <TableColumn fx:id="cookFirstName" prefWidth="92.0" text="First name" />
+                        <TableColumn fx:id="cookLastName" prefWidth="162.4000244140625" text="Last Name" />
                         <TableColumn fx:id="cookBD" prefWidth="122.4000244140625" text="Birth Date" />
                         <TableColumn fx:id="cookGender" prefWidth="83.20001220703125" text="Gender" />
                         <TableColumn fx:id="cookIsChef" minWidth="0.0" prefWidth="72.0" text="Chef" />
                         <TableColumn fx:id="cookExpertise" minWidth="0.0" prefWidth="416.79998779296875" text="Expertise" />
                      </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </AnchorPane>
@@ -77,6 +80,9 @@
                         <TableColumn fx:id="componentGluten" prefWidth="136.0" text="Has gluten" />
                         <TableColumn fx:id="componentPrice" prefWidth="610.39990234375" text="Price" />
                      </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </AnchorPane>
@@ -91,8 +97,8 @@
                         <TableColumn fx:id="dishID" prefWidth="40.00002896785736" text="ID" />
                         <TableColumn fx:id="dishName" prefWidth="96.79998779296875" text="Dish Name" />
                         <TableColumn fx:id="dishType" prefWidth="127.19998168945312" text="Dish Type" />
-                        <TableColumn fx:id="dishComponents" prefWidth="446.4000244140625" text="Dish Components" />
-                        <TableColumn fx:id="dishTime" prefWidth="143.20001220703125" text="Time to make" />
+                        <TableColumn fx:id="dishComponents" prefWidth="332.79998779296875" text="Dish Components" />
+                        <TableColumn fx:id="dishTime" prefWidth="258.4000244140625" text="Time to make" />
                      </columns>
                   </TableView>
                </children>

@@ -44,6 +44,7 @@ public class Cook extends Person{
 	public boolean isChef() {
 		return isChef;
 	}
+	
 
 	public void setChef(boolean isChef) {
 		this.isChef = isChef;

@@ -276,21 +276,21 @@ public class Restaurant implements Serializable {
 
 	/*TODO check IllegalCustomerException*/
 	/* add a Customer to the customers hash map*/
-	public boolean addCustomer(Customer cust) throws SimilarIDInSystemException {
-		try {
-			//if this customer is in the black list, throw IllegalCustomerException
-			if(blackList.contains(cust)) {
-				throw new IllegalCustomerException();
-			}
-			//if customer is null OR the customers hash map contains the customers id OR if he is in the blackList, if so can not add
-			if(cust == null || (customers.containsKey(cust.getId()))) {
-				throw new SimilarIDInSystemException();
-//				return false;
-			}		
+	public boolean addCustomer(Customer cust) throws SimilarIDInSystemException, IllegalCustomerException {
+		//if this customer is in the black list, throw IllegalCustomerException
+		if(blackList.contains(cust)) {
+			throw new IllegalCustomerException();
 		}
-		catch(IllegalCustomerException e) {
-			return false;
-		}
+		//if customer is null OR the customers hash map contains the customers id OR if he is in the blackList, if so can not add
+		if(cust == null || (customers.containsKey(cust.getId()))) {
+			throw new SimilarIDInSystemException();
+		}		
+//		try {
+//
+//		}
+//		catch(IllegalCustomerException e) {
+//			return false;
+//		}
 		customers.put(cust.getId(), cust);
 		return true;			
 	}
@@ -316,38 +316,43 @@ public class Restaurant implements Serializable {
 
 		return getComponenets().put(comp.getId(), comp) ==null;
 	}
+	
+	
 	/* add a order to the orders hash map*/
-	public boolean addOrder(Order order) {
-		try {
-			//if order is null OR if orders hash map contains order OR if customers hash map does not contain the customer in the order return false
-			if(order == null || getOrders().containsKey(order.getId()))
+	public boolean addOrder(Order order) throws IllegalCustomerException, SensitiveException {
+		//if order is null OR if orders hash map contains order OR if customers hash map does not contain the customer in the order return false
+		if(order == null || getOrders().containsKey(order.getId()))
+			return false;
+		if(order.getCustomer() == null || !getCustomers().containsKey(order.getCustomer().getId()))
+			return false;
+		//if the customers is in the blacklist, can not add him to the order and throw IllegalCustomerException exception
+		if(getBlackList().contains(order.getCustomer())) {
+			throw new IllegalCustomerException();
+		}
+		for(Dish d : order.getDishes()){
+			if(!getDishes().containsKey(d.getId()))
 				return false;
-			if(order.getCustomer() == null || !getCustomers().containsKey(order.getCustomer().getId()))
-				return false;
-			//if the customers is in the blacklist, can not add him to the order and throw IllegalCustomerException exception
-			if(getBlackList().contains(order.getCustomer())) {
-				throw new IllegalCustomerException();
-			}
-			for(Dish d : order.getDishes()){
-				if(!getDishes().containsKey(d.getId()))
-					return false;
-				for(Component c: d.getComponenets()) {
-					if(order.getCustomer().isSensitiveToGluten() && c.isHasGluten()) {
-						throw new SensitiveException(order.getCustomer().getFirstName() + " " +order.getCustomer().getLastName(), d.getDishName());
-					}
-					else if(order.getCustomer().isSensitiveToLactose() && c.isHasLactose()) {
-						throw new SensitiveException(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName(), d.getDishName());
-					}
+			for(Component c: d.getComponenets()) {
+				if(order.getCustomer().isSensitiveToGluten() && c.isHasGluten()) {
+					throw new SensitiveException(order.getCustomer().getFirstName() + " " +order.getCustomer().getLastName(), d.getDishName());
+				}
+				else if(order.getCustomer().isSensitiveToLactose() && c.isHasLactose()) {
+					throw new SensitiveException(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName(), d.getDishName());
 				}
 			}
-			return getOrders().put(order.getId(), order) == null;
-		}catch(SensitiveException e) {
-			Utils.MyFileLogWriter.println(e.getMessage());
-			return false;
-		}catch(IllegalCustomerException e) {
-			Utils.MyFileLogWriter.println(e.getMessage());
-			return false;
 		}
+		
+//		try {
+//
+//		}catch(SensitiveException e) {
+//			Utils.MyFileLogWriter.println(e.getMessage());
+//			return false;
+//		}catch(IllegalCustomerException e) {
+//			Utils.MyFileLogWriter.println(e.getMessage());
+//			return false;
+//		}
+		
+		return getOrders().put(order.getId(), order) == null;
 	}
 
 	public boolean addDelivery(Delivery delivery) {
@@ -548,6 +553,8 @@ public class Restaurant implements Serializable {
 		return getAreas().remove(oldArea.getId()) != null;
 	}
 
+	
+	/*Get an object from the HashMap methods*/
 	public Cook getRealCook(int id) {
 		return getCooks().get(id);
 	}

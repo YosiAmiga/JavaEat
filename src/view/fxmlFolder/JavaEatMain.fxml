@@ -12,26 +12,16 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1026.0" stylesheets="@../../../view/background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SampleController">
    <children>
-      <ImageView fitHeight="779.0" fitWidth="1038.0" layoutX="-7.0" layoutY="-6.0">
-         <image>
-            <Image url="@../../../img/back.jpg" />
-         </image>
-      </ImageView>
       <TextField fx:id="username" alignment="CENTER" layoutX="512.0" layoutY="449.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user id" />
       <PasswordField fx:id="password" alignment="CENTER" layoutX="512.0" layoutY="515.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user password" />
       <Button fx:id="login" layoutX="360.0" layoutY="583.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="119.0" text="Log In" textFill="#00a650">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="Arial Black" size="18.0" />
          </font>
       </Button>
-      <ImageView fitHeight="363.0" fitWidth="360.0" layoutX="316.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../img/JavaEatLogo.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="forgot" layoutX="527.0" layoutY="584.0" mnemonicParsing="false" onAction="#ForgotPassword" prefHeight="55.0" prefWidth="161.0" text="Forgot My Password">
+      <Button fx:id="forgot" layoutX="527.0" layoutY="584.0" mnemonicParsing="false" onAction="#ForgotPassword" prefHeight="55.0" prefWidth="161.0" text="Sign up" textFill="#1e00ff">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="Arial Black" size="18.0" />
          </font>
       </Button>
       <Label layoutX="339.0" layoutY="444.0" prefHeight="36.0" prefWidth="162.0" text="User Name:">
@@ -44,6 +34,11 @@
             <Font name="Arial" size="28.0" />
          </font>
       </Label>
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="411.0" layoutY="193.0">
+         <image>
+            <Image url="@../JavaEatLogo.png" />
+         </image>
+      </ImageView>
    </children>
    <styleClass>
       <String fx:value="button" />

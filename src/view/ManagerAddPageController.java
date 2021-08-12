@@ -266,26 +266,43 @@ public class ManagerAddPageController implements Initializable {
 	/************************************Delivery Page*******************************************/
 	
 	@FXML
-	private TextField deliveryId;
+	private TextField deliveryID;
+	@FXML
+	private ComboBox<String> deliveryPersonInDelivery;
+	@FXML
+	private TextField delPersonIDToDelivery;
 	
 	@FXML
-	private TextField ordersToAddDelivery;
+	private ComboBox<String> deliveryAreaInDelivery;
+	
 	
 	@FXML
-	private ComboBox<String> deliveryPerson;
-	
+	private ComboBox<String> ordersInDelivery;	
 	@FXML
-	private ComboBox<String> deliveryArea;
-	
+	private TextField orderIDToAdd;	
+	@FXML
+	private Button addOrderToList;
+	@FXML
+	private Button clearOrdersList;
+	@FXML
+	private TextArea ordersListInDelivery;
 
 	@FXML
 	private DatePicker deliveryDate;
 	
 	@FXML
+	private CheckBox isExpress;
+	@FXML
+	private TextField customPostage;
+	
+	@FXML
 	private CheckBox isDelivered;
 	
 	@FXML
-	private ComboBox<Integer> currentOrds;
+	private Button addDelivery;
+	
+	@FXML
+	private Button removeDelivery;
 	
 	
 	/**************************************Delivery Area Page****************************************/
@@ -369,7 +386,8 @@ public class ManagerAddPageController implements Initializable {
 	ArrayList<Integer> componentsInDishList = new ArrayList<>();
 	ArrayList<String> dishesInOrderList = new ArrayList<>();
 	ArrayList<String> DeliveriesInOrderList = new ArrayList<>();
-	ArrayList<Integer> ordersList = new ArrayList<>();
+	ArrayList<Integer> ordersListToDelivery = new ArrayList<>();
+	
 
 	
 
@@ -394,6 +412,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListOrders = FXCollections.observableArrayList();
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
+		ordersInDelivery.setItems(ObservableListOrders);
 //		currentOrds.setItems(ObservableListOrders);// addOrderToDelivery
 
 		
@@ -411,13 +430,13 @@ public class ManagerAddPageController implements Initializable {
 		/***************Load list of delivery persons in system*********/
 		ArrayList<String> delPersonDB = new ArrayList<>();
 		for(DeliveryPerson dp :  Restaurant.getInstance().getDeliveryPersons().values()) {
-			delPersonDB.add(dp.getFirstName() + " " + dp.getLastName());
+			delPersonDB.add("ID: "+ dp.getId() + " Name: "+dp.getFirstName() + " " + dp.getLastName());
 		}
 		ObservableList<String> ObservableListDelPersons = FXCollections.observableArrayList();
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
 		delAreaDelPersons.setItems(ObservableListDelPersons);
-		deliveryPerson.setItems(ObservableListDelPersons);
+		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
 
 		/***************Load list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
@@ -428,6 +447,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> comboAreas = FXCollections.observableArrayList();
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
+		deliveryAreaInDelivery.setItems(comboAreas);
 		
 		ObservableList<String> comboAreas2 = FXCollections.observableArrayList();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
@@ -435,7 +455,6 @@ public class ManagerAddPageController implements Initializable {
 		}
 		comboAreas2.addAll(areasDB2);
 		deliveryAreasByID.setItems(comboAreas2);
-		deliveryArea.setItems(comboAreas);
 		
 		/***************Load list of components in the system***************/
 		//will be only the id of the component
@@ -1022,38 +1041,62 @@ public class ManagerAddPageController implements Initializable {
 	/**************************************Delivery Methods****************************************/
 	//TODO remove a delivery
 	/**********Add a delivery********/
-	public void addDelivery(ActionEvent e)
-	{
+	public void addDelivery(ActionEvent e){
 		String section = "Delivery";
 		try {
-			int id=Integer.parseInt(deliveryId.getText());// get id
-			
-			String delPeronAddDelivery= deliveryPerson.getValue(); // get the delivery person of the of the delivery we want to add
-			
-			boolean isDeliver=false;// default is false and if selected change to true
-			
-			isDeliver=isDelivered.isSelected();// create an option to choose if chef or not
-
-//			if(control.addDeliveryFromGUI(id,firstName, LastName, localDate, selectedG,selectedN, isChef)) {
-//				successAdded(section, "Success");
-//				Restaurant.save(Input);				
-//			}
-//			//if could not add customer
-//			else {
-//				fail(section,"This id already exists in the customer database!");
-//			}
+			int id = Integer.parseInt(deliveryID.getText());
+			int dpID = Integer.parseInt(delPersonIDToDelivery.getText());
+			String dArea = deliveryAreaInDelivery.getValue();			
+//			int orderID = Integer.parseInt(orderIDToAdd.getText());//TODO in method off add and clear
+			LocalDate delDate = deliveryDate.getValue();
+			boolean isSent = isDelivered.isSelected();
+			boolean isEXP = isExpress.isSelected();
+			//adding to system
+			if(isEXP) {
+				double custPost = Double.parseDouble(customPostage.getText());
+				System.out.println(custPost);
+				if(custPost == 0) {				
+					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, 5, ordersListToDelivery)) {
+						successAdded(section, "Success");
+						Restaurant.save(Input);	
+					}
+					else {
+						fail(section,"This id already exists in the deliveries database!");
+					}
+					
+				}
+				else {				
+					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, custPost, ordersListToDelivery)) {
+						successAdded(section, "Success");
+						Restaurant.save(Input);	
+					}
+					else {
+						fail(section,"This id already exists in the deliveries database!");
+					}				
+				}
+			}
+			else {
+				if(control.addRegularDeliveryFromGUI(id, dpID, dArea, isSent, delDate, ordersListToDelivery)) {
+					successAdded(section, "Success");
+					Restaurant.save(Input);	
+				}
+				else {
+					fail(section,"This id already exists in the deliveries database!");
+				}
+				
+			}
+			System.out.println(Restaurant.getInstance().getDeliveries().values());
 			refreshGui();
 
 		}
-//		catch(IllegelInputException e1) {
-//			fail(section, e1.toString());
-//		}
 		catch(NumberFormatException e1) {
 			fail(section, "Wrong Input!");
+			e1.printStackTrace();
 		}
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
+		
 	}
 	/**************************************Delivery Area Methods****************************************/
 	
@@ -1138,7 +1181,23 @@ public class ManagerAddPageController implements Initializable {
 		refreshGui();
 	}
 	
+	/***************************************/
 	
+	public void clearOrdersInDelivery(ActionEvent e) {
+		ordersListToDelivery.removeAll(ordersListToDelivery);
+		ordersListInDelivery.setText("");
+	}
+	
+	public void addOrderIDToDelivery(ActionEvent e) {
+		if(!ordersListToDelivery.contains(Integer.parseInt(orderIDToAdd.getText()))){
+			ordersListToDelivery.add(Integer.parseInt(orderIDToAdd.getText()));			
+		}
+		String list="";		
+		for(int i : ordersListToDelivery) {
+			list += i+"\n";
+		}
+		ordersListInDelivery.setText(list);
+	}
 
 	/**
 	 * a method to show all the components in the dish
@@ -1401,7 +1460,7 @@ public class ManagerAddPageController implements Initializable {
 		orderIdToRemove.setText("");
 		customerForOrderId.setText("");
 		dishesInOrderShow.setText("");
-		deliveriesInOrderShow.setText("");
+//		deliveriesInOrderShow.setText("");
 		
 		/**Resetting the Delivery**/
 
@@ -1442,7 +1501,8 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListOrders = FXCollections.observableArrayList();
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
-//		currentOrds.setItems(ObservableListOrders);// addOrderToDelivery
+		ordersInDelivery.setItems(ObservableListOrders);
+		//		currentOrds.setItems(ObservableListOrders);// addOrderToDelivery
 
 		
 		/***************Load list of cooks in system*********/
@@ -1459,14 +1519,14 @@ public class ManagerAddPageController implements Initializable {
 		/***************Load list of delivery persons in system*********/
 		ArrayList<String> delPersonDB = new ArrayList<>();
 		for(DeliveryPerson dp :  Restaurant.getInstance().getDeliveryPersons().values()) {
-			delPersonDB.add(dp.getFirstName() + " " + dp.getLastName());
+			delPersonDB.add("ID: "+ dp.getId() + " Name: "+dp.getFirstName() + " " + dp.getLastName());
 		}
 		ObservableList<String> ObservableListDelPersons = FXCollections.observableArrayList();
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
 		delAreaDelPersons.setItems(ObservableListDelPersons);
-		deliveryPerson.setItems(ObservableListDelPersons);
-
+		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
+		
 		/***************Load list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
 		ArrayList<String> areasDB2 = new ArrayList<>();
@@ -1476,6 +1536,8 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> comboAreas = FXCollections.observableArrayList();
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
+		deliveryAreaInDelivery.setItems(comboAreas);
+
 		
 		ObservableList<String> comboAreas2 = FXCollections.observableArrayList();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
@@ -1483,7 +1545,6 @@ public class ManagerAddPageController implements Initializable {
 		}
 		comboAreas2.addAll(areasDB2);
 		deliveryAreasByID.setItems(comboAreas2);
-		deliveryArea.setItems(comboAreas);
 		
 		/***************Load list of components in the system***************/
 		//will be only the id of the component
@@ -1575,7 +1636,15 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListVehicles.addAll(vehicleDB);
 		delPersonVehicle.setItems(ObservableListVehicles);
 
-
+		/*****************************************************/
+		ArrayList<String> deliveriesDb = new ArrayList<>();
+		
+		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+			deliveriesDb.add(String.valueOf(d));
+		}
+		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
+		ObservableListDeliveries.addAll(deliveriesDb);
+		deliveriesInOrder.setItems(ObservableListDeliveries);
 
 /****************************************************************************/		
 

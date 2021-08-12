@@ -8,6 +8,7 @@ import java.util.Collection;
 import Utils.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
@@ -363,24 +364,170 @@ public class PrimaryController {
 	}
 	
 	/************************************Delivery Page*******************************************/
-	public boolean addDeliveryFromGUI(int id, DeliveryPerson deliveryPerson, DeliveryArea area, boolean isDelivered,LocalDate diliveredDate) throws Exception{
+	
+	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, ArrayList<Integer> orders) throws Exception{
 
 		//check for parameters of class cook and validate id
-		boolean validate = (require( id,  deliveryPerson,  area,  isDelivered, diliveredDate)) && (requireNotZeroOrNegative(id));
+		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id,dpID)));
 
 		// if not valid throw exception
 		if(!validate) {
 			throw new IllegelInputException();			
 		}
 		
-		DeliveryPerson delPer= deliveryPerson;
-		DeliveryArea delAre= area;
+				
+		//search for the given delivery person
+		DeliveryPerson delPer = null;
+		for(DeliveryPerson dp : Restaurant.getInstance().getDeliveryPersons().values()) {
+			if(dp.getId() == dpID) {
+				delPer = dp;
+			}
+		}
+		//search for the given delivery area
+		DeliveryArea tempArea = null;
+		int areaID = 0;
+		for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
+			if(d.getAreaName().equals(dArea)) {
+				areaID = d.getId();
+			}
+		}
+		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+
+		/*NO NEED -> the order gets its delivery from the add delivery method in Restaurant
+		 * so if its an RegularDelivery -> no need to create the set*/
+		TreeSet<Order> o = new TreeSet<>();
+
+		for(int temp : orders) {
+			for(Order ordersss : Restaurant.getInstance().getOrders().values()) {
+				if(temp == ordersss.getId()) {
+					o.add(ordersss);
+				}
+			}
+		}
+		RegularDelivery deliveryToAdd = new RegularDelivery(id,delPer,tempArea,isDelivered,diliveredDate);			
+		for(Order or : o) {
+			deliveryToAdd.addOrder(or);
+		}
+		System.out.println(deliveryToAdd.getOrders());		
+		return Restaurant.getInstance().addDelivery(deliveryToAdd);
+		
+	}
+	
+	public boolean addDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, boolean isEXP, double postage, ArrayList<Integer> orders) throws Exception{
+
+		//check for parameters of class cook and validate id
+		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id)));
+
+		// if not valid throw exception
+		if(!validate) {
+			throw new IllegelInputException();			
+		}
+		
+		
 		boolean isDel= isDelivered;
 		LocalDate delDate= diliveredDate;
+		
+		//search for the given delivery person
+		DeliveryPerson delPer = null;
+		for(DeliveryPerson dp : Restaurant.getInstance().getDeliveryPersons().values()) {
+			if(dp.getId() == dpID) {
+				delPer = dp;
+			}
+		}
+		//search for the given delivery area
+		DeliveryArea tempArea = null;
+		int areaID = 0;
+		for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
+			if(d.getAreaName().equals(dArea)) {
+				areaID = d.getId();
+			}
+		}
+		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
 
-		// create a new cook instance with the data we got from GUI
-//		Cook cook = new Cook(id,firstName,LastName,birthday,gender,expert,isChef);
-		return false;
+//		public Delivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+//				boolean isDelivered,LocalDate diliveredDate) 
+		
+//		//constructors for GUI
+//		
+//		public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+//				boolean isDelivered , Order order , double postage, LocalDate deliveredDate) {
+//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
+//			this.order = order;
+//			this.postage = postage;
+//		}
+//		/*if no new postage was enterd*/
+//		public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+//				boolean isDelivered , Order order , LocalDate deliveredDate) {
+//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
+//			this.order = order;
+//			this.postage = 5.0;
+//		}
+		
+		
+//		public RegularDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+//				boolean isDelivered,LocalDate deliveredDate) {
+//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
+//			this.orders = new TreeSet<>();
+//		}
+		
+		//if it is an express delivery like the user entered AND the orders size is 1 
+		/*isEXP is necessary because if we want to change the postage we can't do it just by putting only 1 order,
+		 * this helps us check if it's really an ExpressDelivery or not
+		 * 
+		 * TODO create an exception where one is true and the other is not -> expressDeliveryMissMatchException*/
+		
+//		if((isEXP== true && orders.size()!=1) || (isEXP== false && orders.size()==1)) {
+//			throw new expressDeliveryMissMatchException();
+//		}
+		
+		if(isEXP && orders.size()==1) {
+			//if a new postage was entered, use it
+			if(postage != 5.0) {
+				Order o = null;
+				for(Order temp : Restaurant.getInstance().getOrders().values()) {
+					if(temp.getId() == orders.get(0)) {
+						o = temp;
+					}
+				}
+				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,postage,diliveredDate);
+				return Restaurant.getInstance().addDelivery(deliveryToAdd);
+				
+			}
+			//if no new postage, the default is 5.0
+			else {
+				Order o = null;
+				for(Order temp : Restaurant.getInstance().getOrders().values()) {
+					if(temp.getId() == orders.get(0)) {
+						o = temp;
+					}
+				}
+				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,diliveredDate);
+				return Restaurant.getInstance().addDelivery(deliveryToAdd);
+
+			}
+			
+		}
+		//if it is not an express, then its a RegularDelivery 
+		else {
+			
+			/*NO NEED -> the order gets its delivery from the add delivery method in Restaurant
+			 * so if its an RegularDelivery -> no need to create the set*/
+			TreeSet<Order> o = new TreeSet<>();
+
+			for(int temp : orders) {
+				for(Order ordersss : Restaurant.getInstance().getOrders().values()) {
+					if(temp == ordersss.getId()) {
+						o.add(ordersss);
+					}
+				}
+			}
+			RegularDelivery deliveryToAdd = new RegularDelivery(id,delPer,tempArea,isDelivered,diliveredDate);			
+			for(Order or : o) {
+				deliveryToAdd.addOrder(or);
+			}
+			
+			return Restaurant.getInstance().addDelivery(deliveryToAdd);
+		}
 	}
 	
 

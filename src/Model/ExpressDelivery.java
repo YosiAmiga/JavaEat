@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ExpressDelivery extends Delivery {
+public class ExpressDelivery extends Delivery implements Serializable{
 	/**
 	 * 
 	 */
@@ -10,6 +11,22 @@ public class ExpressDelivery extends Delivery {
 	private Order order;
 	private double postage;
 	
+	//constructors for GUI
+	
+	public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+			boolean isDelivered , Order order , double postage, LocalDate deliveredDate) {
+		super(id, deliveryPerson, area, isDelivered, deliveredDate);
+		this.order = order;
+		this.postage = postage;
+	}
+	/*if no new postage was enterd*/
+	public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+			boolean isDelivered , Order order , LocalDate deliveredDate) {
+		super(id, deliveryPerson, area, isDelivered, deliveredDate);
+		this.order = order;
+		this.postage = 5.0;
+	}
+	/******************************************/
 	public ExpressDelivery(DeliveryPerson deliveryPerson, DeliveryArea area,
 			boolean isDelivered , Order order , double postage, LocalDate deliveredDate) {
 		super(deliveryPerson, area, isDelivered, deliveredDate);

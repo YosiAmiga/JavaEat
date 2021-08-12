@@ -1,16 +1,24 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class RegularDelivery extends Delivery {
+public class RegularDelivery extends Delivery implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private TreeSet<Order> orders;
+	
+	//constructor for GUI
+	public RegularDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+			boolean isDelivered,LocalDate deliveredDate) {
+		super(id, deliveryPerson, area, isDelivered, deliveredDate);
+		this.orders = new TreeSet<>();
+	}
 	
 	public RegularDelivery(DeliveryPerson deliveryPerson, DeliveryArea area,
 			boolean isDelivered,LocalDate deliveredDate) {
@@ -45,5 +53,12 @@ public class RegularDelivery extends Delivery {
 	public boolean removeOrder(Order o) {
 		return orders.remove(o);
 	}
+
+	@Override
+	public String toString() {
+		return "RegularDelivery [orders=" + orders + "]";
+	}
+	
+	
 
 }

@@ -15,6 +15,17 @@ public abstract class Delivery implements Serializable{
 	private boolean isDelivered;
 	private LocalDate deliveredDate;
 	
+	//constructor for GUI
+	public Delivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+			boolean isDelivered,LocalDate diliveredDate) {
+		super();
+		this.id = id;
+		this.deliveryPerson = deliveryPerson;
+		this.area = area;
+		this.isDelivered = isDelivered;
+		this.deliveredDate = diliveredDate;
+	}
+	
 	public Delivery(DeliveryPerson deliveryPerson, DeliveryArea area,
 			boolean isDelivered,LocalDate diliveredDate) {
 		super();

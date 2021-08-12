@@ -381,7 +381,8 @@ public class Restaurant implements Serializable {
 					ed.getOrder().setDelivery(delivery);
 			}
 		}catch(ConvertToExpressException e) {
-			Utils.MyFileLogWriter.println(e.getMessage());
+//			Utils.MyFileLogWriter.println(e.getMessage());
+			//TODO pop up with message saying that the delivery was converted to express
 			RegularDelivery rd = (RegularDelivery)delivery;
 			delivery = new ExpressDelivery(rd.getDeliveryPerson(), rd.getArea(),rd.isDelivered(), rd.getOrders().first() ,rd.getDeliveredDate());
 		}finally {
@@ -414,7 +415,7 @@ public class Restaurant implements Serializable {
 						}
 					});
 				orders.add(ex.getOrder());
-				orderByCustomer.put(ex.getOrder().getCustomer(), orders);
+//				orderByCustomer.put(ex.getOrder().getCustomer(), orders);
 			}
 		}
 		return getDeliveries().put(delivery.getId(),delivery) ==null;

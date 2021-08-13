@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -21,8 +22,9 @@ import Model.Customer;
 
 
 public class CustomerMainPageController implements Initializable  {
-	 static Customer customer;
-	 @FXML
+		//the customer currently logged in
+		static Customer customer;
+	 	@FXML
 	    private StackPane mainPane;
 
 	    @FXML
@@ -34,7 +36,7 @@ public class CustomerMainPageController implements Initializable  {
 	    @FXML
 	    private ToggleButton orders;
 	    @FXML
-		private ToggleButton log;
+		private ToggleButton logout;
 
 	    @FXML
 	    private ToggleButton exit;
@@ -43,8 +45,13 @@ public class CustomerMainPageController implements Initializable  {
 	    private AnchorPane rootPane;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		
+	    newOrder.setSelected(false);
+	    cancel.setSelected(false);
+	    orders.setSelected(false);
+	    logout.setSelected(false);
+	    exit.setSelected(false);
+	    successLogin(customer.getFirstName() + " " + customer.getLastName(),"Welcome to JavaEat!");
+	    
 	}
 	
 	public void loadNewOrder(ActionEvent e)
@@ -106,6 +113,28 @@ public class CustomerMainPageController implements Initializable  {
 			ex.printStackTrace();
 		}
 	}
+	
+	public void logOutSys(ActionEvent e) {
+		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
+		al.setHeaderText("Are you sure you want to log out of the system?");
+		al.setTitle("Log out");
+		al.setResizable(false);
+		Optional<ButtonType> result = al.showAndWait();
+		if(result.get() == ButtonType.OK)
+		{
+			goodSound();
+			try {
+				AnchorPane pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
+				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
+				mainPane.getChildren().removeAll(mainPane.getChildren());
+				mainPane.getChildren().add(pane);
+			}
+			catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 	public void exitProgrem(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
 		al.setHeaderText("Are you sure you want to exit the program?");
@@ -119,34 +148,33 @@ public class CustomerMainPageController implements Initializable  {
 	}
 
 	
+	public void successLogin(String content, String header) {
+		successSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText(content+" logged in successfuly!");
+		al.setHeaderText(header);
+		al.setTitle("Welcome");
+		al.setResizable(false);
+		al.showAndWait();
+	}
 	
+
+
 	
-	public static Customer getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
-	public static void setCustomer(Customer customer) {
+
+	public void setCustomer(Customer customer) {
 		CustomerMainPageController.customer = customer;
 	}
 
-	
-	public void logOutSys(ActionEvent e) {
-		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
-		al.setHeaderText("Are you sure you want to log out of the system?");
-		al.setTitle("Log out");
-		al.setResizable(false);
-		Optional<ButtonType> result = al.showAndWait();
-		if(result.get() == ButtonType.OK)
-		{
-			goodSound();
-			try {
-				AnchorPane pane = FXMLLoader.load(getClass().getResource("JavaEatMain.fxml"));
-				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-				mainPane.getChildren().removeAll(mainPane.getChildren());
-				mainPane.getChildren().add(pane);
-			}
-			catch (IOException e1) {
-				e1.printStackTrace();
-			}
+	public void successSound() {
+		Sounds s = new Sounds();
+		try {
+			s.addSound();
+		}catch(Exception e2) {
+			e2.printStackTrace();
 		}
 	}
 	

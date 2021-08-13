@@ -47,7 +47,7 @@ public class Restaurant implements Serializable {
 	private HashMap<Customer, TreeSet<Order>> orderByCustomer;
 	private HashMap<DeliveryArea, HashSet<Order>> orderByDeliveryArea;
 	private HashSet<Customer> blackList;
-	
+
 	
 	/*Singleton for the restaurant*/
 	public static Restaurant getInstance()
@@ -163,7 +163,11 @@ public class Restaurant implements Serializable {
 		orderByCustomer = new HashMap<>();
 		orderByDeliveryArea = new HashMap<>();
 		blackList = new HashSet<>();
+
 	}
+	
+
+
 
 	public HashMap<Integer, Cook> getCooks() {
 		return cooks;
@@ -292,6 +296,7 @@ public class Restaurant implements Serializable {
 //			return false;
 //		}
 		customers.put(cust.getId(), cust);
+
 		return true;			
 	}
 	
@@ -385,20 +390,15 @@ public class Restaurant implements Serializable {
 			//TODO pop up with message saying that the delivery was converted to express
 			RegularDelivery rd = (RegularDelivery)delivery;
 			delivery = new ExpressDelivery(rd.getDeliveryPerson(), rd.getArea(),rd.isDelivered(), rd.getOrders().first() ,rd.getDeliveredDate());
-		}finally {
+		}
+		finally{
 			delivery.getArea().addDelivery(delivery);
 			if(delivery instanceof RegularDelivery) {
 				RegularDelivery rg = (RegularDelivery)delivery;
 				for(Order o: rg.getOrders()) {
 					TreeSet<Order> orders = orderByCustomer.get(o);
 					if(orders == null)
-						orders = new TreeSet<>(new Comparator<Order>() {
-
-							@Override
-							public int compare(Order o1, Order o2) {
-								return o1.getDelivery().getDeliveredDate().compareTo(o2.getDelivery().getDeliveredDate());
-							}
-						});
+						orders = new TreeSet<>();
 					orders.add(o);
 					orderByCustomer.put(o.getCustomer(), orders);
 				}
@@ -407,18 +407,12 @@ public class Restaurant implements Serializable {
 				ExpressDelivery ex = (ExpressDelivery)delivery;
 				TreeSet<Order> orders = orderByCustomer.get(ex.getOrder());
 				if(orders == null)
-					orders = new TreeSet<>(new Comparator<Order>() {
-
-						@Override
-						public int compare(Order o1, Order o2) {
-							return o1.getDelivery().getDeliveredDate().compareTo(o2.getDelivery().getDeliveredDate());
-						}
-					});
+					orders = new TreeSet<>();
 				orders.add(ex.getOrder());
 //				orderByCustomer.put(ex.getOrder().getCustomer(), orders);
 			}
 		}
-		return getDeliveries().put(delivery.getId(),delivery) ==null;
+		return getDeliveries().put(delivery.getId(),delivery) == null;
 	}
 
 	public boolean addDeliveryArea(DeliveryArea da) {
@@ -458,6 +452,7 @@ public class Restaurant implements Serializable {
 		if(blackList.contains(cust)) {
 			blackList.remove(cust);
 		}
+
 		return getCustomers().remove(cust.getId())!=null;
 	}
 
@@ -663,8 +658,7 @@ public class Restaurant implements Serializable {
 		}
 		return delivered;
 	}
-	
-	
+		
 	/**Count how many RegularDelivery and ExpressDelivery are in the restaurant*/
 
 	public HashMap<String,Integer> getNumberOfDeliveriesPerType(){

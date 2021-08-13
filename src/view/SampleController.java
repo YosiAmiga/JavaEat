@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-
+import Exceptions.IllegelPasswordException;
+import Exceptions.IllegelUserNameException;
+import Exceptions.IncorrectPasswordException;
 import controller.Sounds;
 
 import javafx.event.ActionEvent;
@@ -33,6 +35,8 @@ import Model.*;
 
 
 public class SampleController implements Initializable{
+	
+	CustomerMainPageController controlCustomer = new CustomerMainPageController();
 
 	@FXML
 	private AnchorPane mainPane;
@@ -45,12 +49,15 @@ public class SampleController implements Initializable{
 	
 	@FXML
 	private PasswordField password;
+	@FXML
+	private AnchorPane pane;
 
 	@FXML
-	private Button forgot;
+	private Button signUpButton;
 
 	@FXML
 	private Button backPage;
+	
 	
 	
 	@Override
@@ -59,13 +66,29 @@ public class SampleController implements Initializable{
 		
 	}
 	
+	public void signUpToSystem(ActionEvent e) throws IOException{
+		try {
+			goodSound();
+			AnchorPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\SignUpPage.fxml"));
+			System.out.println("hey");
+			pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
+			mainPane.getChildren().removeAll(mainPane.getChildren());
+			mainPane.getChildren().add(pane);			
+		}
+		catch(Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	@FXML
 	public void login(ActionEvent e) throws IOException {
 		try {
-			Person userType;
-			
+			Person userType;			
 			/*if the user input for both username and password is manager, then login as an manager*/
 			//works, only let you get into manager page if you enter correctly 
+			if(password.getText().isBlank()) {
+				throw new IllegelPasswordException();
+			}
 			if(username.getText().equals("m") && password.getText().equals("m")) {
 				userType = Manager.getInstance();
 				goodSound();
@@ -74,17 +97,43 @@ public class SampleController implements Initializable{
 				mainPane.getChildren().removeAll(mainPane.getChildren());
 				mainPane.getChildren().add(pane);
 			}
+			else {
+				if(!Restaurant.getInstance().getCustomers().containsKey(Integer.parseInt(username.getText()))){
+					throw new IllegelUserNameException();
+				}
+				Customer tempCustomer = Restaurant.getInstance().getCustomers().get(Integer.parseInt(username.getText()));
+				String correctPass = tempCustomer.getPassword();
+				
+				if(!correctPass.equals(password.getText())) {
+					throw new IncorrectPasswordException();
+				}
+				else {
+					//save the customer password from the database to check if it matches the one that was entered in the input
+					//save the customer object in CustomerMainPageController with his data
+					CustomerMainPageController.customer = tempCustomer;
+					goodSound();
+					StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
+					pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
+					mainPane.getChildren().removeAll(mainPane.getChildren());
+					mainPane.getChildren().add(pane);
+//					if(correctPass.equals(password.getText())) {
+//					}
+					
+				}
+			}
+			
 			/*if the user enter any username (his id) or any password, create this user and check him in the database*/
 //			else {
 //				userType = loginCheck(Integer.parseInt(username.getText()),password.getText());
 //			}
-			if(username.getText().equals("User") && password.getText().equals("User")) {
-				goodSound();
-				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
-				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-				mainPane.getChildren().removeAll(mainPane.getChildren());
-				mainPane.getChildren().add(pane);
-			}
+
+//			if(username.getText().equals("User") && password.getText().equals("User")) {
+//				goodSound();
+//				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
+//				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
+//				mainPane.getChildren().removeAll(mainPane.getChildren());
+//				mainPane.getChildren().add(pane);
+//			}
 //			
 //			if(userType instanceof Customer) {
 //				//move to customer xml
@@ -97,8 +146,18 @@ public class SampleController implements Initializable{
 //			}
 			
 			
-		}catch(Exception ex) {
-			System.err.println("error");
+		}
+		catch(IncorrectPasswordException e1) {
+			failLogin(e1.toString());
+		}
+		catch(IllegelPasswordException e1) {
+			failLogin(e1.toString());
+		}
+		catch(IllegelUserNameException e1) {
+			failLogin(e1.toString());
+		}
+		catch(Exception e1) {
+			e1.printStackTrace();
 		}
 	}
 	
@@ -142,68 +201,11 @@ public class SampleController implements Initializable{
 //		}
 	}
 	
-	
 
-//    @FXML
-//    void nextPage(ActionEvent e) {
-//    	Employee emp = new Employee();
-//    	emp.name = "Jon Snow";
-//        emp.address = "Draganston, Winterfall";
-//        emp.number = 1;
-//        
-//    	Employee emp2 = new Employee();
-//    	emp2.name = "Moshe Moshe";
-//        emp2.address = "Draganston, Winterfall";
-//        emp2.number = 2;
-//        
-//        ArrayList<Employee> EmpArray = new ArrayList<>();
-//        EmpArray.add(emp);
-//        EmpArray.add(emp2);
-//        try {
-//           FileOutputStream fileOut = new FileOutputStream("employee.ser");//name of the folder we create
-//           ObjectOutputStream out = new ObjectOutputStream(fileOut);
-//           for(Employee temp : EmpArray) {
-//        	   out.writeObject(temp);
-//        	   
-//           }
-//           out.close();
-//           fileOut.close();
-//           System.out.printf("Serialized data is saved in employee.ser");
-//
-//        } catch (IOException i) {
-//           i.printStackTrace();
-//        }
-//     }
-//    @FXML
-//    void DeserializeDemo(ActionEvent e) {
-//    	Employee emp = null;
-//        try {
-//           FileInputStream fileIn = new FileInputStream("employee.ser");
-//           ObjectInputStream in = new ObjectInputStream(fileIn);
-//           emp = (Employee) in.readObject();
-//           in.close();
-//           fileIn.close();
-//        } catch (IOException i) {
-//           i.printStackTrace();
-//           return;
-//        } catch (ClassNotFoundException c) {
-//           System.out.println("Employee class not found");
-//           c.printStackTrace();
-//           return;
-//        }
-//        
-//        System.out.println("Deserialized Employee...");
-//        System.out.println("Name: " + emp.name);
-//        System.out.println("Address: " + emp.address);
-//        System.out.println("Number: " + emp.number);
-//     }
+
     
     
-//    @FXML
-//    void backPage(ActionEvent e) {
-//    	BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-//    }
-    //spin the circle
+
 
     
 //    public void Login(ActionEvent e) throws IOException
@@ -297,12 +299,28 @@ public class SampleController implements Initializable{
 //    }
 //    
     
+	public void failLogin(String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to login");
+		al.setHeaderText(header);
+		al.setTitle("Fail");
+		al.setResizable(false);
+		al.showAndWait();
+	}    
     
     
     
     
-    
-    
+	public void fail(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to add : " + content);
+		al.setHeaderText(header);
+		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}   
     
     
     

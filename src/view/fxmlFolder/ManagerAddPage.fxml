@@ -286,7 +286,6 @@
                   <Button fx:id="clearDishesInOrder" layoutX="494.0" layoutY="218.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" text="Clear list" />
                   <TextArea fx:id="dishesInOrderShow" layoutX="50.0" layoutY="252.0" prefHeight="58.0" prefWidth="235.0" />
                   <ComboBox fx:id="deliveriesInOrder" layoutX="49.0" layoutY="342.0" prefHeight="26.0" prefWidth="347.0" promptText="Select a Delivery" />
-                  <TextArea layoutX="98.0" layoutY="383.0" prefHeight="99.0" prefWidth="226.0" />
                   <Button fx:id="addOrder" layoutX="49.0" layoutY="494.0" mnemonicParsing="false" onAction="#addOrder" prefHeight="39.0" prefWidth="138.0" text="Add Order" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -309,6 +308,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
+                  <TextField fx:id="deliveryIDToOrder" layoutX="50.0" layoutY="383.0" prefHeight="26.0" prefWidth="200.0" promptText="Enter Delivery ID" />
                </children></AnchorPane>
             
          </content>
@@ -348,7 +348,7 @@
                   <Button fx:id="clearOrdersList" layoutX="152.0" layoutY="278.0" mnemonicParsing="false" onAction="#clearOrdersInDelivery" text="Clear list" />
                   <TextField fx:id="delPersonIDToDelivery" layoutX="64.0" layoutY="118.0" promptText="Delivery Person ID" />
                   <CheckBox fx:id="isExpress" layoutX="369.0" layoutY="244.0" mnemonicParsing="false" text="Express Delivery" />
-                  <TextField fx:id="customPostage" layoutX="367.0" layoutY="265.0" prefHeight="26.0" prefWidth="238.0" promptText="Enter custom express payment (optional)" />
+                  <TextField fx:id="customPostage" layoutX="367.0" layoutY="265.0" prefHeight="26.0" prefWidth="238.0" promptText="Enter express delivery fee (only if selected)" />
                   <TextField fx:id="orderIDToAdd" layoutX="65.0" layoutY="240.0" promptText="Order ID to add" />
                </children></AnchorPane>
             

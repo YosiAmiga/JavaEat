@@ -107,7 +107,9 @@ public class Order implements Comparable<Order>, Serializable{
 	
 	@Override
 	public String toString() {
-		return "Order ID: " + id + "\nCustomer: " + customer;
+		return "Order ID: " + id +
+				"\nCustomer: " + customer;
+//				+"\nDelivery: " + getDelivery().getId();
 	}
 	
 	// methods

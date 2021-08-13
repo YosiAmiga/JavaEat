@@ -14,10 +14,10 @@ public class RegularDelivery extends Delivery implements Serializable{
 	private TreeSet<Order> orders;
 	
 	//constructor for GUI
-	public RegularDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
+	public RegularDelivery(int id,TreeSet<Order> orders, DeliveryPerson deliveryPerson, DeliveryArea area,
 			boolean isDelivered,LocalDate deliveredDate) {
 		super(id, deliveryPerson, area, isDelivered, deliveredDate);
-		this.orders = new TreeSet<>();
+		this.orders = orders;
 	}
 	
 	public RegularDelivery(DeliveryPerson deliveryPerson, DeliveryArea area,

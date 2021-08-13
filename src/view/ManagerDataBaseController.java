@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.TreeSet;
+
 import Model.*;
 import Utils.DishType;
 import Utils.Expertise;
@@ -117,7 +119,6 @@ public class ManagerDataBaseController implements Initializable {
 	private TableColumn<Dish, Integer> dishTime;
 	
 	/*******************Orders Table********************/
-	/*Order(int id,Customer customer, ArrayList<Dish> dishes, Delivery delivery)*/
 	@FXML
 	private TableView<Order> ordersTable;
 	@FXML
@@ -128,6 +129,43 @@ public class ManagerDataBaseController implements Initializable {
 	private TableColumn<Order, ArrayList<Dish>> orderDishes;
 	@FXML
 	private TableColumn<Order, Delivery> orderDelivery;
+	
+	/****************Express Delivery Table****************/
+
+	@FXML
+	private TableView<ExpressDelivery> expDeliveryTable;
+	@FXML
+	private TableColumn<ExpressDelivery, Integer> expDeliveryID;
+	@FXML
+	private TableColumn<ExpressDelivery, DeliveryPerson> expDeliveryDelPerson;
+	@FXML
+	private TableColumn<ExpressDelivery, DeliveryArea> expDeliveryDelArea;
+	@FXML
+	private TableColumn<ExpressDelivery, String> expDeliveryIsDelivered;
+	@FXML
+	private TableColumn<ExpressDelivery, Order> expDeliveryOrder;
+	@FXML
+	private TableColumn<ExpressDelivery, Double> expDeliveryPostage;
+	@FXML
+	private TableColumn<ExpressDelivery, LocalDate> expDeliveryDate;
+	
+	/****************Regular Delivery Table****************/
+//	public RegularDelivery(int id,TreeSet<Order> orders, DeliveryPerson deliveryPerson, DeliveryArea area,
+//			boolean isDelivered,LocalDate deliveredDate)
+	@FXML
+	private TableView<RegularDelivery> regDeliveryTable;
+	@FXML
+	private TableColumn<RegularDelivery, Integer> regDeliveryID;
+	@FXML
+	private TableColumn<RegularDelivery, TreeSet<Order>> regDeliveryOrders;
+	@FXML
+	private TableColumn<RegularDelivery, DeliveryPerson> regDeliveryDelPerson;
+	@FXML
+	private TableColumn<RegularDelivery, DeliveryArea> regDeliveryDelArea;
+	@FXML
+	private TableColumn<RegularDelivery, String> regDeliveryIsDelivered;
+	@FXML
+	private TableColumn<RegularDelivery, LocalDate> regDeliveryDate;
 	
 	/****************Delivery Area Table****************/
 
@@ -237,9 +275,27 @@ public class ManagerDataBaseController implements Initializable {
 //		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
 		ordersTable.setItems(getOrders());
 
+		/*set in the table all the express deliveries data from database for each of their fields*/
+		expDeliveryID.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Integer>("id"));
+		expDeliveryDelPerson.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, DeliveryPerson>("deliveryPerson"));
+		expDeliveryDelArea.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, DeliveryArea>("area"));
+//		expDeliveryIsDelivered.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, String>("isDelivered"));
+		expDeliveryOrder.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Order>("order"));
+		expDeliveryPostage.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Double>("postage"));
+		expDeliveryDate.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, LocalDate>("deliveredDate"));
+		expDeliveryTable.setItems(getExpDelivery());
+
+		/*set in the table all the regular deliveries data from database for each of their fields*/
+		regDeliveryID.setCellValueFactory(new PropertyValueFactory<RegularDelivery, Integer>("id"));
+		regDeliveryDelPerson.setCellValueFactory(new PropertyValueFactory<RegularDelivery, DeliveryPerson>("deliveryPerson"));
+		regDeliveryDelArea.setCellValueFactory(new PropertyValueFactory<RegularDelivery, DeliveryArea>("area"));
+//		regDeliveryIsDelivered.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, String>("isDelivered"));
+		regDeliveryOrders.setCellValueFactory(new PropertyValueFactory<RegularDelivery, TreeSet<Order>>("orders"));
+		regDeliveryDate.setCellValueFactory(new PropertyValueFactory<RegularDelivery, LocalDate>("deliveredDate"));
+		regDeliveryTable.setItems(getRegDelivery());
 
 
-		
+
 		
 		//TODO fix viewing the HashSet as a toString
 		/*set in the table all the delivery areas data from database for each of their fields*/
@@ -267,65 +323,7 @@ public class ManagerDataBaseController implements Initializable {
 		
 
 		
-//		//populate Orders Table from DB
-//		ordersID.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Integer>("id"));
-//		ordersOwner.setCellValueFactory(new PropertyValueFactory<OrdersForTable, String>("owner"));
-//		ordersQuantity.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Integer>("quantity"));
-//		ordersPrice.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Double>("Price"));
-//		OrdersFlights.setCellValueFactory(new PropertyValueFactory<OrdersForTable, String>("flights"));
-//		OrderAccom.setCellValueFactory(new PropertyValueFactory<OrdersForTable, String>("accommodations"));
-//		ordersTrips.setCellValueFactory(new PropertyValueFactory<OrdersForTable, String>("groupTrips"));
-//		orders.setItems(getItems());
 
-		
-//		//populating Accommodations Table from DB
-//		accID.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Long>("businessId"));
-//		accName.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, String>("displayName"));
-//		accRooms.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Integer>("numberOfRooms"));
-//		accPeople.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Integer>("numberOfPeoplePerRoom"));
-//		accPrice.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Double>("pricePerPerson"));
-//		accLocation.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Destination>("location"));
-//		accType.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, String>("type"));
-//		accOccupied.setCellValueFactory(new PropertyValueFactory<AccommodationForTable, Integer>("currentNumberOfOccupiedRooms"));
-//		accommodations.setItems(getAcc());
-//		//Populating Destination Table from DB
-//		destCountry.setCellValueFactory(new PropertyValueFactory<Destination, String>("country"));
-//		destCity.setCellValueFactory(new PropertyValueFactory<Destination, String>("city"));
-//		destinations.setItems(getDests());
-//		//populating customer table from DB
-//		customerID.setCellValueFactory(new PropertyValueFactory<Customer, Long>("id"));
-//		customerFirst.setCellValueFactory(new PropertyValueFactory<Customer, String>("firstName"));
-//		customerLast.setCellValueFactory(new PropertyValueFactory<Customer, String>("surname"));
-//		customerBirth.setCellValueFactory(new PropertyValueFactory<Customer, Date>("birthDate"));
-//		customerPass.setCellValueFactory(new PropertyValueFactory<Customer, String>("password"));
-//		customerAnswer.setCellValueFactory(new PropertyValueFactory<Customer, String>("answer"));
-//		customerOrders.setCellValueFactory(new PropertyValueFactory<Customer, HashSet<Order>>("orders"));
-//		customerEmail.setCellValueFactory(new PropertyValueFactory<Customer, String>("email"));
-//		customerAdd.setCellValueFactory(new PropertyValueFactory<Customer, Address>("address"));
-//		customers.setItems(getCustomers());
-//		//populating Guide table from DB
-//		guideID.setCellValueFactory(new PropertyValueFactory<Guide, Long>("id"));
-//		guideFirst.setCellValueFactory(new PropertyValueFactory<Guide, String>("firstName"));
-//		guideLast.setCellValueFactory(new PropertyValueFactory<Guide, String>("surname"));
-//		guideBirth.setCellValueFactory(new PropertyValueFactory<Guide, Date>("birthDate"));
-//		guidePass.setCellValueFactory(new PropertyValueFactory<Guide, String>("password"));
-//		guideAnswer.setCellValueFactory(new PropertyValueFactory<Guide, String>("answer"));
-//		guideExp.setCellValueFactory(new PropertyValueFactory<Guide, HashSet<Destination>>("experiencedDestinations"));
-//		guideStart.setCellValueFactory(new PropertyValueFactory<Guide, Date>("startDate"));
-//		guideEmail.setCellValueFactory(new PropertyValueFactory<Guide, String>("email"));
-//		guideAdd.setCellValueFactory(new PropertyValueFactory<Guide, Address>("address"));
-//		guideTrips.setCellValueFactory(new PropertyValueFactory<Guide, HashSet<GroupTrip>>("groupsTrip"));
-//		guides.setItems(getGuides());
-//		//Populating GroupTrip table from DB
-//		tripID.setCellValueFactory(new PropertyValueFactory<GroupTrip, Integer>("tripId"));
-//		tripDescription.setCellValueFactory(new PropertyValueFactory<GroupTrip, String>("description"));
-//		tripDate.setCellValueFactory(new PropertyValueFactory<GroupTrip, Date>("date"));
-//		tripLocation.setCellValueFactory(new PropertyValueFactory<GroupTrip, Destination>("location"));
-//		tripGuide.setCellValueFactory(new PropertyValueFactory<GroupTrip, Guide>("guide"));
-//		tripPrice.setCellValueFactory(new PropertyValueFactory<GroupTrip, Double>("price"));
-//		tripCapacity.setCellValueFactory(new PropertyValueFactory<GroupTrip, Integer>("maxCapacity"));
-//		tripOccupied.setCellValueFactory(new PropertyValueFactory<GroupTrip, Integer>("currentNumberOfTourists"));
-//		trips.setItems(getTrips());
 	}
 	
 	
@@ -379,6 +377,32 @@ public class ManagerDataBaseController implements Initializable {
 		ArrayList<Order> query=new ArrayList<Order>(Restaurant.getInstance().getOrders().values());
 		orders.addAll(query);
 		return orders;	
+	}
+	
+	/*get all the express deliveries from the database*/
+	private ObservableList<ExpressDelivery> getExpDelivery(){
+		ObservableList<ExpressDelivery> expDel=FXCollections.observableArrayList();
+		ArrayList<ExpressDelivery> query=new ArrayList<ExpressDelivery>();
+		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+			if(d instanceof ExpressDelivery) {
+				query.add((ExpressDelivery)d);
+			}
+		}
+		expDel.addAll(query);
+		return expDel;	
+	}
+	
+	/*get all the regular deliveries from the database*/
+	private ObservableList<RegularDelivery> getRegDelivery(){
+		ObservableList<RegularDelivery> regDel=FXCollections.observableArrayList();
+		ArrayList<RegularDelivery> query=new ArrayList<RegularDelivery>();
+		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+			if(d instanceof RegularDelivery) {
+				query.add((RegularDelivery)d);
+			}
+		}
+		regDel.addAll(query);
+		return regDel;	
 	}
 	
 	

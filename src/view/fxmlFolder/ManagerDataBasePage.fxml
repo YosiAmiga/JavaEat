@@ -125,16 +125,15 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="trips" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="expDeliveryTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="tripID" prefWidth="75.0" text="ID" />
-                        <TableColumn fx:id="tripDescription" prefWidth="112.0" text="Description" />
-                        <TableColumn fx:id="tripDate" prefWidth="84.79998779296875" text="Date" />
-                        <TableColumn fx:id="tripLocation" prefWidth="93.60003662109375" text="Location" />
-                        <TableColumn fx:id="tripGuide" prefWidth="103.20001220703125" text="Guide" />
-                        <TableColumn fx:id="tripPrice" prefWidth="117.60003662109375" text="Price" />
-                        <TableColumn fx:id="tripCapacity" prefWidth="129.5999755859375" text="Capacity" />
-                        <TableColumn fx:id="tripOccupied" prefWidth="147.20001220703125" text="Occupied" />
+                        <TableColumn fx:id="expDeliveryID" prefWidth="48.800018310546875" text="ID" />
+                        <TableColumn fx:id="expDeliveryDelPerson" prefWidth="152.79995727539062" text=" Delivery Person" />
+                        <TableColumn fx:id="expDeliveryDelArea" prefWidth="156.79998779296875" text="Delivery Area" />
+                        <TableColumn fx:id="expDeliveryIsDelivered" prefWidth="116.79998779296875" text="Is Delivered" />
+                        <TableColumn fx:id="expDeliveryOrder" prefWidth="99.199951171875" text="Order" />
+                        <TableColumn fx:id="expDeliveryPostage" prefWidth="116.79998779296875" text="Postage" />
+                        <TableColumn fx:id="expDeliveryDate" prefWidth="170.4000244140625" text="Delivery Date" />
                      </columns>
                   </TableView>
                </children>
@@ -145,16 +144,14 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="trips1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="regDeliveryTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="tripID1" prefWidth="75.0" text="ID" />
-                        <TableColumn fx:id="tripDescription1" prefWidth="112.0" text="Description" />
-                        <TableColumn fx:id="tripDate1" prefWidth="84.79998779296875" text="Date" />
-                        <TableColumn fx:id="tripLocation1" prefWidth="93.60003662109375" text="Location" />
-                        <TableColumn fx:id="tripGuide1" prefWidth="103.20001220703125" text="Guide" />
-                        <TableColumn fx:id="tripPrice1" prefWidth="117.60003662109375" text="Price" />
-                        <TableColumn fx:id="tripCapacity1" prefWidth="129.5999755859375" text="Capacity" />
-                        <TableColumn fx:id="tripOccupied1" prefWidth="147.20001220703125" text="Occupied" />
+                        <TableColumn fx:id="regDeliveryID" prefWidth="68.0" text="ID" />
+                        <TableColumn fx:id="regDeliveryDelPerson" prefWidth="134.4000244140625" text=" Delivery Person" />
+                        <TableColumn fx:id="regDeliveryDelArea" prefWidth="156.79998779296875" text="Delivery Area" />
+                        <TableColumn fx:id="regDeliveryIsDelivered" prefWidth="116.79998779296875" text="Is Delivered" />
+                        <TableColumn fx:id="regDeliveryOrders" prefWidth="173.5999755859375" text="Orders" />
+                        <TableColumn fx:id="regDeliveryDate" prefWidth="202.4000244140625" text="Delivery Date" />
                      </columns>
                   </TableView>
                </children>

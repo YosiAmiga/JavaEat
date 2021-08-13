@@ -22,6 +22,7 @@ import Exceptions.IllegelPasswordException;
 import Exceptions.PasswordMismatchException;
 import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
+import Exceptions.expressDeliveryMissMatchException;
 import Utils.*;
 import controller.PrimaryController;
 import controller.Sounds;
@@ -238,6 +239,8 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private ComboBox<String> deliveriesInOrder;
+	@FXML
+	private TextField deliveryIDToOrder;
 	
 	@FXML
 	private Button addOrder;
@@ -977,9 +980,9 @@ public class ManagerAddPageController implements Initializable {
 		try {
 			int id=Integer.parseInt(orderId.getText());// get id			
 			int custForOrder=Integer.parseInt(customerForOrderId.getText());//get the customer's id after viewing the combo box	
-			String deliveryInOrderForGui= deliveriesInOrder.getValue();
-					
-			if(control.addOrderFromGUI(id,custForOrder, dishesInOrderList, deliveryInOrderForGui)) {
+//			String deliveryInOrderForGui= deliveriesInOrder.getValue();
+			int deliveryID = Integer.parseInt(deliveryIDToOrder.getText());		
+			if(control.addOrderFromGUI(id,custForOrder, dishesInOrderList, deliveryID)) {
 				successAdded(section, "Success");
 				Restaurant.save(Input);				//customerForOrderId
 			}
@@ -1047,11 +1050,11 @@ public class ManagerAddPageController implements Initializable {
 			int id = Integer.parseInt(deliveryID.getText());
 			int dpID = Integer.parseInt(delPersonIDToDelivery.getText());
 			String dArea = deliveryAreaInDelivery.getValue();			
-//			int orderID = Integer.parseInt(orderIDToAdd.getText());//TODO in method off add and clear
+			int orderID = Integer.parseInt(orderIDToAdd.getText());//TODO in method off add and clear
 			LocalDate delDate = deliveryDate.getValue();
 			boolean isSent = isDelivered.isSelected();
 			boolean isEXP = isExpress.isSelected();
-			//adding to system
+			//if the combo box of express delivery is selected, then use the express delivery method
 			if(isEXP) {
 				double custPost = Double.parseDouble(customPostage.getText());
 				System.out.println(custPost);
@@ -1075,6 +1078,7 @@ public class ManagerAddPageController implements Initializable {
 					}				
 				}
 			}
+			//if the combo box of express delivery is NOT selected, then use the regular delivery method
 			else {
 				if(control.addRegularDeliveryFromGUI(id, dpID, dArea, isSent, delDate, ordersListToDelivery)) {
 					successAdded(section, "Success");
@@ -1089,6 +1093,9 @@ public class ManagerAddPageController implements Initializable {
 			refreshGui();
 
 		}
+		catch(expressDeliveryMissMatchException e1) {
+			fail(section, e1.toString());
+		}
 		catch(NumberFormatException e1) {
 			fail(section, "Wrong Input!");
 			e1.printStackTrace();
@@ -1102,8 +1109,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	/**************Add a Delivery Area************/
 	public void addDeliveryArea(ActionEvent e) {
-//		/*constructor for GUI*/
-//		public DeliveryArea(int id, String areaName, HashSet<Neighberhood> neighberhoods, int deliverTime) {
+
 		String section = "Delivery Area";
 		try {
 			int id = Integer.parseInt(delAreaID.getText());
@@ -1181,7 +1187,7 @@ public class ManagerAddPageController implements Initializable {
 		refreshGui();
 	}
 	
-	/***************************************/
+	/****************************Add and Clear methods*******************************************/
 	
 	public void clearOrdersInDelivery(ActionEvent e) {
 		ordersListToDelivery.removeAll(ordersListToDelivery);
@@ -1295,36 +1301,7 @@ public class ManagerAddPageController implements Initializable {
 
 	public void uploadCertificate(ActionEvent e)
 	{
-//		FileChooser fc=new FileChooser();
-//		fc.getExtensionFilters().add(new ExtensionFilter("PDF Files","*.pdf") );
-//		File file=fc.showOpenDialog(null);
-//
-//
-//		if(file!=null)
-//		{
-//			expCertificateLabel.setFont(new Font(20));
-//			expCertificateLabel.setText("Destination Certificate Was Added!");	
-//
-//			File toFile = new File("./Certificates/"+file.getName());
-//
-//
-//			try {
-//
-//				java.nio.file.Files.move( 
-//						file.toPath(), 
-//						toFile.toPath() ,StandardCopyOption.REPLACE_EXISTING);
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//
-//
-//		}
-//		else
-//		{
-//			expCertificateLabel.setFont(new Font(20));
-//			expCertificateLabel.setText("Add Destination Certificate to procceed");	
-//		}
+
 	}
 
 
@@ -1439,7 +1416,6 @@ public class ManagerAddPageController implements Initializable {
 
 		
 		/**Resetting the Component**/
-
 		componentID.setText("");
 		componentName.setText("");
 		componentPrice.setText("");
@@ -1447,6 +1423,7 @@ public class ManagerAddPageController implements Initializable {
 		hasGluten.setSelected(false);
 		delComponentID.setText("");
 
+		
 		/**Resetting the Dish**/
 		dishId.setText("");
 		dishName.setText("");
@@ -1455,6 +1432,7 @@ public class ManagerAddPageController implements Initializable {
 		componentsList.setText("");
 		//TODO addComponentToList clear the TextArea componentsList
 
+		
 		/**Resetting the Order**/
 		orderId.setText("");
 		orderIdToRemove.setText("");
@@ -1462,8 +1440,17 @@ public class ManagerAddPageController implements Initializable {
 		dishesInOrderShow.setText("");
 //		deliveriesInOrderShow.setText("");
 		
+		
 		/**Resetting the Delivery**/
-
+		deliveryID.setText("");
+		delPersonIDToDelivery.setText("");
+		orderIDToAdd.setText("");
+		dishesInOrderShow.setText("");
+		isExpress.setSelected(false);
+		isDelivered.setSelected(false);
+		ordersListInDelivery.setText("");
+		customPostage.setText("");
+		
 		
 		/**Resetting the Delivery Area**/
 		delAreaID.setText("");
@@ -1475,8 +1462,8 @@ public class ManagerAddPageController implements Initializable {
 		oldAreaID.setText("");
 		newAreaID.setText("");
 
+		
 		/**Resetting the Blacklist**/
-
 		customerToBlacklist.setText("");
 
 		/****************************************************************************/		

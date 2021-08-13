@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.PasswordMismatchException;
+import Exceptions.expressDeliveryMissMatchException;
 import javafx.collections.ObservableList;
 
 
@@ -325,7 +326,7 @@ public class PrimaryController {
 	 * @return true if success, false if failed.
 	 * @throws Exception
 	 */
-	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<String> dishesInOrderList,String DeliveriesInOrderList) throws Exception{
+	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<String> dishesInOrderList,int deliveryID) throws Exception{
 
 		//check for parameters of class order and validate id
 		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
@@ -348,7 +349,12 @@ public class PrimaryController {
 			}		
 		}
 		
-		Delivery del=null;		
+		Delivery del=null;
+		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+			if(d.getId() == deliveryID) {
+				del = d;
+			}		
+		}
 		Order order = new Order(id,c,AlDishes,del);
 		
 		return Restaurant.getInstance().addOrder(order);
@@ -364,7 +370,17 @@ public class PrimaryController {
 	}
 	
 	/************************************Delivery Page*******************************************/
-	
+	/**
+	 * a method to add a regular delivery to the database
+	 * @param id - the id of the regular delivery
+	 * @param dpID - the delivery person of the regular delivery
+	 * @param dArea - the delivery area of the regular delivery
+	 * @param isDelivered - is the regular delivery delivered
+	 * @param diliveredDate - the date of the regular delivery
+	 * @param orders - the orders of the regular delivery
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, ArrayList<Integer> orders) throws Exception{
 
 		//check for parameters of class cook and validate id
@@ -393,26 +409,36 @@ public class PrimaryController {
 		}
 		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
 
-		/*NO NEED -> the order gets its delivery from the add delivery method in Restaurant
-		 * so if its an RegularDelivery -> no need to create the set*/
-		TreeSet<Order> o = new TreeSet<>();
+		/*create the TreeSet of orders in the regular order*/
+		TreeSet<Order> ordersForRegular = new TreeSet<>();
 
 		for(int temp : orders) {
 			for(Order ordersss : Restaurant.getInstance().getOrders().values()) {
 				if(temp == ordersss.getId()) {
-					o.add(ordersss);
+					ordersForRegular.add(ordersss);
 				}
 			}
 		}
-		RegularDelivery deliveryToAdd = new RegularDelivery(id,delPer,tempArea,isDelivered,diliveredDate);			
-		for(Order or : o) {
-			deliveryToAdd.addOrder(or);
-		}
+		
+		RegularDelivery deliveryToAdd = new RegularDelivery(id,ordersForRegular,delPer,tempArea,isDelivered,diliveredDate);			
 		System.out.println(deliveryToAdd.getOrders());		
 		return Restaurant.getInstance().addDelivery(deliveryToAdd);
 		
 	}
 	
+	/**
+	 * a method to add an express delivery to the database
+	 * @param id - the id of the express delivery
+	 * @param dpID - the delivery person of the express delivery
+	 * @param dArea - the delivery area of the express delivery
+	 * @param isDelivered - is express delivery delivered
+	 * @param diliveredDate - the date of the express delivery
+	 * @param isEXP - is it an express delivery
+	 * @param postage - the extra fee (postage) of the express delivery
+	 * @param orders - the order of the express delivery
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean addDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, boolean isEXP, double postage, ArrayList<Integer> orders) throws Exception{
 
 		//check for parameters of class cook and validate id
@@ -444,31 +470,6 @@ public class PrimaryController {
 		}
 		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
 
-//		public Delivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
-//				boolean isDelivered,LocalDate diliveredDate) 
-		
-//		//constructors for GUI
-//		
-//		public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
-//				boolean isDelivered , Order order , double postage, LocalDate deliveredDate) {
-//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
-//			this.order = order;
-//			this.postage = postage;
-//		}
-//		/*if no new postage was enterd*/
-//		public ExpressDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
-//				boolean isDelivered , Order order , LocalDate deliveredDate) {
-//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
-//			this.order = order;
-//			this.postage = 5.0;
-//		}
-		
-		
-//		public RegularDelivery(int id, DeliveryPerson deliveryPerson, DeliveryArea area,
-//				boolean isDelivered,LocalDate deliveredDate) {
-//			super(id, deliveryPerson, area, isDelivered, deliveredDate);
-//			this.orders = new TreeSet<>();
-//		}
 		
 		//if it is an express delivery like the user entered AND the orders size is 1 
 		/*isEXP is necessary because if we want to change the postage we can't do it just by putting only 1 order,
@@ -476,9 +477,9 @@ public class PrimaryController {
 		 * 
 		 * TODO create an exception where one is true and the other is not -> expressDeliveryMissMatchException*/
 		
-//		if((isEXP== true && orders.size()!=1) || (isEXP== false && orders.size()==1)) {
-//			throw new expressDeliveryMissMatchException();
-//		}
+		if((isEXP== true && orders.size()!=1) || (isEXP== false && orders.size()==1)) {
+			throw new expressDeliveryMissMatchException();
+		}
 		
 		if(isEXP && orders.size()==1) {
 			//if a new postage was entered, use it
@@ -489,6 +490,7 @@ public class PrimaryController {
 						o = temp;
 					}
 				}
+				//use the given postage
 				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,postage,diliveredDate);
 				return Restaurant.getInstance().addDelivery(deliveryToAdd);
 				
@@ -507,27 +509,10 @@ public class PrimaryController {
 			}
 			
 		}
-		//if it is not an express, then its a RegularDelivery 
 		else {
-			
-			/*NO NEED -> the order gets its delivery from the add delivery method in Restaurant
-			 * so if its an RegularDelivery -> no need to create the set*/
-			TreeSet<Order> o = new TreeSet<>();
-
-			for(int temp : orders) {
-				for(Order ordersss : Restaurant.getInstance().getOrders().values()) {
-					if(temp == ordersss.getId()) {
-						o.add(ordersss);
-					}
-				}
-			}
-			RegularDelivery deliveryToAdd = new RegularDelivery(id,delPer,tempArea,isDelivered,diliveredDate);			
-			for(Order or : o) {
-				deliveryToAdd.addOrder(or);
-			}
-			
-			return Restaurant.getInstance().addDelivery(deliveryToAdd);
+			 throw new expressDeliveryMissMatchException();
 		}
+
 	}
 	
 

@@ -23,6 +23,8 @@ import Exceptions.SimilarIDInSystemException;
 import Utils.Expertise;
 import Utils.MyFileLogWriter;
 import Utils.Neighberhood;
+import controller.Sounds;
+import javafx.scene.control.Alert;
 
 
 
@@ -347,15 +349,6 @@ public class Restaurant implements Serializable {
 			}
 		}
 		
-//		try {
-//
-//		}catch(SensitiveException e) {
-//			Utils.MyFileLogWriter.println(e.getMessage());
-//			return false;
-//		}catch(IllegalCustomerException e) {
-//			Utils.MyFileLogWriter.println(e.getMessage());
-//			return false;
-//		}
 		
 		return getOrders().put(order.getId(), order) == null;
 	}
@@ -372,6 +365,8 @@ public class Restaurant implements Serializable {
 					if(!getOrders().containsKey(o.getId()))
 						return false;
 					o.setDelivery(delivery);
+					//put the same order again in the HashMap after linking it's delivery to it
+					getOrders().put(o.getId(), o);
 				}
 				if(rd.getOrders().size() ==1) {
 					throw new ConvertToExpressException();
@@ -384,12 +379,20 @@ public class Restaurant implements Serializable {
 				if(!getOrders().containsKey(ed.getOrder().getId()))
 						return false;
 					ed.getOrder().setDelivery(delivery);
+					//put the same order again in the HashMap after linking it's delivery to it
+					getOrders().put(ed.getOrder().getId(), ed.getOrder());
 			}
 		}catch(ConvertToExpressException e) {
-//			Utils.MyFileLogWriter.println(e.getMessage());
 			//TODO pop up with message saying that the delivery was converted to express
 			RegularDelivery rd = (RegularDelivery)delivery;
 			delivery = new ExpressDelivery(rd.getDeliveryPerson(), rd.getArea(),rd.isDelivered(), rd.getOrders().first() ,rd.getDeliveredDate());
+			for(Order o : rd.getOrders()){
+				if(!getOrders().containsKey(o.getId()))
+					return false;
+				o.setDelivery(delivery);
+				//put the same order again in the HashMap after linking it's delivery to it
+				getOrders().put(o.getId(), o);
+			}
 		}
 		finally{
 			delivery.getArea().addDelivery(delivery);
@@ -409,7 +412,7 @@ public class Restaurant implements Serializable {
 				if(orders == null)
 					orders = new TreeSet<>();
 				orders.add(ex.getOrder());
-//				orderByCustomer.put(ex.getOrder().getCustomer(), orders);
+				orderByCustomer.put(ex.getOrder().getCustomer(), orders);
 			}
 		}
 		return getDeliveries().put(delivery.getId(),delivery) == null;
@@ -489,7 +492,7 @@ public class Restaurant implements Serializable {
 				}
 			}
 		}catch(NoComponentsExceptions e) {
-			Utils.MyFileLogWriter.println(e.getMessage());
+			successRemove("The "+ removeDish + " does not include components and is removed from the menu!","Removed a Dish with no components!");
 			removeDish(removeDish);
 		}
 		return getComponenets().remove(comp.getId())!=null;
@@ -501,11 +504,15 @@ public class Restaurant implements Serializable {
 		if(getOrders().remove(order.getId())!=null) {
 			if(order.getDelivery() instanceof RegularDelivery) {
 				RegularDelivery rd = (RegularDelivery) order.getDelivery();
-				return rd.removeOrder(order);
+				if(rd != null) {
+					return rd.removeOrder(order);					
+				}
 			}
 			else {
 				ExpressDelivery ed = (ExpressDelivery) order.getDelivery();
-				ed.setOrder(null);
+				if(ed != null) {
+					ed.setOrder(null);					
+				}
 				return true;
 			}
 		}
@@ -519,11 +526,13 @@ public class Restaurant implements Serializable {
 			RegularDelivery rd = (RegularDelivery)delivery;
 			for(Order o : rd.getOrders()) {
 				o.setDelivery(null);
+				getOrders().put(o.getId(), o);
 			}
 		}
 		else {
 			ExpressDelivery ed = (ExpressDelivery) delivery;
 			ed.getOrder().setDelivery(null);
+			getOrders().put(ed.getOrder().getId(), ed.getOrder());
 		}
 		return getDeliveries().remove(delivery.getId()) != null && delivery.getArea().removeDelivery(delivery);
 	}
@@ -793,5 +802,25 @@ public class Restaurant implements Serializable {
 			}
 		}
 		return AIDecision;
+	}
+	
+	
+	public void successRemove(String content, String header) {
+		successSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText(content+" Removed Successfully");
+		al.setHeaderText(header);
+		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
+	public void successSound() {
+		Sounds s = new Sounds();
+		try {
+			s.addSound();
+		}catch(Exception e2) {
+			e2.printStackTrace();
+		}
 	}
 }

@@ -56,7 +56,8 @@ public class RegularDelivery extends Delivery implements Serializable{
 
 	@Override
 	public String toString() {
-		return "RegularDelivery [orders=" + orders + "]";
+		return "Regular Delivery ID: " + getId() +
+				"\nOrders: "  + orders;
 	}
 	
 	

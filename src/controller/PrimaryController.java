@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.PasswordMismatchException;
+import Exceptions.SimilarIDInSystemException;
 import Exceptions.expressDeliveryMissMatchException;
 import javafx.collections.ObservableList;
 
@@ -42,12 +43,7 @@ public class PrimaryController {
 	
 	
 	/**
-	 * This method is used to add a new customer to the system.
-	 *
-	 * 1) validate parameters.
-	 * 2) check if customer does not exist already.
-	 * 3) create customer object.
-	 * 4) add customer to the system.
+	 * a method to add a new customer to the database.
 	 *
 	 * @param id The id of the customer.
 	 * @param firstName The first name of the customer.
@@ -69,8 +65,11 @@ public class PrimaryController {
 		if(!validate) {
 			throw new IllegelInputException();			
 		}
-//		if(id < 0 || houseNumber < 0)
-//			throw new NegativeNumberNotPriceException();
+		
+		if(Restaurant.getInstance().getCustomers().containsKey(id)) {
+			throw new SimilarIDInSystemException();
+		}
+
 		if(!password.equals(verifyPass)) {
 			throw new PasswordMismatchException();			
 		}
@@ -326,7 +325,42 @@ public class PrimaryController {
 	 * @return true if success, false if failed.
 	 * @throws Exception
 	 */
-	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<String> dishesInOrderList,int deliveryID) throws Exception{
+//	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList,int deliveryID) throws Exception{
+//
+//		//check for parameters of class order and validate id
+//		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
+//
+//		// if not valid throw exception
+//		if(!validate) {
+//			throw new IllegelInputException();			
+//		}
+//
+//		// create a new customer instance with the data we got from GUI		
+//		Customer c= Restaurant.getInstance().getRealCustomer(custForOrder);
+//		
+//		ArrayList<Dish> AlDishes=new ArrayList<Dish>();
+//			
+//		for(Dish d : Restaurant.getInstance().getDishes().values()) {
+//			for(int i : dishesInOrderList) {
+//				if(d.getId().equals(i)) {
+//					AlDishes.add(d);
+//				}
+//			}		
+//		}
+//		
+//		Delivery del=null;
+//		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+//			if(d.getId() == deliveryID) {
+//				del = d;
+//			}		
+//		}
+//		Order order = new Order(id,c,AlDishes,del);
+//		
+//		return Restaurant.getInstance().addOrder(order);
+//	}
+	
+	//trying to create order without creating a delivery, and only after linking delivery to it, add the order to HashSet again
+	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws Exception{
 
 		//check for parameters of class order and validate id
 		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
@@ -342,24 +376,31 @@ public class PrimaryController {
 		ArrayList<Dish> AlDishes=new ArrayList<Dish>();
 			
 		for(Dish d : Restaurant.getInstance().getDishes().values()) {
-			for(String s : dishesInOrderList) {
-				if(d.getDishName().equals(s)) {
+			for(int i : dishesInOrderList) {
+				if(d.getId().equals(i)) {
 					AlDishes.add(d);
 				}
 			}		
 		}
 		
-		Delivery del=null;
-		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
-			if(d.getId() == deliveryID) {
-				del = d;
-			}		
-		}
-		Order order = new Order(id,c,AlDishes,del);
+//		Delivery del=null;
+//		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+//			if(d.getId() == deliveryID) {
+//				del = d;
+//			}		
+//		}
+		
+		Order order = new Order(id,c,AlDishes);
 		
 		return Restaurant.getInstance().addOrder(order);
 	}
 	
+	/**
+	 * a method to remove an order from the database
+	 * @param id
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean removeOrderFromGUI(int id) throws IllegelInputException{
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {
@@ -369,7 +410,17 @@ public class PrimaryController {
 		return Restaurant.getInstance().removeOrder(orderDelete);
 	}
 	
-	/************************************Delivery Page*******************************************/
+	/************************************Delivery Page
+	 * @throws IllegelInputException *******************************************/
+	public boolean removeDeliveryFromGUI(int id) throws IllegelInputException {
+		boolean validate = requireNotZeroOrNegative(id);
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		Delivery delToDelete = Restaurant.getInstance().getRealDelivery(id);
+		return Restaurant.getInstance().removeDelivery(delToDelete);
+	}
+	
 	/**
 	 * a method to add a regular delivery to the database
 	 * @param id - the id of the regular delivery
@@ -381,7 +432,7 @@ public class PrimaryController {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, ArrayList<Integer> orders) throws Exception{
+	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, HashSet<Integer> orders) throws Exception{
 
 		//check for parameters of class cook and validate id
 		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id,dpID)));
@@ -439,7 +490,7 @@ public class PrimaryController {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean addDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, boolean isEXP, double postage, ArrayList<Integer> orders) throws Exception{
+	public boolean addDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, boolean isEXP, double postage, HashSet<Integer> orders) throws Exception{
 
 		//check for parameters of class cook and validate id
 		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id)));
@@ -486,8 +537,11 @@ public class PrimaryController {
 			if(postage != 5.0) {
 				Order o = null;
 				for(Order temp : Restaurant.getInstance().getOrders().values()) {
-					if(temp.getId() == orders.get(0)) {
-						o = temp;
+					for(int i : orders) {
+						if(temp.getId() == i) {
+							o = temp;
+						}
+						
 					}
 				}
 				//use the given postage
@@ -499,8 +553,11 @@ public class PrimaryController {
 			else {
 				Order o = null;
 				for(Order temp : Restaurant.getInstance().getOrders().values()) {
-					if(temp.getId() == orders.get(0)) {
-						o = temp;
+					for(int i : orders) {
+						if(temp.getId() == i) {
+							o = temp;
+						}
+						
 					}
 				}
 				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,diliveredDate);

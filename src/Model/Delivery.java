@@ -106,8 +106,10 @@ public abstract class Delivery implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Delivery [id=" + id + ", deliveryPerson=" + deliveryPerson + ", area=" + area + ", isDelivered="
-				+ isDelivered + "]";
+		return "Delivery Person ID: " + id +
+				"\nArea: " + area +
+				"\nIs Delivered: "
+				+ isDelivered;
 	}
 
 }

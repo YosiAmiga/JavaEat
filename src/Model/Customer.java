@@ -81,7 +81,7 @@ public class Customer extends Person{
 	
 	@Override
 	public String toString() {
-		return "Customer ID: " + getId() + "\n Full Name : " + getFirstName() + " " +getLastName() ;
+		return "Customer ID: " + getId() + "\nFull Name : " + getFirstName() + " " +getLastName() ;
 	}
 
 //	@Override

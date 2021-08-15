@@ -59,10 +59,10 @@ public class CustomerMainPageController implements Initializable  {
 		try {
 			if(newOrder.isSelected())
 			{
-//				CustomerNewOrderPageController.setCustomer(customer);
+				CustomerMyOrdersController.customer = customer;
 				cancel.setSelected(false);
 				orders.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("CustomerNewOrderPage.fxml"));
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\customerMyOrders.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
 				rootPane.getChildren().add(pane);

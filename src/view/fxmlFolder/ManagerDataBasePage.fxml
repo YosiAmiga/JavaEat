@@ -168,7 +168,7 @@
                         <TableColumn fx:id="deliveryAreaName" prefWidth="105.60000610351562" text="Name" />
                         <TableColumn fx:id="deliveryAreaDelPersons" prefWidth="188.00003051757812" text="Delivery Persons" />
                         <TableColumn fx:id="deliveryAreaHoods" prefWidth="196.0" text="Neighborhoods" />
-                        <TableColumn prefWidth="152.0" text="TODO deliveries" />
+                        <TableColumn fx:id="deliveryAreaDeliveries" prefWidth="152.0" text="Deliveries" />
                         <TableColumn fx:id="deliveryAreaTime" prefWidth="165.5999755859375" text="Delivery time" />
                      </columns>
                   </TableView>

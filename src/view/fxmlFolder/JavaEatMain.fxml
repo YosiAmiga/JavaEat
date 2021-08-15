@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1026.0" stylesheets="@../../../view/background.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SampleController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SampleController">
    <children>
       <TextField fx:id="username" alignment="CENTER" layoutX="512.0" layoutY="449.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user id" />
       <PasswordField fx:id="password" alignment="CENTER" layoutX="512.0" layoutY="515.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user password" />

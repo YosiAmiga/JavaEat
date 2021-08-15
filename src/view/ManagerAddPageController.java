@@ -16,9 +16,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import Exceptions.EmptyTextFieldException;
 import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
+import Exceptions.NoComponentsExceptions;
 import Exceptions.PasswordMismatchException;
 import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
@@ -79,8 +81,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private Button addCustomer;
-	@FXML 
-	private TextField delCustomerID;
+
 	
 	@FXML
 	private ComboBox<String> customerDelete;	
@@ -112,8 +113,7 @@ public class ManagerAddPageController implements Initializable {
 	private ComboBox<String> delPersonDelete;
 	@FXML
 	private Button deleteDelPerson;
-	@FXML
-	private TextField deleteDelPersonID;
+
 	
 
 	
@@ -144,8 +144,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private ComboBox<String> cooksInSys;
-	@FXML
-	private TextField cookIDtoDelete;
+
 	@FXML
 	private Button removeCookBtn;
 	
@@ -172,8 +171,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private Button delComponent;
-	@FXML
-	private TextField delComponentID;
+
 	
 	
 	@FXML
@@ -197,7 +195,7 @@ public class ManagerAddPageController implements Initializable {
 	private ComboBox<String> TypeOfTheDish;
 		
 	@FXML
-	private ComboBox<Integer> componentsInDish;
+	private ComboBox<String> componentsInDish;
 	
 	@FXML
 	private TextArea componentsList;
@@ -210,8 +208,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private ComboBox<String> dishIDToDelete;
-	@FXML
-	private TextField deleteDishTextField;
+
 	@FXML
 	private Button removeDish;
 	
@@ -219,11 +216,6 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private TextField orderId;
-	
-	
-	@FXML
-	private TextField orderIdToRemove;//
-	
 	
 	@FXML
 	private TextField customerForOrderId;
@@ -272,8 +264,6 @@ public class ManagerAddPageController implements Initializable {
 	private TextField deliveryID;
 	@FXML
 	private ComboBox<String> deliveryPersonInDelivery;
-	@FXML
-	private TextField delPersonIDToDelivery;
 	
 	@FXML
 	private ComboBox<String> deliveryAreaInDelivery;
@@ -281,8 +271,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private ComboBox<String> ordersInDelivery;	
-	@FXML
-	private TextField orderIDToAdd;	
+
 	@FXML
 	private Button addOrderToList;
 	@FXML
@@ -305,6 +294,10 @@ public class ManagerAddPageController implements Initializable {
 	private Button addDelivery;
 	
 	@FXML
+	private ComboBox<String> currentDelivery;
+	@FXML
+	private TextField delIDToRemove;
+	@FXML
 	private Button removeDelivery;
 	
 	
@@ -317,14 +310,7 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private TextField delAreaTime;
 	
-	@FXML
-	private ComboBox<String> delAreaDelPersons;
-	@FXML
-	private Button addDelPersonToArea;
-	@FXML
-	private Button clearDelPersons;
-	@FXML
-	private TextArea delPersonsList;
+
 	
 	@FXML
 	private ComboBox<String> delAreaHoods;
@@ -335,14 +321,7 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private TextArea hoodList;
 	
-	@FXML
-	private ComboBox<String> delAreaDeliveries;
-	@FXML
-	private Button addDeliveriesToArea;
-	@FXML
-	private Button clearDeliveries;
-	@FXML
-	private TextArea deliveriesList;
+
 	
 	@FXML
 	private Button addDeliveryArea;
@@ -359,8 +338,7 @@ public class ManagerAddPageController implements Initializable {
 
 
 	/*************************************Blacklist Page*************************************/
-	@FXML
-	private TextField customerToBlacklist;
+
 	@FXML
 	private ComboBox<String> customerList;
 	@FXML
@@ -387,10 +365,12 @@ public class ManagerAddPageController implements Initializable {
 	ArrayList<Long> packageAccommodationList=new ArrayList<Long>();
 	ArrayList<String> hoodsInDeliveryArea = new ArrayList<>();
 	ArrayList<Integer> componentsInDishList = new ArrayList<>();
-	ArrayList<String> dishesInOrderList = new ArrayList<>();
+	ArrayList<String> componentsInDishToShow = new ArrayList<>();
+	ArrayList<Integer> dishesInOrderList = new ArrayList<>();
+	ArrayList<String> dishesInOrderText = new ArrayList<>();
 	ArrayList<String> DeliveriesInOrderList = new ArrayList<>();
-	ArrayList<Integer> ordersListToDelivery = new ArrayList<>();
-	
+	HashSet<Integer> ordersListToDelivery = new HashSet<>();
+	ArrayList<String> ordersListShow = new ArrayList<>();
 
 	
 
@@ -400,11 +380,11 @@ public class ManagerAddPageController implements Initializable {
 		/**************Load list of dishes in system*********/
 		ArrayList<String> dishesDB = new ArrayList<>();
 		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
-			dishesDB.add(d.getDishName());
+			dishesDB.add("ID: " + d.getId() + " Name: " + d.getDishName());
 		}
 		ObservableList<String> ObservableListDishes = FXCollections.observableArrayList();
 		ObservableListDishes.addAll(dishesDB);
-		dishIDToDelete.setItems(ObservableListDishes);//current orders
+		dishIDToDelete.setItems(ObservableListDishes);		
 		dishesInOrder.setItems(ObservableListDishes);
 		
 		/************load list of orders in the system **************/
@@ -416,7 +396,6 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
 		ordersInDelivery.setItems(ObservableListOrders);
-//		currentOrds.setItems(ObservableListOrders);// addOrderToDelivery
 
 		
 		/***************Load list of cooks in system*********/
@@ -438,7 +417,6 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListDelPersons = FXCollections.observableArrayList();
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
-		delAreaDelPersons.setItems(ObservableListDelPersons);
 		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
 
 		/***************Load list of delivery areas in system*********************/
@@ -461,11 +439,11 @@ public class ManagerAddPageController implements Initializable {
 		
 		/***************Load list of components in the system***************/
 		//will be only the id of the component
-		ArrayList<Integer> componentsDB = new ArrayList<>();
+		ArrayList<String> componentsDB = new ArrayList<>();
 		for(Component c : Restaurant.getInstance().getComponenets().values()) {
-			componentsDB.add(c.getId());
+			componentsDB.add("ID: "+c.getId() + " Name: " + c.getComponentName());
 		}
-		ObservableList<Integer> ObservableListComponents = FXCollections.observableArrayList();
+		ObservableList<String> ObservableListComponents = FXCollections.observableArrayList();
 		ObservableListComponents.addAll(componentsDB);
 		componentsInDish.setItems(ObservableListComponents);
 		
@@ -558,7 +536,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
 		ObservableListDeliveries.addAll(deliveriesDb);
 		deliveriesInOrder.setItems(ObservableListDeliveries);
-
+		currentDelivery.setItems(ObservableListDeliveries);
 	}
 	
 	/**************************************Methods*****************************************/
@@ -569,7 +547,13 @@ public class ManagerAddPageController implements Initializable {
 	public void delCustomer(ActionEvent e) {
 		String section = "Customer";
 		try {
-			int id = Integer.parseInt(delCustomerID.getText());
+			//Save the data from the current customer combo box
+			String str = customerDelete.getValue();
+			//Extract only the customer ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
+
 			if(control.removeCustomerGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -654,7 +638,6 @@ public class ManagerAddPageController implements Initializable {
 			fail(section,e1.toString());
 		}
 		catch(SimilarIDInSystemException e1) {
-			badSound();
 			fail(section,e1.toString());
 		}
 //		catch(NegativeNumberNotPriceException e1) {
@@ -682,7 +665,13 @@ public class ManagerAddPageController implements Initializable {
 	public void removeDeliveryPerson(ActionEvent e) {
 		String section = "Delivery Person";
 		try {
-			int id = Integer.parseInt(deleteDelPersonID.getText());
+			//Save the data from the current Delivery Person combo box
+			String str = delPersonDelete.getValue();
+			//Extract only the Delivery Person ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
+
 			if(control.removeDeliveryPersonGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -746,7 +735,12 @@ public class ManagerAddPageController implements Initializable {
 	public void removeCook(ActionEvent e) {
 		String section = "Cook";
 		try {
-			int id = Integer.parseInt(cookIDtoDelete.getText());
+			//Save the data from the current Cook combo box
+			String str = cooksInSys.getValue();
+			//Extract only the Cook ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
 			if(control.removeCookFromGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -853,10 +847,14 @@ public class ManagerAddPageController implements Initializable {
 	}
 	
 	/**************Delete a component*************/
-	public void delComponent(ActionEvent e) {
+	public void removeComponent(ActionEvent e) {
 		String section = "Component";
 		try {
-			int id = Integer.parseInt(delComponentID.getText());
+			String str = componentsDelete.getValue();
+			//Extract only the component ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
 			//remove method in primary controller
 			if(control.removeComponentGUI(id)) {
 				successRemove(section, "Success");
@@ -868,6 +866,7 @@ public class ManagerAddPageController implements Initializable {
 			System.out.println(Restaurant.getInstance().getComponenets());
 			refreshGui();
 		}
+
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
 		}
@@ -880,14 +879,12 @@ public class ManagerAddPageController implements Initializable {
 	/**************Add a component***************/
 	public void addComponent(ActionEvent e) {
 		String section = "Component";
-//		public Component(int id, String componentName, boolean hasLactose, boolean hasGluten, double price)
 		try {
 			int id = Integer.parseInt(componentID.getText());
 			String cName = componentName.getText();
 			boolean lactose = hasLactose.isSelected();
 			boolean gluten = hasGluten.isSelected();
 			double price = Double.parseDouble(componentPrice.getText());
-			//add method in primary controller
 			if(control.addComponentGUI(id, cName, lactose, gluten, price)) {
 				successAdded(section,"Success");
 				System.out.println(Restaurant.getInstance().getComponenets());
@@ -917,7 +914,11 @@ public class ManagerAddPageController implements Initializable {
 	public void removeDish(ActionEvent e) {
 		String section = "Dish";
 		try {
-			int id = Integer.parseInt(deleteDishTextField.getText());
+			String str = dishIDToDelete.getValue();
+			//Extract only the Dish ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
 			if(control.removeDishFromGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -953,7 +954,10 @@ public class ManagerAddPageController implements Initializable {
 					selectedD = g;
 				}
 			}
-			
+			String str = componentsInDish.getValue();
+			String numberOnly= str.replaceAll("[^0-9]", "");
+			System.out.println(numberOnly);
+			System.out.println("-----------------------");
 			if(control.addDishFromGUI(id, dName,selectedD, componentsInDishList, toMake)) {
 				successAdded(section,"Success");
 				Restaurant.save(Input);	
@@ -979,12 +983,17 @@ public class ManagerAddPageController implements Initializable {
 		String section = "Order";
 		try {
 			int id=Integer.parseInt(orderId.getText());// get id			
-			int custForOrder=Integer.parseInt(customerForOrderId.getText());//get the customer's id after viewing the combo box	
-//			String deliveryInOrderForGui= deliveriesInOrder.getValue();
-			int deliveryID = Integer.parseInt(deliveryIDToOrder.getText());		
-			if(control.addOrderFromGUI(id,custForOrder, dishesInOrderList, deliveryID)) {
+			
+			String custID = customersForOrder.getValue();
+			//Extract only the Order ID in order to remove him
+			String numberOnlyCustomer= custID.replaceAll("[^0-9]", "");	
+			int custForOrder=Integer.parseInt(numberOnlyCustomer);//get the customer's id after viewing the combo box	
+			
+//			int deliveryID = Integer.parseInt(deliveryIDToOrder.getText());		
+			
+			if(control.addOrderFromGUI(id,custForOrder, dishesInOrderList)) {
 				successAdded(section, "Success");
-				Restaurant.save(Input);				//customerForOrderId
+				Restaurant.save(Input);		
 			}
 			//if could not add customer
 			else {
@@ -1020,7 +1029,11 @@ public class ManagerAddPageController implements Initializable {
 	public void removeOrder(ActionEvent e) {
 		String section = "Order";
 		try {
-			int id = Integer.parseInt(orderIdToRemove.getText());
+			String str = currentOrders.getValue();
+			//Extract only the Order ID in order to remove him
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnly);
 			
 			if(control.removeOrderFromGUI(id)) {
 				successRemove(section, "Success");
@@ -1042,15 +1055,45 @@ public class ManagerAddPageController implements Initializable {
 
 
 	/**************************************Delivery Methods****************************************/
-	//TODO remove a delivery
+	public void removeDelivery(ActionEvent e) {
+		String section = "Delivery";
+		try {
+			
+			int id = Integer.parseInt(delIDToRemove.getText());
+			if(control.removeDeliveryFromGUI(id)) {
+				successAdded(section, "Success");
+				Restaurant.save(Input);	
+			}
+			
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(NumberFormatException e1) {
+			fail(section, "Wrong Input!");
+			e1.printStackTrace();
+		}
+		catch (Exception e1) {
+			fail(section, e1.toString());
+		}
+		
+	
+	}
 	/**********Add a delivery********/
 	public void addDelivery(ActionEvent e){
 		String section = "Delivery";
 		try {
 			int id = Integer.parseInt(deliveryID.getText());
-			int dpID = Integer.parseInt(delPersonIDToDelivery.getText());
-			String dArea = deliveryAreaInDelivery.getValue();			
-			int orderID = Integer.parseInt(orderIDToAdd.getText());//TODO in method off add and clear
+			
+			String delPerId = deliveryPersonInDelivery.getValue();
+			//Extract only the Order ID in order to remove him
+			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
+			
+			int dpID = Integer.parseInt(numberOnlyDelPer);
+			
+			System.out.println(dpID);
+			String dArea = deliveryAreaInDelivery.getValue();	
+			
 			LocalDate delDate = deliveryDate.getValue();
 			boolean isSent = isDelivered.isSelected();
 			boolean isEXP = isExpress.isSelected();
@@ -1167,7 +1210,12 @@ public class ManagerAddPageController implements Initializable {
 	public void addCustomerToBlacklist(ActionEvent e) {
 		String section = "Customer";
 		try {
-			int id = Integer.parseInt(customerToBlacklist.getText());
+			
+			String cutomerToBlacklist = customerList.getValue();
+			//Extract only the Order ID in order to remove him
+			String numberOnlyCustomer= cutomerToBlacklist.replaceAll("[^0-9]", "");	
+			
+			int id = Integer.parseInt(numberOnlyCustomer);
 			if(control.addToBlacklistFromGUI(id)) {
 				successAdded(section,"Success");
 				Restaurant.save(Input);
@@ -1190,16 +1238,23 @@ public class ManagerAddPageController implements Initializable {
 	/****************************Add and Clear methods*******************************************/
 	
 	public void clearOrdersInDelivery(ActionEvent e) {
+		ordersListShow.removeAll(ordersListShow);
 		ordersListToDelivery.removeAll(ordersListToDelivery);
 		ordersListInDelivery.setText("");
 	}
 	
 	public void addOrderIDToDelivery(ActionEvent e) {
-		if(!ordersListToDelivery.contains(Integer.parseInt(orderIDToAdd.getText()))){
-			ordersListToDelivery.add(Integer.parseInt(orderIDToAdd.getText()));			
+		String str = ordersInDelivery.getValue();
+		if(!ordersListShow.contains(str)){
+			ordersListShow.add(str);		
 		}
+		
+		//Extract only the component ID in order to add him to the dish
+		String numberOnly= str.replaceAll("[^0-9]", "");		
+		ordersListToDelivery.add(Integer.parseInt(numberOnly));
+		System.out.println(ordersListToDelivery);
 		String list="";		
-		for(int i : ordersListToDelivery) {
+		for(String i : ordersListShow) {
 			list += i+"\n";
 		}
 		ordersListInDelivery.setText(list);
@@ -1207,43 +1262,44 @@ public class ManagerAddPageController implements Initializable {
 
 	/**
 	 * a method to show all the components in the dish
-	 * @param e
 	 */
 	public void addComponentToList(ActionEvent e) {
 		//dish can have several components
+		//show all the components value in the text area
+		String str = componentsInDish.getValue();
+		componentsInDishToShow.add(str);
 		
-		componentsInDishList.add(componentsInDish.getValue());
+		//Extract only the component ID in order to add him to the dish
+		String numberOnly= str.replaceAll("[^0-9]", "");		
+		componentsInDishList.add(Integer.parseInt(numberOnly));
 		String list="";		
-		for(int s : componentsInDishList) {
+		for(String s : componentsInDishToShow) {
 			list += s+"\n";
 		}
-		componentsList.setText(list);
+		componentsList.setText(list);			
+		
 	}
 	
 
 	
 	public void addCDishesInOrderToList(ActionEvent e) {
 		//order can have several dishes
+		//show all the components value in the text area
+		String str = dishesInOrder.getValue();
+		dishesInOrderText.add(str);
 		
-		dishesInOrderList.add(dishesInOrder.getValue());
+		//Extract only the component ID in order to add him to the dish
+		String numberOnly= str.replaceAll("[^0-9]", "");	
+		dishesInOrderList.add(Integer.parseInt(numberOnly));
 		String list="";
-		for(String s : dishesInOrderList) {
+		for(String s : dishesInOrderText) {
 			list += s+"\n";
 		}
 		dishesInOrderShow.setText(list);
 	}
+
+	//TODO FIX!!
 	
-	
-	public void addOrderToList(ActionEvent e) {
-		//dish can have several components
-		
-		componentsInDishList.add(componentsInDish.getValue());
-		String list="";
-		for(int s : componentsInDishList) {
-			list += s+"\n";
-		}
-		componentsList.setText(list);
-	}
 	
 	
 	public void addCDeliveriesInOrderToList(ActionEvent e) {
@@ -1261,16 +1317,17 @@ public class ManagerAddPageController implements Initializable {
 	 * @param e 
 	 */
 	public void clearDishesInOrderList(ActionEvent e) {
-		dishesInOrderList.removeAll(dishesInOrderList);
+		dishesInOrderText.removeAll(dishesInOrderText);
 		dishesInOrderShow.setText("");
 	}
 	
 	public void clearDeliveriesInOrderList(ActionEvent e) {
-		DeliveriesInOrderList.removeAll(dishesInOrderList);
+//		DeliveriesInOrderList.removeAll(dishesInOrderList);
 		deliveriesInOrderShow.setText("");
 	}
 	
 	public void clearComponentsInDishesList(ActionEvent e) {
+		componentsInDishToShow.removeAll(componentsInDishToShow);
 		componentsInDishList.removeAll(componentsInDishList);
 		componentsList.setText("");
 	}
@@ -1396,23 +1453,23 @@ public class ManagerAddPageController implements Initializable {
 		customerPassVerify.setText("");
 		customerLactose.setSelected(false);
 		customerGluten.setSelected(false);
-		delCustomerID.setText("");
 		
 	
 		/**Resetting the Delivery Person**/
 		delPersonId.setText("");		
 		delPersonFName.setText("");
 		delPersonLName.setText("");
-		deleteDelPersonID.setText("");
 		
 		
 		/**Reseting the Cook**/
 		cookId.setText("");		
 		cookFirstName.setText("");
 		cookLastName.setText("");
+		cookExpertise.setPromptText("Expertise");
+		cookGender.setPromptText("Gender");
+		cooksInSys.setPromptText("Current Cook");
 		/*TODO cookDate reset*/
 		isChef.setSelected(false);;
-		cookIDtoDelete.setText("");
 
 		
 		/**Resetting the Component**/
@@ -1421,21 +1478,18 @@ public class ManagerAddPageController implements Initializable {
 		componentPrice.setText("");
 		hasLactose.setSelected(false);
 		hasGluten.setSelected(false);
-		delComponentID.setText("");
 
 		
 		/**Resetting the Dish**/
 		dishId.setText("");
 		dishName.setText("");
 		timeToMake.setText("");
-		deleteDishTextField.setText("");
 		componentsList.setText("");
 		//TODO addComponentToList clear the TextArea componentsList
 
 		
 		/**Resetting the Order**/
 		orderId.setText("");
-		orderIdToRemove.setText("");
 		customerForOrderId.setText("");
 		dishesInOrderShow.setText("");
 //		deliveriesInOrderShow.setText("");
@@ -1443,8 +1497,6 @@ public class ManagerAddPageController implements Initializable {
 		
 		/**Resetting the Delivery**/
 		deliveryID.setText("");
-		delPersonIDToDelivery.setText("");
-		orderIDToAdd.setText("");
 		dishesInOrderShow.setText("");
 		isExpress.setSelected(false);
 		isDelivered.setSelected(false);
@@ -1456,15 +1508,12 @@ public class ManagerAddPageController implements Initializable {
 		delAreaID.setText("");
 		delAreaName.setText("");
 		delAreaTime.setText("");
-		delPersonsList.setText("");
 		hoodList.setText("");
-		deliveriesList.setText("");
 		oldAreaID.setText("");
 		newAreaID.setText("");
 
 		
 		/**Resetting the Blacklist**/
-		customerToBlacklist.setText("");
 
 		/****************************************************************************/		
 		/************************Updating all the ComboBox**************************/
@@ -1473,7 +1522,7 @@ public class ManagerAddPageController implements Initializable {
 		/**************Load list of dishes in system*********/
 		ArrayList<String> dishesDB = new ArrayList<>();
 		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
-			dishesDB.add(d.getDishName());
+			dishesDB.add("ID: " + d.getId() + " Name: " + d.getDishName());
 		}
 		ObservableList<String> ObservableListDishes = FXCollections.observableArrayList();
 		ObservableListDishes.addAll(dishesDB);
@@ -1489,7 +1538,6 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
 		ordersInDelivery.setItems(ObservableListOrders);
-		//		currentOrds.setItems(ObservableListOrders);// addOrderToDelivery
 
 		
 		/***************Load list of cooks in system*********/
@@ -1511,7 +1559,6 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListDelPersons = FXCollections.observableArrayList();
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
-		delAreaDelPersons.setItems(ObservableListDelPersons);
 		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
 		
 		/***************Load list of delivery areas in system*********************/
@@ -1534,12 +1581,11 @@ public class ManagerAddPageController implements Initializable {
 		deliveryAreasByID.setItems(comboAreas2);
 		
 		/***************Load list of components in the system***************/
-		//will be only the id of the component
-		ArrayList<Integer> componentsDB = new ArrayList<>();
+		ArrayList<String> componentsDB = new ArrayList<>();
 		for(Component c : Restaurant.getInstance().getComponenets().values()) {
-			componentsDB.add(c.getId());
+			componentsDB.add("ID: "+c.getId() + " Name: " + c.getComponentName());
 		}
-		ObservableList<Integer> ObservableListComponents = FXCollections.observableArrayList();
+		ObservableList<String> ObservableListComponents = FXCollections.observableArrayList();
 		ObservableListComponents.addAll(componentsDB);
 		componentsInDish.setItems(ObservableListComponents);
 		
@@ -1623,7 +1669,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListVehicles.addAll(vehicleDB);
 		delPersonVehicle.setItems(ObservableListVehicles);
 
-		/*****************************************************/
+		/*********************Load Deliveries********************************/
 		ArrayList<String> deliveriesDb = new ArrayList<>();
 		
 		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
@@ -1632,6 +1678,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
 		ObservableListDeliveries.addAll(deliveriesDb);
 		deliveriesInOrder.setItems(ObservableListDeliveries);
+		currentDelivery.setItems(ObservableListDeliveries);
 
 /****************************************************************************/		
 

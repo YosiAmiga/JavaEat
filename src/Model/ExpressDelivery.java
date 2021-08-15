@@ -63,11 +63,11 @@ public class ExpressDelivery extends Delivery implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Express delivery ID: " + this.getId() +
+		return "Express Delivery ID: " + this.getId() +
 				"\nDelivery Person: " + this.getDeliveryPerson().getFirstName() + " " +this.getDeliveryPerson().getLastName() +
 				"\nArea : " + this.getArea().getAreaName() +
 //				"\nCustomer's Order: " + getOrder().getCustomer().getFirstName() + " " + getOrder().getCustomer().getLastName() +
-				"\nis Deliverd: " + this.isDelivered()  +
+				"\nIs Deliverd: " + this.isDelivered()  +
 				"\nExpress fee: " + postage;
 	}	
 }

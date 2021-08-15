@@ -14,8 +14,12 @@
    <children>
       <BorderPane prefHeight="730.0" prefWidth="892.0">
          <right>
-            <VBox prefHeight="650.0" prefWidth="145.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="671.0" prefWidth="162.0" BorderPane.alignment="CENTER">
                <children>
+                  <ImageView fx:id="CustomerImage" fitHeight="103.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../Capture.PNG" />
+                     </image></ImageView>
                   <ToggleButton fx:id="newOrder" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadNewOrder" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Manage Orders">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -88,7 +92,7 @@
                         <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="exit" contentDisplay="TOP" mnemonicParsing="false" onAction="#exitProgrem" prefHeight="126.0" prefWidth="208.0" styleClass="button" text="Exit">
+                  <ToggleButton fx:id="exit" contentDisplay="TOP" mnemonicParsing="false" onAction="#exitProgrem" prefHeight="94.0" prefWidth="136.0" styleClass="button" text="Exit">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -110,7 +114,7 @@
             </VBox>
          </right>
          <center>
-            <AnchorPane fx:id="rootPane" prefHeight="651.0" prefWidth="746.0" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="rootPane" prefHeight="671.0" prefWidth="842.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>

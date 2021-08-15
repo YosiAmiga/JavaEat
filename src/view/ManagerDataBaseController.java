@@ -14,6 +14,7 @@ import Utils.Expertise;
 import Utils.Gender;
 import Utils.Neighberhood;
 import Utils.Vehicle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -150,8 +151,7 @@ public class ManagerDataBaseController implements Initializable {
 	private TableColumn<ExpressDelivery, LocalDate> expDeliveryDate;
 	
 	/****************Regular Delivery Table****************/
-//	public RegularDelivery(int id,TreeSet<Order> orders, DeliveryPerson deliveryPerson, DeliveryArea area,
-//			boolean isDelivered,LocalDate deliveredDate)
+
 	@FXML
 	private TableView<RegularDelivery> regDeliveryTable;
 	@FXML
@@ -181,8 +181,8 @@ public class ManagerDataBaseController implements Initializable {
 	private TableColumn<DeliveryArea, HashSet<DeliveryPerson>> deliveryAreaDelPersons;
 	@FXML
 	private TableColumn<DeliveryArea, Integer> deliveryAreaTime;
-//	@FXML
-//	private TableColumn<DeliveryArea, HashSet<Delivery>> deliveryAreaDeliveries;
+	@FXML
+	private TableColumn<DeliveryArea, HashSet<Delivery>> deliveryAreaDeliveries;
 	
 	
 /****************Blacklist Table****************/
@@ -214,7 +214,6 @@ public class ManagerDataBaseController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
 		/*set in the table all the customers data from database for each of their fields*/
-		//TODO FIX BOOLEAN
 		theCustomerID.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
 		customerFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("firstName"));
 		customerLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("lastName"));
@@ -222,8 +221,8 @@ public class ManagerDataBaseController implements Initializable {
 		customerGender.setCellValueFactory(new PropertyValueFactory<Customer, Gender>("gender"));
 		customerPassword.setCellValueFactory(new PropertyValueFactory<Customer, String>("password"));
 		customerNeighborhood.setCellValueFactory(new PropertyValueFactory<Customer, Neighberhood>("neighberhood"));
-//		customerLactose.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToLactose"));
-//		customerGluten.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToGluten"));
+		customerLactose.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToLactose())));
+		customerGluten.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToGluten())));
 		customersTable.setItems(getCustomers());
 		
 		
@@ -239,19 +238,17 @@ public class ManagerDataBaseController implements Initializable {
 		
 		
 		/*set in the table all the cooks data from database for each of their fields*/
-		//TODO FIX BOOLEAN
 		cookID.setCellValueFactory(new PropertyValueFactory<Cook, Integer>("id"));
 		cookFirstName.setCellValueFactory(new PropertyValueFactory<Cook, String>("firstName"));
 		cookLastName.setCellValueFactory(new PropertyValueFactory<Cook, String>("lastName"));
 		cookBD.setCellValueFactory(new PropertyValueFactory<Cook, LocalDate>("birthDay"));
 		cookGender.setCellValueFactory(new PropertyValueFactory<Cook, Gender>("gender"));
 		cookExpertise.setCellValueFactory(new PropertyValueFactory<Cook, Expertise>("expert"));
-//		cookIsChef.setCellValueFactory(new PropertyValueFactory<Cook, String>("isChef"));
+		cookIsChef.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isChef())));
 		cooksTable.setItems(getCooks());
 
 
 		/*set in the table all the components data from database for each of their fields*/
-		//TODO FIX BOOLEAN
 		componentID.setCellValueFactory(new PropertyValueFactory<Component, Integer>("id"));
 		componentName.setCellValueFactory(new PropertyValueFactory<Component, String>("componentName"));
 		componentLactose.setCellValueFactory(new PropertyValueFactory<Component, String>("hasLactose"));
@@ -279,7 +276,7 @@ public class ManagerDataBaseController implements Initializable {
 		expDeliveryID.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Integer>("id"));
 		expDeliveryDelPerson.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, DeliveryPerson>("deliveryPerson"));
 		expDeliveryDelArea.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, DeliveryArea>("area"));
-//		expDeliveryIsDelivered.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, String>("isDelivered"));
+		expDeliveryIsDelivered.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isDelivered())));
 		expDeliveryOrder.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Order>("order"));
 		expDeliveryPostage.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, Double>("postage"));
 		expDeliveryDate.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, LocalDate>("deliveredDate"));
@@ -289,7 +286,7 @@ public class ManagerDataBaseController implements Initializable {
 		regDeliveryID.setCellValueFactory(new PropertyValueFactory<RegularDelivery, Integer>("id"));
 		regDeliveryDelPerson.setCellValueFactory(new PropertyValueFactory<RegularDelivery, DeliveryPerson>("deliveryPerson"));
 		regDeliveryDelArea.setCellValueFactory(new PropertyValueFactory<RegularDelivery, DeliveryArea>("area"));
-//		regDeliveryIsDelivered.setCellValueFactory(new PropertyValueFactory<ExpressDelivery, String>("isDelivered"));
+		regDeliveryIsDelivered.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isDelivered())));
 		regDeliveryOrders.setCellValueFactory(new PropertyValueFactory<RegularDelivery, TreeSet<Order>>("orders"));
 		regDeliveryDate.setCellValueFactory(new PropertyValueFactory<RegularDelivery, LocalDate>("deliveredDate"));
 		regDeliveryTable.setItems(getRegDelivery());
@@ -317,8 +314,8 @@ public class ManagerDataBaseController implements Initializable {
 		blacklistGender.setCellValueFactory(new PropertyValueFactory<Customer, Gender>("gender"));
 		blacklistPassword.setCellValueFactory(new PropertyValueFactory<Customer, String>("password"));
 		blacklistNeighborhood.setCellValueFactory(new PropertyValueFactory<Customer, Neighberhood>("neighberhood"));
-//		blacklistLactose.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToLactose"));
-//		blacklistGluten.setCellValueFactory(new PropertyValueFactory<Customer, String>("isSensitiveToGluten"));
+		blacklistLactose.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToLactose())));
+		blacklistGluten.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToGluten())));
 		blacklistTable.setItems(getBlacklist());
 		
 

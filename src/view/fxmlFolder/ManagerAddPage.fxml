@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -18,49 +19,49 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="customerId" layoutX="137.0" layoutY="45.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer ID">
+                  <TextField fx:id="customerId" layoutX="26.0" layoutY="49.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer ID">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="customerFirst" layoutX="137.0" layoutY="78.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer First Name">
+                  <TextField fx:id="customerFirst" layoutX="26.0" layoutY="82.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer First Name">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="customerLast" layoutX="137.0" layoutY="111.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer Last Name">
+                  <TextField fx:id="customerLast" layoutX="26.0" layoutY="115.0" prefHeight="24.0" prefWidth="348.0" promptText="Customer Last Name">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <DatePicker fx:id="customerBirth" layoutX="137.0" layoutY="145.0" prefHeight="25.0" prefWidth="348.0" promptText="Customer Birth Date">
+                  <DatePicker fx:id="customerBirth" layoutX="26.0" layoutY="149.0" prefHeight="25.0" prefWidth="348.0" promptText="Customer Birth Date">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </DatePicker>
-                  <TextField fx:id="customerPass" layoutX="137.0" layoutY="180.0" prefHeight="24.0" prefWidth="348.0" promptText="Password">
+                  <TextField fx:id="customerPass" layoutX="26.0" layoutY="184.0" prefHeight="24.0" prefWidth="348.0" promptText="Password">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <TextField fx:id="customerPassVerify" layoutX="137.0" layoutY="220.0" prefHeight="24.0" prefWidth="348.0" promptText="Verify Password">
+                  <TextField fx:id="customerPassVerify" layoutX="26.0" layoutY="224.0" prefHeight="24.0" prefWidth="348.0" promptText="Verify Password">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <ComboBox fx:id="customerGenderCombo" layoutX="137.0" layoutY="269.0" prefWidth="150.0" promptText="Gender" />
-                  <ComboBox fx:id="customerHoodCombo" layoutX="137.0" layoutY="304.0" prefWidth="150.0" promptText="Neighborhood" />
-                  <CheckBox fx:id="customerGluten" layoutX="137.0" layoutY="362.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to gluten">
+                  <ComboBox fx:id="customerGenderCombo" layoutX="26.0" layoutY="273.0" prefWidth="150.0" promptText="Gender" />
+                  <ComboBox fx:id="customerHoodCombo" layoutX="26.0" layoutY="308.0" prefWidth="150.0" promptText="Neighborhood" />
+                  <CheckBox fx:id="customerGluten" layoutX="26.0" layoutY="366.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to gluten">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox fx:id="customerLactose" layoutX="137.0" layoutY="398.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to lactose">
+                  <CheckBox fx:id="customerLactose" layoutX="26.0" layoutY="402.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to lactose">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </CheckBox>
-                  <Button fx:id="addCustomer" layoutX="137.0" layoutY="443.0" mnemonicParsing="false" onAction="#addCustomer" prefHeight="39.0" prefWidth="138.0" text="Add Customer" textFill="#00a650">
+                  <Button fx:id="addCustomer" layoutX="26.0" layoutY="447.0" mnemonicParsing="false" onAction="#addCustomer" prefHeight="39.0" prefWidth="138.0" text="Add Customer" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
@@ -68,12 +69,14 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="customerDelete" layoutX="374.0" layoutY="268.0" prefHeight="26.0" prefWidth="221.0" promptText="Current customer list" />
-                  <Button fx:id="delCustomer" layoutX="398.0" layoutY="361.0" mnemonicParsing="false" onAction="#delCustomer" prefHeight="47.0" prefWidth="151.0" text="Delete Customer" textFill="RED">
+                  <ComboBox fx:id="customerDelete" layoutX="237.0" layoutY="366.0" prefHeight="26.0" prefWidth="221.0" promptText="Select customer to delete" />
+                  <Button fx:id="delCustomer" layoutX="261.0" layoutY="459.0" mnemonicParsing="false" onAction="#removeCustomer" prefHeight="47.0" prefWidth="151.0" text="Delete Customer" textFill="RED">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Button>
+                  <Button fx:id="customerAddPic" layoutX="441.0" layoutY="295.0" mnemonicParsing="false" onAction="#uploadFile" text="Upload profile picture" />
+                  <ImageView fx:id="customerProfile" fitHeight="218.0" fitWidth="188.0" layoutX="400.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -96,7 +99,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="delPersonDelete" layoutX="331.0" layoutY="303.0" prefHeight="26.0" prefWidth="180.0" promptText="Current Delivery Persons" />
+                  <ComboBox fx:id="delPersonDelete" layoutX="304.0" layoutY="303.0" prefHeight="26.0" prefWidth="233.0" promptText="Select delivery person to delete" />
                   <Button fx:id="deleteDelPerson" layoutX="301.0" layoutY="392.0" mnemonicParsing="false" onAction="#removeDeliveryPerson" prefHeight="39.0" prefWidth="240.0" text="Delete Delivery Person" textFill="RED">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -105,7 +108,6 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <Button layoutX="26.0" layoutY="510.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="127.0" text="Add Certificate" />
                </children>
             </AnchorPane>
          </content>
@@ -145,7 +147,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="cooksInSys" layoutX="382.0" layoutY="278.0" prefWidth="150.0" promptText="Current Cook" />
+                  <ComboBox fx:id="cooksInSys" layoutX="382.0" layoutY="278.0" prefHeight="26.0" prefWidth="161.0" promptText="Select cook to delete" />
                   <Button fx:id="removeCookBtn" layoutX="388.0" layoutY="398.0" mnemonicParsing="false" onAction="#removeCook" prefHeight="39.0" prefWidth="138.0" text="Remove Cook" textFill="#e4401b">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -194,7 +196,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="componentsDelete" layoutX="330.0" layoutY="255.0" prefHeight="26.0" prefWidth="186.0" promptText="Components in DB" />
+                  <ComboBox fx:id="componentsDelete" layoutX="330.0" layoutY="255.0" prefHeight="26.0" prefWidth="202.0" promptText="Select component to delete" />
                   <Button fx:id="delComponent" layoutX="336.0" layoutY="338.0" mnemonicParsing="false" onAction="#removeComponent" prefHeight="39.0" prefWidth="179.0" text="Delete Component" textFill="RED">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -244,7 +246,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="dishIDToDelete" layoutX="457.0" layoutY="226.0" prefWidth="150.0" promptText="Dishes in system" />
+                  <ComboBox fx:id="dishIDToDelete" layoutX="457.0" layoutY="226.0" prefWidth="150.0" promptText="Select dish to delete" />
                   <Button fx:id="removeDish" layoutX="457.0" layoutY="498.0" mnemonicParsing="false" onAction="#removeDish" prefHeight="39.0" prefWidth="138.0" text="Remove Dish" textFill="RED">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -266,12 +268,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <ComboBox fx:id="customersForOrder" layoutX="50.0" layoutY="114.0" prefHeight="26.0" prefWidth="347.0" promptText="Customers for order" />
-                  <TextField fx:id="customerForOrderId" layoutX="49.0" layoutY="165.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter Cutsomer ID">
-                     <opaqueInsets>
-                        <Insets top="5.0" />
-                     </opaqueInsets>
-                  </TextField>
+                  <ComboBox fx:id="customersForOrder" layoutX="50.0" layoutY="114.0" prefHeight="26.0" prefWidth="347.0" promptText="Select a customer for order" />
                   <ComboBox fx:id="dishesInOrder" layoutX="49.0" layoutY="217.0" prefHeight="26.0" prefWidth="347.0" promptText="Select a Dish" />
                   <Button fx:id="addDishesInOrder" layoutX="434.0" layoutY="218.0" mnemonicParsing="false" onAction="#addCDishesInOrderToList" text="add" />
                   <Button fx:id="clearDishesInOrder" layoutX="494.0" layoutY="218.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" text="Clear list" />
@@ -285,7 +282,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
-                  <ComboBox fx:id="currentOrders" layoutX="434.0" layoutY="352.0" prefHeight="23.0" prefWidth="179.0" promptText="Current orders" />
+                  <ComboBox fx:id="currentOrders" layoutX="434.0" layoutY="352.0" prefHeight="23.0" prefWidth="179.0" promptText="Select order to delete" />
                   <Button fx:id="removeOrder" layoutX="402.0" layoutY="494.0" mnemonicParsing="false" onAction="#removeOrder" prefHeight="39.0" prefWidth="138.0" text="Remove Order" textFill="#fc261e">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -332,11 +329,10 @@
                   <TextArea fx:id="ordersListInDelivery" layoutX="61.0" layoutY="278.0" prefHeight="142.0" prefWidth="235.0" />
                   <Button fx:id="addOrderToList" layoutX="64.0" layoutY="244.0" mnemonicParsing="false" onAction="#addOrderIDToDelivery" text="add" />
                   <Button fx:id="clearOrdersList" layoutX="220.0" layoutY="244.0" mnemonicParsing="false" onAction="#clearOrdersInDelivery" text="Clear list" />
-                  <TextField fx:id="delPersonIDToDelivery" layoutX="64.0" layoutY="118.0" promptText="Delivery Person ID" />
                   <CheckBox fx:id="isExpress" layoutX="369.0" layoutY="244.0" mnemonicParsing="false" text="Express Delivery" />
                   <TextField fx:id="customPostage" layoutX="367.0" layoutY="265.0" prefHeight="26.0" prefWidth="238.0" promptText="Enter express delivery fee (only if selected)" />
                   <TextField fx:id="delIDToRemove" layoutX="378.0" layoutY="475.0" promptText="Enter Delivery ID" />
-                  <ComboBox fx:id="currentDelivery" layoutX="378.0" layoutY="398.0" prefWidth="150.0" promptText="Current Deliveries" />
+                  <ComboBox fx:id="currentDelivery" layoutX="367.0" layoutY="303.0" prefHeight="26.0" prefWidth="179.0" promptText="Select delivery to delete" />
                </children></AnchorPane>
             
          </content>
@@ -372,7 +368,7 @@
                   <Button fx:id="addHoodToArea" layoutX="47.0" layoutY="177.0" mnemonicParsing="false" onAction="#addHoodToAreaList" text="add" />
                   <Button fx:id="clearHoods" layoutX="156.0" layoutY="177.0" mnemonicParsing="false" onAction="#clearHoodsInArea" text="Clear List" />
                   <TextArea fx:id="hoodList" layoutX="47.0" layoutY="213.0" prefHeight="200.0" prefWidth="173.0" />
-                  <ComboBox fx:id="deliveryAreasByID" layoutX="397.0" layoutY="300.0" prefHeight="26.0" prefWidth="169.0" promptText="Delivery Area to replace" />
+                  <ComboBox fx:id="deliveryAreasByID" layoutX="360.0" layoutY="213.0" prefHeight="26.0" prefWidth="169.0" promptText="Delivery Area to replace" />
                   <Button fx:id="areaToReplace" layoutX="373.0" layoutY="504.0" mnemonicParsing="false" onAction="#replaceDeliveryArea" prefHeight="40.0" prefWidth="188.0" text="Replace Delivery Area" textFill="RED">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
@@ -387,9 +383,9 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="blacklistList" layoutX="73.0" layoutY="141.0" prefHeight="26.0" prefWidth="147.0" promptText="Current blacklist " />
-                  <ComboBox fx:id="customerList" layoutX="386.0" layoutY="141.0" prefHeight="26.0" prefWidth="221.0" promptText="Current customer list" />
-                  <Button fx:id="addToBlackList" layoutX="221.0" layoutY="369.0" mnemonicParsing="false" onAction="#addCustomerToBlacklist" prefHeight="39.0" prefWidth="179.0" text="Add to blacklist" textFill="#00a650">
+                  <ComboBox fx:id="blacklistList" layoutX="58.0" layoutY="141.0" prefHeight="26.0" prefWidth="147.0" promptText="Current blacklist " />
+                  <ComboBox fx:id="customerList" layoutX="324.0" layoutY="141.0" prefHeight="26.0" prefWidth="221.0" promptText="Select customer to blacklist" />
+                  <Button fx:id="addToBlackList" layoutX="221.0" layoutY="323.0" mnemonicParsing="false" onAction="#addCustomerToBlacklist" prefHeight="39.0" prefWidth="179.0" text="Add to blacklist" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>

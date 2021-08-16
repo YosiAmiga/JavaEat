@@ -16,6 +16,7 @@ import Exceptions.PasswordMismatchException;
 import Exceptions.SimilarIDInSystemException;
 import Exceptions.expressDeliveryMissMatchException;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 
 
 
@@ -39,7 +40,6 @@ public class PrimaryController {
 		return Restaurant.getInstance().removeCustomer(customerDel);
 	}
 	
-
 	
 	
 	/**

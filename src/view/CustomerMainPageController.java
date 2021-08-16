@@ -16,6 +16,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import Model.Customer;
@@ -24,14 +25,15 @@ import Model.Customer;
 public class CustomerMainPageController implements Initializable  {
 		//the customer currently logged in
 		static Customer customer;
+		@FXML
+		private ImageView customerProfile;
+		
 	 	@FXML
 	    private StackPane mainPane;
 
 	    @FXML
 	    private ToggleButton newOrder;
 
-	    @FXML
-	    private ToggleButton cancel;
 
 	    @FXML
 	    private ToggleButton orders;
@@ -46,7 +48,6 @@ public class CustomerMainPageController implements Initializable  {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	    newOrder.setSelected(false);
-	    cancel.setSelected(false);
 	    orders.setSelected(false);
 	    logout.setSelected(false);
 	    exit.setSelected(false);
@@ -60,7 +61,6 @@ public class CustomerMainPageController implements Initializable  {
 			if(newOrder.isSelected())
 			{
 				CustomerMyOrdersController.customer = customer;
-				cancel.setSelected(false);
 				orders.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\customerMyOrders.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
@@ -74,25 +74,25 @@ public class CustomerMainPageController implements Initializable  {
 		}
 	}
 
-	public void loadCancelOrder(ActionEvent e)
-	{
-		try {
-			if(cancel.isSelected())
-			{
-//				CustomerCancelPageController.setCustomer(customer);
-				newOrder.setSelected(false);
-				orders.setSelected(false);
-				AnchorPane pane=FXMLLoader.load(getClass().getResource("CustomerCancelPage.fxml"));
-				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-				rootPane.getChildren().removeAll(rootPane.getChildren());
-				rootPane.getChildren().add(pane);
-			}
-
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-	}
+//	public void loadCancelOrder(ActionEvent e)
+//	{
+//		try {
+//			if(cancel.isSelected())
+//			{
+////				CustomerCancelPageController.setCustomer(customer);
+//				newOrder.setSelected(false);
+//				orders.setSelected(false);
+//				AnchorPane pane=FXMLLoader.load(getClass().getResource("CustomerCancelPage.fxml"));
+//				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
+//				rootPane.getChildren().removeAll(rootPane.getChildren());
+//				rootPane.getChildren().add(pane);
+//			}
+//
+//		} catch (IOException ex) {
+//			// TODO Auto-generated catch block
+//			ex.printStackTrace();
+//		}
+//	}
 	
 	public void loadOrders(ActionEvent e)
 	{
@@ -101,7 +101,6 @@ public class CustomerMainPageController implements Initializable  {
 			{
 //				customerOrdersPageController.setCustomer(customer);
 				newOrder.setSelected(false);
-				cancel.setSelected(false);
 				TableView pane=FXMLLoader.load(getClass().getResource("CustomerOrdersPage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());

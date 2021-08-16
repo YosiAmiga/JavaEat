@@ -297,9 +297,8 @@ public class Restaurant implements Serializable {
 //		catch(IllegalCustomerException e) {
 //			return false;
 //		}
-		customers.put(cust.getId(), cust);
 
-		return true;			
+		return customers.put(cust.getId(), cust)==null;			
 	}
 	
 	/* add a dish to the dishes hash map*/

@@ -16,10 +16,7 @@
          <right>
             <VBox prefHeight="671.0" prefWidth="162.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="CustomerImage" fitHeight="103.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../Capture.PNG" />
-                     </image></ImageView>
+                  <ImageView fx:id="customerProfile" fitHeight="161.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true" />
                   <ToggleButton fx:id="newOrder" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadNewOrder" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Manage Orders">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -28,24 +25,6 @@
                         <ImageView fitHeight="60.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../img/choices.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font name="Arial Bold" size="17.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                  </ToggleButton>
-                  <ToggleButton fx:id="cancel" contentDisplay="TOP" mnemonicParsing="false" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="TODO">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                     <graphic>
-                        <ImageView fitHeight="60.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../img/information.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -74,7 +53,7 @@
                         <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="logout" contentDisplay="TOP" mnemonicParsing="false" onAction="#logOutSys" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Log Out">
+                  <ToggleButton fx:id="logout" contentDisplay="TOP" mnemonicParsing="false" onAction="#logOutSys" prefHeight="83.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Log Out">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>

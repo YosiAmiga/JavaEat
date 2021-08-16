@@ -1,7 +1,11 @@
 package view;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -10,6 +14,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import Exceptions.EmptyComboBoxException;
 import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
@@ -33,40 +38,22 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class SignUpController implements Initializable {
 	private static final String Input = "Rest.ser";
 	
 	/*The controller to add and remove everything from the GUI to the database*/
 	PrimaryController control=new PrimaryController();
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		/******************Load Neighborhood enum****************/
-		ArrayList<String> neighberhoodsDB=new ArrayList<String>();
-		for(Neighberhood n : Neighberhood.values()) {
-
-			neighberhoodsDB.add(String.valueOf(n));
-		}
-
-		ObservableList<String> ObservableListNeighborhoods=FXCollections.observableArrayList();
-		ObservableListNeighborhoods.addAll(neighberhoodsDB);
-		customerHoodCombo.setItems(ObservableListNeighborhoods);
-		
-		/******************Load genders enum****************/
-		ArrayList<String> gendersDB=new ArrayList<String>();
-		for(Gender g : Gender.values()) {
-
-			gendersDB.add(String.valueOf(g));
-		}		
-		ObservableList<String> observableListGenders=FXCollections.observableArrayList();
-		observableListGenders.addAll(gendersDB);
-		customerGenderCombo.setItems(observableListGenders);
-		
-	}
-	
+	@FXML
+	private ImageView customerProfile;
+	@FXML
+	private Button customerAddPic;
 	/**************************************Customer Page*****************************************/
 	@FXML
 	private AnchorPane mainPane;
@@ -94,14 +81,51 @@ public class SignUpController implements Initializable {
 	private Button getBack;
 	@FXML
 	private Button addCustomer;
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		/******************Load Neighborhood enum****************/
+		ArrayList<String> neighberhoodsDB=new ArrayList<String>();
+		for(Neighberhood n : Neighberhood.values()) {
+
+			neighberhoodsDB.add(String.valueOf(n));
+		}
+
+		ObservableList<String> ObservableListNeighborhoods=FXCollections.observableArrayList();
+		ObservableListNeighborhoods.addAll(neighberhoodsDB);
+		customerHoodCombo.setItems(ObservableListNeighborhoods);
+		
+		/******************Load genders enum****************/
+		ArrayList<String> gendersDB=new ArrayList<String>();
+		for(Gender g : Gender.values()) {
+
+			gendersDB.add(String.valueOf(g));
+		}		
+		ObservableList<String> observableListGenders=FXCollections.observableArrayList();
+		observableListGenders.addAll(gendersDB);
+		customerGenderCombo.setItems(observableListGenders);
+		
+	}
+	
+
 
 	/**************Add a customer*************/
 	//working
-	public void addCustomer(ActionEvent e)
-	{
+	public void addCustomer(ActionEvent e){
 		String section = "Customer";
 		try {
-
+			//check if the combo box were selected
+			if(customerGenderCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerHoodCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerBirth.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			
 			int id=Integer.parseInt(customerId.getText());
 			String password=customerPass.getText();
 			String passwordVerify=customerPassVerify.getText();
@@ -114,8 +138,10 @@ public class SignUpController implements Initializable {
 			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
 			Date date = Date.from(instant);
 			String gender = customerGenderCombo.getValue();
+
 			Gender selectedG = null;
 			String neighberhood = customerHoodCombo.getValue();
+			
 			Neighberhood selectedN = null;
 			
 			for(Gender g : Gender.values()) {
@@ -130,7 +156,6 @@ public class SignUpController implements Initializable {
 			}
 			boolean lactose = customerLactose.isSelected();
 			boolean gluten = customerGluten.isSelected();
-
 			if(control.addCustomerFromGUI(id,firstName, LastName, localDate, selectedG, password, passwordVerify, selectedN, lactose, gluten)) {
 				successAdded(section, "Success");
 				Restaurant.save(Input);				
@@ -139,9 +164,18 @@ public class SignUpController implements Initializable {
 			else {
 				fail(section,"Could not add customer to system!");
 			}
+//			Customer custToAdd = new Customer(firstName,LastName,localDate,selectedG,selectedN,lactose,gluten);
+//			if(Restaurant.getInstance().addCustomer(custToAdd)) {
+//			}
+
+			System.out.println(Restaurant.getInstance().getCustomers());
+			refreshGui();
 
 			//pop up with success
 			//exception-Customer adding failed,Customer already exists/illegal input
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection("Gender/Neighborhood",e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -156,7 +190,6 @@ public class SignUpController implements Initializable {
 			fail(section,e1.toString());
 		}
 		catch(SimilarIDInSystemException e1) {
-			badSound();
 			fail(section,e1.toString());
 		}
 //		catch(NegativeNumberNotPriceException e1) {
@@ -168,13 +201,55 @@ public class SignUpController implements Initializable {
 //			fail(a, "Person"+e1.toString());
 //		}
 		catch(NumberFormatException e1) {
-			badSound();
 			fail(section, "Wrong Input!");
 		}
 		catch (Exception e1) {
-			badSound();
 			fail(section, e1.toString());
 		}
+	}
+	
+	
+	/***************a method to save a photo*******************/
+	public void uploadFile(ActionEvent e)
+	{
+		FileChooser fc=new FileChooser();
+		fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpg", "*.png") );
+		File file= fc.showOpenDialog(null);
+
+
+		if(file!=null)
+		{
+//			labelForFile.setFont(new Font(20));
+//			labelForFile.setText("Uploaded successfully");	
+
+			successUpload();
+			File toFile = new File(file.getName());
+
+			try {
+
+				java.nio.file.Files.move( 
+						file.toPath(), 
+						toFile.toPath() ,StandardCopyOption.REPLACE_EXISTING);
+				//get the file name using input stream
+				InputStream stream = new FileInputStream(file.getName());
+				//create a new image and use the uploaded file
+			    Image image = new Image(stream);
+			    //set the image in the image view
+			    customerProfile.setImage(image);
+			    
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+
+		}
+//		else
+//		{
+//			labelForFile.setFont(new Font(20));
+//			labelForFile.setText("Add photo to procceed");		
+//		}
 	}
 	
 	public void refreshGui(){}
@@ -201,6 +276,26 @@ public class SignUpController implements Initializable {
 		}
 	}
 
+	public void successUpload() {
+		successSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText("Successfully uploaded photo!");
+		al.setHeaderText("Upload");
+		al.setTitle("Photo");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
+	public void failSelection(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to select : " + content);
+		al.setHeaderText(header);
+		al.setTitle("ComboBox");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
 	public void successAdded(String content, String header) {
 		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);

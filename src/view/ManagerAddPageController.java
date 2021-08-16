@@ -3,9 +3,12 @@ package view;
 
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
@@ -16,6 +19,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+
+import Exceptions.EmptyComboBoxException;
 import Exceptions.EmptyTextFieldException;
 import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
@@ -31,6 +37,7 @@ import controller.Sounds;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,6 +51,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -56,7 +65,15 @@ public class ManagerAddPageController implements Initializable {
 	/*The controller to add and remove everything from the GUI to the database*/
 	PrimaryController control=new PrimaryController();
 	
-	
+	///***************////////
+	@FXML
+	private ImageView customerProfile;
+	@FXML
+	private Button customerAddPic;
+
+
+
+	////*************//////////
 	/**************************************Customer Page*****************************************/
 	@FXML
 	private TextField customerId;
@@ -216,9 +233,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private TextField orderId;
-	
-	@FXML
-	private TextField customerForOrderId;
+
 	
 	@FXML
 	private ComboBox<String> customersForOrder;
@@ -377,6 +392,7 @@ public class ManagerAddPageController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) 
 	{
+
 		/**************Load list of dishes in system*********/
 		ArrayList<String> dishesDB = new ArrayList<>();
 		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
@@ -544,9 +560,12 @@ public class ManagerAddPageController implements Initializable {
 
 	
 	/**************Delete a customer*************/
-	public void delCustomer(ActionEvent e) {
+	public void removeCustomer(ActionEvent e) {
 		String section = "Customer";
 		try {
+			if(customerDelete.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			//Save the data from the current customer combo box
 			String str = customerDelete.getValue();
 			//Extract only the customer ID in order to remove him
@@ -558,12 +577,15 @@ public class ManagerAddPageController implements Initializable {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
 			}
-			//if the id is not in the customer database, we cant delete it
+			//if the id is not in the customer database, we can't delete it
 			else {
 				fail(section,"This id does not exists in the customer database!");
 			}
 			System.out.println(Restaurant.getInstance().getCustomers());
 			
+		}		
+		catch(EmptyComboBoxException e1) {
+			failSelection("Customer to delete",e1.toString());
 		}
 		catch (Exception e1) {
 			fail(section, e1.toString());
@@ -573,11 +595,20 @@ public class ManagerAddPageController implements Initializable {
 
 	/**************Add a customer*************/
 	//working
-	public void addCustomer(ActionEvent e)
-	{
+	public void addCustomer(ActionEvent e){
 		String section = "Customer";
 		try {
-
+			//check if the combo box were selected
+			if(customerGenderCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerHoodCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerBirth.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			
 			int id=Integer.parseInt(customerId.getText());
 			String password=customerPass.getText();
 			String passwordVerify=customerPassVerify.getText();
@@ -590,8 +621,10 @@ public class ManagerAddPageController implements Initializable {
 			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
 			Date date = Date.from(instant);
 			String gender = customerGenderCombo.getValue();
+
 			Gender selectedG = null;
 			String neighberhood = customerHoodCombo.getValue();
+			
 			Neighberhood selectedN = null;
 			
 			for(Gender g : Gender.values()) {
@@ -624,6 +657,9 @@ public class ManagerAddPageController implements Initializable {
 
 			//pop up with success
 			//exception-Customer adding failed,Customer already exists/illegal input
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection("Gender/Neighborhood",e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -665,6 +701,9 @@ public class ManagerAddPageController implements Initializable {
 	public void removeDeliveryPerson(ActionEvent e) {
 		String section = "Delivery Person";
 		try {
+			if(delPersonDelete.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			//Save the data from the current Delivery Person combo box
 			String str = delPersonDelete.getValue();
 			//Extract only the Delivery Person ID in order to remove him
@@ -680,7 +719,11 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the delivery person database!");
 			}
 			
-		}catch(Exception e1) {
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection("Delivery Person to delete",e1.toString());
+		}
+		catch(Exception e1) {
 			e1.printStackTrace();
 		}
 	}
@@ -690,7 +733,19 @@ public class ManagerAddPageController implements Initializable {
 //		public DeliveryPerson(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Vehicle vehicle,
 //		DeliveryArea area)
 		String section = "Delivery Person";
-		try {			
+		try {
+			if(genderCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonVehicle.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonArea.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonBirth.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			int id = Integer.parseInt(delPersonId.getText());			
 			String fName = delPersonFName.getText();
 			String lName = delPersonLName.getText();
@@ -722,7 +777,11 @@ public class ManagerAddPageController implements Initializable {
 				fail(section,"This id already exists in the delivery persons database!");
 			}
 								
-		}catch(Exception e1) {
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
+		catch(Exception e1) {
 			e1.printStackTrace();
 		}
 		refreshGui();
@@ -735,6 +794,9 @@ public class ManagerAddPageController implements Initializable {
 	public void removeCook(ActionEvent e) {
 		String section = "Cook";
 		try {
+			if(cooksInSys.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			//Save the data from the current Cook combo box
 			String str = cooksInSys.getValue();
 			//Extract only the Cook ID in order to remove him
@@ -751,6 +813,9 @@ public class ManagerAddPageController implements Initializable {
 			}
 			
 		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
@@ -762,6 +827,15 @@ public class ManagerAddPageController implements Initializable {
 	{
 		String section = "Cook";
 		try {
+			if(cookDate.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(cookGender.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(cookExpertise.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			int id=Integer.parseInt(cookId.getText());// get id
 			String firstName=cookFirstName.getText();//get the first name
 			String LastName=cookLastName.getText();// get the last name
@@ -796,6 +870,9 @@ public class ManagerAddPageController implements Initializable {
 			System.out.println("cooks: " + Restaurant.getInstance().getCooks());
 			refreshGui();
 
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -850,6 +927,9 @@ public class ManagerAddPageController implements Initializable {
 	public void removeComponent(ActionEvent e) {
 		String section = "Component";
 		try {
+			if(componentsDelete.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			String str = componentsDelete.getValue();
 			//Extract only the component ID in order to remove him
 			String numberOnly= str.replaceAll("[^0-9]", "");	
@@ -866,7 +946,9 @@ public class ManagerAddPageController implements Initializable {
 			System.out.println(Restaurant.getInstance().getComponenets());
 			refreshGui();
 		}
-
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
 		}
@@ -895,6 +977,7 @@ public class ManagerAddPageController implements Initializable {
 			}
 								
 		}
+		
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
 		}
@@ -914,6 +997,9 @@ public class ManagerAddPageController implements Initializable {
 	public void removeDish(ActionEvent e) {
 		String section = "Dish";
 		try {
+			if(dishIDToDelete.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			String str = dishIDToDelete.getValue();
 			//Extract only the Dish ID in order to remove him
 			String numberOnly= str.replaceAll("[^0-9]", "");	
@@ -927,6 +1013,9 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the dishes database!");
 			}
 			
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -943,6 +1032,12 @@ public class ManagerAddPageController implements Initializable {
 	public void addDish(ActionEvent e) {
 		String section = "Dish";
 		try {
+			if(TypeOfTheDish.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(componentsInDish.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			
 			int id = Integer.parseInt(dishId.getText());
 			String dName = dishName.getText();
@@ -954,10 +1049,7 @@ public class ManagerAddPageController implements Initializable {
 					selectedD = g;
 				}
 			}
-			String str = componentsInDish.getValue();
-			String numberOnly= str.replaceAll("[^0-9]", "");
-			System.out.println(numberOnly);
-			System.out.println("-----------------------");
+
 			if(control.addDishFromGUI(id, dName,selectedD, componentsInDishList, toMake)) {
 				successAdded(section,"Success");
 				Restaurant.save(Input);	
@@ -966,6 +1058,9 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id already exists in the dishes database!");
 			}			
 			System.out.println(Restaurant.getInstance().getDishes().values());
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -982,6 +1077,10 @@ public class ManagerAddPageController implements Initializable {
 	{
 		String section = "Order";
 		try {
+			if(customersForOrder.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+
 			int id=Integer.parseInt(orderId.getText());// get id			
 			
 			String custID = customersForOrder.getValue();
@@ -990,7 +1089,6 @@ public class ManagerAddPageController implements Initializable {
 			int custForOrder=Integer.parseInt(numberOnlyCustomer);//get the customer's id after viewing the combo box	
 			
 //			int deliveryID = Integer.parseInt(deliveryIDToOrder.getText());		
-			
 			if(control.addOrderFromGUI(id,custForOrder, dishesInOrderList)) {
 				successAdded(section, "Success");
 				Restaurant.save(Input);		
@@ -1002,6 +1100,9 @@ public class ManagerAddPageController implements Initializable {
 			System.out.println("orders : " + Restaurant.getInstance().getOrders().values());
 			refreshGui();
 
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(SensitiveException e1) {
 			fail(section, e1.toString());
@@ -1029,6 +1130,9 @@ public class ManagerAddPageController implements Initializable {
 	public void removeOrder(ActionEvent e) {
 		String section = "Order";
 		try {
+			if(currentOrders.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			String str = currentOrders.getValue();
 			//Extract only the Order ID in order to remove him
 			String numberOnly= str.replaceAll("[^0-9]", "");	
@@ -1043,6 +1147,9 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the orders database!");
 			}
 			
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -1084,14 +1191,21 @@ public class ManagerAddPageController implements Initializable {
 		String section = "Delivery";
 		try {
 			int id = Integer.parseInt(deliveryID.getText());
-			
+			if(deliveryPersonInDelivery.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(deliveryAreaInDelivery.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(deliveryDate.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
 			String delPerId = deliveryPersonInDelivery.getValue();
-			//Extract only the Order ID in order to remove him
+			//Extract only the delivery person ID 
 			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
 			
 			int dpID = Integer.parseInt(numberOnlyDelPer);
 			
-			System.out.println(dpID);
 			String dArea = deliveryAreaInDelivery.getValue();	
 			
 			LocalDate delDate = deliveryDate.getValue();
@@ -1136,6 +1250,9 @@ public class ManagerAddPageController implements Initializable {
 			refreshGui();
 
 		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
 		catch(expressDeliveryMissMatchException e1) {
 			fail(section, e1.toString());
 		}
@@ -1158,7 +1275,6 @@ public class ManagerAddPageController implements Initializable {
 			int id = Integer.parseInt(delAreaID.getText());
 			String aName = delAreaName.getText();
 			int deliveryTime = Integer.parseInt(delAreaTime.getText());
-			String aHood = delAreaHoods.getValue();
 			
 			if(control.addDeliveryAreaGUI(id, aName, hoodsInDeliveryArea, deliveryTime)) {
 				successAdded(section,"Success");
@@ -1195,6 +1311,7 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "Could not replace old area with new one!");
 			}
 		}
+		
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
 		}
@@ -1210,7 +1327,10 @@ public class ManagerAddPageController implements Initializable {
 	public void addCustomerToBlacklist(ActionEvent e) {
 		String section = "Customer";
 		try {
-			
+			if(customerList.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+
 			String cutomerToBlacklist = customerList.getValue();
 			//Extract only the Order ID in order to remove him
 			String numberOnlyCustomer= cutomerToBlacklist.replaceAll("[^0-9]", "");	
@@ -1224,6 +1344,9 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the customers database!");
 			}
 			
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -1244,20 +1367,30 @@ public class ManagerAddPageController implements Initializable {
 	}
 	
 	public void addOrderIDToDelivery(ActionEvent e) {
-		String str = ordersInDelivery.getValue();
-		if(!ordersListShow.contains(str)){
-			ordersListShow.add(str);		
+		String section = "Order";
+		try {
+			if(ordersInDelivery.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			String str = ordersInDelivery.getValue();
+			if(!ordersListShow.contains(str)){
+				ordersListShow.add(str);		
+			}
+			
+			//Extract only the component ID in order to add him to the dish
+			String numberOnly= str.replaceAll("[^0-9]", "");		
+			ordersListToDelivery.add(Integer.parseInt(numberOnly));
+			System.out.println(ordersListToDelivery);
+			String list="";		
+			for(String i : ordersListShow) {
+				list += i+"\n";
+			}
+			ordersListInDelivery.setText(list);
+			
 		}
-		
-		//Extract only the component ID in order to add him to the dish
-		String numberOnly= str.replaceAll("[^0-9]", "");		
-		ordersListToDelivery.add(Integer.parseInt(numberOnly));
-		System.out.println(ordersListToDelivery);
-		String list="";		
-		for(String i : ordersListShow) {
-			list += i+"\n";
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
-		ordersListInDelivery.setText(list);
 	}
 
 	/**
@@ -1265,37 +1398,60 @@ public class ManagerAddPageController implements Initializable {
 	 */
 	public void addComponentToList(ActionEvent e) {
 		//dish can have several components
-		//show all the components value in the text area
-		String str = componentsInDish.getValue();
-		componentsInDishToShow.add(str);
-		
-		//Extract only the component ID in order to add him to the dish
-		String numberOnly= str.replaceAll("[^0-9]", "");		
-		componentsInDishList.add(Integer.parseInt(numberOnly));
-		String list="";		
-		for(String s : componentsInDishToShow) {
-			list += s+"\n";
+		String section = "Component";
+		try {
+			
+			//show all the components value in the text area
+			if(componentsInDish.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			String str = componentsInDish.getValue();
+			componentsInDishToShow.add(str);
+			
+			//Extract only the component ID in order to add him to the dish
+			String numberOnly= str.replaceAll("[^0-9]", "");		
+			componentsInDishList.add(Integer.parseInt(numberOnly));
+			String list="";		
+			for(String s : componentsInDishToShow) {
+				list += s+"\n";
+			}
+			componentsList.setText(list);			
 		}
-		componentsList.setText(list);			
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
 		
 	}
 	
 
-	
+	/**
+	 * a method to show all the dishes in the order
+	 */
 	public void addCDishesInOrderToList(ActionEvent e) {
+		String section = "Dishes";
 		//order can have several dishes
-		//show all the components value in the text area
-		String str = dishesInOrder.getValue();
-		dishesInOrderText.add(str);
-		
-		//Extract only the component ID in order to add him to the dish
-		String numberOnly= str.replaceAll("[^0-9]", "");	
-		dishesInOrderList.add(Integer.parseInt(numberOnly));
-		String list="";
-		for(String s : dishesInOrderText) {
-			list += s+"\n";
+		try {
+			
+			//show all the components value in the text area
+			if(dishesInOrder.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			String str = dishesInOrder.getValue();
+			dishesInOrderText.add(str);
+			
+			//Extract only the component ID in order to add him to the dish
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			dishesInOrderList.add(Integer.parseInt(numberOnly));
+			String list="";
+			for(String s : dishesInOrderText) {
+				list += s+"\n";
+			}
+			dishesInOrderShow.setText(list);
+			
 		}
-		dishesInOrderShow.setText(list);
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
 	}
 
 	//TODO FIX!!
@@ -1337,14 +1493,25 @@ public class ManagerAddPageController implements Initializable {
 	 * @param e
 	 */
 	public void addHoodToAreaList(ActionEvent e) {
-		if(!hoodsInDeliveryArea.contains(delAreaHoods.getValue())) {
-			hoodsInDeliveryArea.add(delAreaHoods.getValue());
+		String section = "Neighborhood";
+		try {
+			
+			if(delAreaHoods.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			
+			if(!hoodsInDeliveryArea.contains(delAreaHoods.getValue())) {
+				hoodsInDeliveryArea.add(delAreaHoods.getValue());
+			}
+			String list="";
+			for(String s : hoodsInDeliveryArea) {
+				list += s+"\n";
+			}
+			hoodList.setText(list);
 		}
-		String list="";
-		for(String s : hoodsInDeliveryArea) {
-			list += s+"\n";
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
 		}
-		hoodList.setText(list);
 	}
 	/**
 	 * a method to clear the list of neighborhoods in the list view
@@ -1356,12 +1523,72 @@ public class ManagerAddPageController implements Initializable {
 	}
 
 
-	public void uploadCertificate(ActionEvent e)
+	/***************a method to save a photo*******************/
+	public void uploadFile(ActionEvent e)
 	{
+		FileChooser fc=new FileChooser();
+		fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpg", "*.png") );
+		File file= fc.showOpenDialog(null);
+
+
+		if(file!=null)
+		{
+
+
+			successUpload();
+			File toFile = new File(file.getName());
+
+			try {
+
+				java.nio.file.Files.move( 
+						file.toPath(), 
+						toFile.toPath() ,StandardCopyOption.REPLACE_EXISTING);
+				//get the file name using input stream
+				InputStream stream = new FileInputStream(file.getName());
+				//create a new image and use the uploaded file
+			    Image image = new Image(stream);
+			    //set the image in the image view
+			    customerProfile.setImage(image);
+
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+
+		}
 
 	}
+	
+//	@Override
+//    public void handle(ActionEvent t) {
+//        FileChooser fileChooser = new FileChooser();
+//        
+//        //Set extension filter
+//        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+//        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+//        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+//         
+//        //Show open file dialog
+//        File file = fileChooser.showOpenDialog(null);
+//                  
+//        try {
+//        } catch (IOException ex) {
+//            Logger.getLogger(JavaFXPixel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
-
+	public void successUpload() {
+		successSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText("Successfully uploaded photo!");
+		al.setHeaderText("Upload");
+		al.setTitle("Photo");
+		al.setResizable(false);
+		al.showAndWait();
+	}
 	
 	public void successRemove(String content, String header) {
 		successSound();
@@ -1389,6 +1616,16 @@ public class ManagerAddPageController implements Initializable {
 		al.setContentText(content+" Updated Successfully");
 		al.setHeaderText(header);
 		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
+	public void failSelection(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to select : " + content);
+		al.setHeaderText(header);
+		al.setTitle("ComboBox");
 		al.setResizable(false);
 		al.showAndWait();
 	}
@@ -1485,19 +1722,16 @@ public class ManagerAddPageController implements Initializable {
 		dishName.setText("");
 		timeToMake.setText("");
 		componentsList.setText("");
-		//TODO addComponentToList clear the TextArea componentsList
 
 		
 		/**Resetting the Order**/
 		orderId.setText("");
-		customerForOrderId.setText("");
 		dishesInOrderShow.setText("");
-//		deliveriesInOrderShow.setText("");
+		deliveryIDToOrder.setText("");
 		
 		
 		/**Resetting the Delivery**/
 		deliveryID.setText("");
-		dishesInOrderShow.setText("");
 		isExpress.setSelected(false);
 		isDelivered.setSelected(false);
 		ordersListInDelivery.setText("");

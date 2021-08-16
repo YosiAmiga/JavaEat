@@ -59,50 +59,9 @@ public class Restaurant implements Serializable {
 		return restaurant;
 	}
 
-	/******Serialization*******/
-	public static void writeToFile(Restaurant r) {
-		try {
-			ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("Restaurant.ser"));
-			o.writeObject(r);//serialize the restaurant
-			o.writeObject(Cook.getIdCounter());//serialize the 
-			o.writeObject(DeliveryPerson.getIdCounter());//serialize the 
-			o.writeObject(Customer.getIdCounter());//serialize the 
-			o.writeObject(Dish.getIdCounter());//serialize the 
-			o.writeObject(Component.getIdCounter());//serialize the 
-			o.writeObject(Order.getIdCounter());//serialize the //serialize the 
-			o.writeObject(DeliveryArea.getIdCounter());//serialize the 
-			o.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	
-	/******Deserialization*******/
-	public static void readFile() throws ClassNotFoundException {
-		try {
-			ObjectInputStream i = new ObjectInputStream(new FileInputStream("Restaurant.ser"));
-			restaurant = (Restaurant) i.readObject();
-			Cook.setIdCounter((int) i.readObject());;
-			DeliveryPerson.setIdCounter((int) i.readObject());
-			Customer.setIdCounter((int) i.readObject());
-			Dish.setIdCounter((int) i.readObject());
-			Component.setIdCounter((int) i.readObject());
-			Order.setIdCounter((int) i.readObject());
-			DeliveryArea.setIdCounter((int) i.readObject());
-			i.close();
-		} catch (FileNotFoundException e) {
-			restaurant = new Restaurant();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	/*******************Different way to save and load data to ser file********************/
+	/*******************a way to save and load data to ser file********************/
 	public static boolean save(String fileName) {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -364,8 +323,8 @@ public class Restaurant implements Serializable {
 					if(!getOrders().containsKey(o.getId()))
 						return false;
 					o.setDelivery(delivery);
-					//put the same order again in the HashMap after linking it's delivery to it
-					getOrders().put(o.getId(), o);
+//					//put the same order again in the HashMap after linking it's delivery to it
+//					getOrders().put(o.getId(), o);
 				}
 				if(rd.getOrders().size() ==1) {
 					throw new ConvertToExpressException();
@@ -378,8 +337,8 @@ public class Restaurant implements Serializable {
 				if(!getOrders().containsKey(ed.getOrder().getId()))
 						return false;
 					ed.getOrder().setDelivery(delivery);
-					//put the same order again in the HashMap after linking it's delivery to it
-					getOrders().put(ed.getOrder().getId(), ed.getOrder());
+//					//put the same order again in the HashMap after linking it's delivery to it
+//					getOrders().put(ed.getOrder().getId(), ed.getOrder());
 			}
 		}catch(ConvertToExpressException e) {
 			//TODO pop up with message saying that the delivery was converted to express
@@ -522,6 +481,7 @@ public class Restaurant implements Serializable {
 		if(delivery == null || !getDeliveries().containsKey(delivery.getId()))
 			return false;
 		if(delivery instanceof RegularDelivery) {
+			System.out.println(delivery);
 			RegularDelivery rd = (RegularDelivery)delivery;
 			for(Order o : rd.getOrders()) {
 				o.setDelivery(null);
@@ -529,6 +489,7 @@ public class Restaurant implements Serializable {
 			}
 		}
 		else {
+			System.out.println(delivery);
 			ExpressDelivery ed = (ExpressDelivery) delivery;
 			ed.getOrder().setDelivery(null);
 			getOrders().put(ed.getOrder().getId(), ed.getOrder());
@@ -623,12 +584,22 @@ public class Restaurant implements Serializable {
 		if(d instanceof RegularDelivery) {
 			RegularDelivery rd = (RegularDelivery)d;
 			for(Order o : rd.getOrders()) {
-				MyFileLogWriter.println(o+" had reached to Customer "+o.getCustomer());
+				Alert al = new Alert(Alert.AlertType.INFORMATION);
+				al.setContentText(o+" had reached to Customer "+o.getCustomer());
+				al.setHeaderText("Deliver");
+				al.setTitle("Deliver Query");
+				al.setResizable(false);
+				al.showAndWait();
 			}
 		}
 		else {
 			ExpressDelivery ed = (ExpressDelivery)d;
-			MyFileLogWriter.println(ed.getOrder()+" had reached to Customer "+ed.getOrder().getCustomer());
+			Alert al = new Alert(Alert.AlertType.INFORMATION);
+			al.setContentText(ed.getOrder()+" had reached to Customer "+ed.getOrder().getCustomer());
+			al.setHeaderText("Deliver");
+			al.setTitle("Delivery");
+			al.setResizable(false);
+			al.showAndWait();
 		}
 		
 	}

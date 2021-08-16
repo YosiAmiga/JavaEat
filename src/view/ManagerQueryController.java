@@ -5,12 +5,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeSet;
 
+import Exceptions.EmptyComboBoxException;
 import view.RelevantDishesQueryController;
 import controller.Sounds;
 import javafx.collections.FXCollections;
@@ -22,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,9 +38,8 @@ import Utils.Expertise;
 public class ManagerQueryController implements Initializable{
 	private static final String Input = "JavaEat.ser";
 	
-	/***************ReleventDishList() Query*****************/
-	@FXML
-	private TextField customerIDForRelDish;
+	/*************** .1. ReleventDishList() Query*****************/
+
 	@FXML
 	private Button searchForCustomer;
 	@FXML
@@ -45,7 +47,40 @@ public class ManagerQueryController implements Initializable{
 	@FXML
 	private AnchorPane relDishesWrapper;
 	
-	/**************getPopularComponents() Query*************/
+	/***************TODO .2. deliver() Query*****************/
+	@FXML
+	private ComboBox<String> deliveriesInSystem;
+	@FXML
+	private TextField deliveryID;
+	@FXML
+	private Button deliverDelivery;
+
+	/*************** .3. GetCooksByExpertise() Query*****************/
+
+	@FXML
+	private Button searchForCook;
+	@FXML
+	private ComboBox<String> cookExpertise;
+	@FXML
+	private AnchorPane cookByExpWrapper;
+	
+	/***************TODO .4. getDeliveriesByPerson() Query*****************/
+	
+	
+	
+	/*************** .5. getNumberOfDeliveriesPerType() Query*****************/
+
+	@FXML
+	private Label regularCount;
+	@FXML
+	private Label expressCount;
+	
+	/***************.6. revenueFromExpressDeliveries() Query*****************/
+	@FXML
+	private Label expressRevenue;
+	
+	/*************** .7. getPopularComponents() Query*****************/
+	
 	@FXML
 	private TableView<Component> getPopularComponentsTable;
 	@FXML
@@ -59,7 +94,8 @@ public class ManagerQueryController implements Initializable{
 	@FXML
 	private TableColumn<Component, Double> componentPrice;
 
-	/**************getProfitRelation() Query*************/
+	/*************** .8. getProfitRelation() Query*****************/
+
 	@FXML
 	private TableView<Dish> dishesTable;
 	@FXML
@@ -73,20 +109,29 @@ public class ManagerQueryController implements Initializable{
 	@FXML
 	private TableColumn<Dish, Integer> dishTime;
 
+	/***************TODO .9. createAIMacine() Query*****************/
 
-	/**************GetCooksByExpertise() Query*************/
-	@FXML
-	private Button searchForCook;
-	@FXML
-	private ComboBox<String> cookExpertise;
-	@FXML
-	private AnchorPane cookByExpWrapper;
-	
+
 	/*******************************************************/
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		ArrayList<String> deliveriesDb = new ArrayList<>();
+		
+		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
+			deliveriesDb.add(String.valueOf(d));
+		}
+		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
+		ObservableListDeliveries.addAll(deliveriesDb);
+		deliveriesInSystem.setItems(ObservableListDeliveries);
+
+		
+		expressRevenue.setText(String.valueOf(Restaurant.getInstance().revenueFromExpressDeliveries()));
+		
+		regularCount.setText(String.valueOf(deliveryCounter("Regular delivery")));
+		expressCount.setText(String.valueOf(deliveryCounter("Express delivery")));
+		
 		/*Show the data for query: getReleventDishList()*/
 		/***************Load list of customers in the system***************/
 		ArrayList<String> customerDB = new ArrayList<>();
@@ -123,49 +168,32 @@ public class ManagerQueryController implements Initializable{
 		ObservableList<String> ObservableListExpertise=FXCollections.observableArrayList();
 		ObservableListExpertise.addAll(cookExpertiseAL);
 		cookExpertise.setItems(ObservableListExpertise);
-		
-		//populating popular destinations table
-		
-//		popularDestCountry.setCellValueFactory(new PropertyValueFactory<Destination, String>("Country"));
-//		popularDestCity.setCellValueFactory(new PropertyValueFactory<Destination, String>("City"));
-//		PopularDestinationsTable.setItems(getDestItems());
-//		//populating WIFI table
-//		wifiId.setCellValueFactory(new PropertyValueFactory<Person, Long>("id"));
-//		wifiFirst.setCellValueFactory(new PropertyValueFactory<Person, String>("firstName"));
-//		wifiLat.setCellValueFactory(new PropertyValueFactory<Person, String>("surname"));
-//		wifiBirth.setCellValueFactory(new PropertyValueFactory<Person, Date>("birthDate"));
-//		wifiEmail.setCellValueFactory(new PropertyValueFactory<Person, String>("email"));
-//		wifiAddress.setCellValueFactory(new PropertyValueFactory<Person, Address>("address"));
-//		wifiTable.setItems(getWifiItems());
-//		//populating Orders Table
-//		ordersID.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Integer>("id"));
-//		ordersOwner.setCellValueFactory(new PropertyValueFactory<OrdersForTable, String>("owner"));
-//		ordersQuantity.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Integer>("quantity"));
-//		ordersPrice.setCellValueFactory(new PropertyValueFactory<OrdersForTable, Double>("Price"));
-//		ordersTable.setItems(getOrderItems());
-//		//populating FlightXOR comboBoxes
-//		ObservableList<String> flights=FXCollections.observableArrayList();
-//		ArrayList<String> flightNumber=new ArrayList<String>();
-//		for(String f:Shared.getInstance().getFlights().keySet())
-//			flightNumber.add(f);
-//		flights.addAll(flightNumber);
-//		xorFlightOne.setItems(flights);
-//		xorFlightTwo.setItems(flights);
 
 
 	}
 	
+	/*************** .1. ReleventDishList() Query*****************/
 	/*a method to use the GUI to call the query*/
 	public void getCustomerToQueryFromGUI(ActionEvent e){
-		RelevantDishesQueryController.givenCustomerID = Integer.parseInt(customerIDForRelDish.getText());
-		TableView<Dish> pane;
 		try {
+			if(customersInSystem.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			String str = customersInSystem.getValue();
+			
+			//Extract only the component ID in order to add him to the dish
+			String numberOnly= str.replaceAll("[^0-9]", "");	
+			RelevantDishesQueryController.givenCustomerID = Integer.parseInt(numberOnly);
+			
+			TableView<Dish> pane;
 			pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\RelevantDishTable.fxml"));
 			pane.setPrefSize(relDishesWrapper.getWidth(), relDishesWrapper.getHeight());
 			relDishesWrapper.getChildren().removeAll(relDishesWrapper.getChildren());
 			relDishesWrapper.getChildren().add(pane);
 		}
-
+		catch(EmptyComboBoxException e1) {
+			failSelection("Customer to select",e1.toString());
+		}
 		catch (IOException e1) {
 
 			e1.printStackTrace();
@@ -173,6 +201,23 @@ public class ManagerQueryController implements Initializable{
 
 	}
 	
+	/*************** .2. deliver() Query*****************/
+	public void deliverTheDelivery(ActionEvent e) {
+		try {
+			if(deliveryID.getText() == null) {
+				throw new NumberFormatException();
+			}
+			int delID = Integer.parseInt(deliveryID.getText());
+			Delivery d = Restaurant.getInstance().getRealDelivery(delID);
+			Restaurant.getInstance().deliver(d);
+		}
+		catch(NumberFormatException e1) {
+			fail("Delivery ID", "Wrong Input!");
+		}
+	}
+	
+	/*************** .3. GetCooksByExpertise() Query*****************/
+
 	/*a method to use the GUI to call the query*/
 	public void getExpertiesToQueryFromGUI(ActionEvent e){
 		CooksByExpertiseQueryController.givenExp = cookExpertise.getValue();
@@ -191,69 +236,22 @@ public class ManagerQueryController implements Initializable{
 
 	}
 	
+	/*************** .5. getNumberOfDeliveriesPerType() Query*****************/
+
+	//for getNumberOfDeliveriesPerType()
+	private int deliveryCounter(String deliveryType) {
+		HashMap<String, Integer> copyQuery = new HashMap<>(Restaurant.getInstance().getNumberOfDeliveriesPerType());
+		int counter = 0;
+		for(String s : copyQuery.keySet()) {
+			if(s.equals(deliveryType)) {
+				counter = copyQuery.get(s);
+			}
+		}
+		return counter;
+	}
 	
-//
-//
-//	private ObservableList<OrdersForTable> getOrderItems() {
-//		ObservableList<OrdersForTable> orders=FXCollections.observableArrayList();
-//		ArrayList<Order> query=new ArrayList<Order>(control.getAllOrdersSortededByTotalCost());
-//		ArrayList<OrdersForTable> convertedForTable=new ArrayList<OrdersForTable>();
-//		for(Order o:query)
-//			convertedForTable.add(new OrdersForTable(o));
-//		orders.addAll(convertedForTable);
-//		return orders;
-//	}
-//
-//
-//
-//
-//	public void getAccommodationAsc(ActionEvent e)
-//	{
-//		goodSound();
-//		AccommodationTableController.ascending=true;
-//		TableView<TravelPackage> pane;
-//		try {
-//			pane = FXMLLoader.load(getClass().getResource("AccommodationTable.fxml"));
-//			pane.setPrefSize(accommodationTableWrapper.getWidth(), accommodationTableWrapper.getHeight());
-//			accommodationTableWrapper.getChildren().removeAll(accommodationTableWrapper.getChildren());
-//			accommodationTableWrapper.getChildren().add(pane);
-//		}
-//
-//		catch (IOException e1) {
-//
-//			e1.printStackTrace();
-//		}
-//
-//
-//	}
-//	public void getAccommodationDsc(ActionEvent e)
-//	{
-//		goodSound();
-//		AccommodationTableController.ascending=false;
-//		TableView<TravelPackage> pane;
-//		try {
-//			pane = FXMLLoader.load(getClass().getResource("AccommodationTable.fxml"));
-//			pane.setPrefSize(accommodationTableWrapper.getWidth(), accommodationTableWrapper.getHeight());
-//			accommodationTableWrapper.getChildren().removeAll(accommodationTableWrapper.getChildren());
-//			accommodationTableWrapper.getChildren().add(pane);
-//		}
-//
-//		catch (IOException e1) {
-//
-//			e1.printStackTrace();
-//		}
-//
-//	}
-//
-//
-//	private ObservableList<Person> getWifiItems() {
-//		ObservableList<Person> wifi=FXCollections.observableArrayList();
-//		ArrayList<Person> query=new ArrayList<Person>();
-//		query.addAll(control.getAllCustomersWhoOrdered_A_MotelWithWiFiService());
-//		wifi.addAll(query);
-//		return wifi;
-//	}
-//
+	/*************** .7. getPopularComponents() Query*****************/
+
 	/****Returns the data of the given queries from the system****/
 	//for getPopularComponents()
 	private ObservableList<Component> getPopularComp(){
@@ -264,6 +262,9 @@ public class ManagerQueryController implements Initializable{
 		return popularComponents;		
 	}
 	
+	/*************** .8. getProfitRelation() Query*****************/
+
+	//for getProfitRelation()
 	private ObservableList<Dish> getProfitRel(){
 		ObservableList<Dish> mpDish = FXCollections.observableArrayList();
 		ArrayList<Dish> query = new ArrayList<Dish> (Restaurant.getInstance().getProfitRelation());
@@ -272,47 +273,39 @@ public class ManagerQueryController implements Initializable{
 		return mpDish;		
 	}
 	
-	
-//	private ObservableList<Destination> getDestItems() {
-//		ObservableList<Destination> popular=FXCollections.observableArrayList();
-//		ArrayList<Destination> query=(ArrayList<Destination>) control.getMostPopularDestinations();
-//		popular.addAll(query);
-//
-//
-//		return popular;
-//	}
-//
-//
-//	public void getPackagesInRange(ActionEvent e)
-//	{
-//		try {
-//			double min=Double.parseDouble(packagesMinPrice.getText());
-//			double max=Double.parseDouble(packagesMaxPrice.getText());
-//			ArrayList<TravelPackage> query=new ArrayList<TravelPackage> (control.getAllPackagesInRange(min, max));
-//			PackageTableController.tableInput=query;
-//			TableView<TravelPackage> pane;
-//			pane = FXMLLoader.load(getClass().getResource("PackagesTable.fxml"));
-//			pane.setPrefSize(packagesTableWrapper.getWidth(), packagesTableWrapper.getHeight());
-//			packagesTableWrapper.getChildren().removeAll(packagesTableWrapper.getChildren());
-//			packagesTableWrapper.getChildren().add(pane);
-//		}
-//
-//		catch (IOException e1) {
-//
-//			e1.printStackTrace();
-//		}
-//		catch(NumberFormatException e1) {
-//			badSound();
-//			Alert al = new Alert(Alert.AlertType.ERROR);
-//			al.setContentText("Please type numbers");
-//			al.setHeaderText("Input Error");
-//			al.setTitle("Database");
-//			al.setResizable(false);
-//			al.showAndWait();
-//		}
-//
-//	}
 
+
+	
+	public void succsesDeliver() {
+		goodSound();
+		Alert al = new Alert(Alert.AlertType.INFORMATION);
+		al.setContentText("Deliverey has reached customer!");
+		al.setHeaderText("Deliver");
+		al.setTitle("Delivery");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
+	public void fail(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to add : " + content);
+		al.setHeaderText(header);
+		al.setTitle("Database");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
+	public void failSelection(String content, String header) {
+		badSound();
+		Alert al = new Alert(Alert.AlertType.ERROR);
+		al.setContentText("Faild to select : " + content);
+		al.setHeaderText(header);
+		al.setTitle("ComboBox");
+		al.setResizable(false);
+		al.showAndWait();
+	}
+	
 	public void goodSound() {
 		Sounds s = new Sounds();
 		try {

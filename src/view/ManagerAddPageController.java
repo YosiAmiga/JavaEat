@@ -244,10 +244,7 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private ComboBox<String> dishesInOrder;// multiple choice 
 	
-	@FXML
-	private ComboBox<String> deliveriesInOrder;
-	@FXML
-	private TextField deliveryIDToOrder;
+
 	
 	@FXML
 	private Button addOrder;
@@ -551,7 +548,7 @@ public class ManagerAddPageController implements Initializable {
 		}
 		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
 		ObservableListDeliveries.addAll(deliveriesDb);
-		deliveriesInOrder.setItems(ObservableListDeliveries);
+//		deliveriesInOrder.setItems(ObservableListDeliveries);
 		currentDelivery.setItems(ObservableListDeliveries);
 	}
 	
@@ -685,7 +682,6 @@ public class ManagerAddPageController implements Initializable {
 //			fail(a, "Person"+e1.toString());
 //		}
 		catch(NumberFormatException e1) {
-			badSound();
 			fail(section, "Wrong Input!");
 		}
 		catch (Exception e1) {
@@ -846,7 +842,7 @@ public class ManagerAddPageController implements Initializable {
 			Gender selectedG = null;
 			String expertise = cookExpertise.getValue();
 			Expertise selectedN = null;
-			boolean isChef=false;// create an option to choose if chef or not
+			boolean isCookChef=isChef.isSelected();// create an option to choose if chef or not
 			
 			for(Gender g : Gender.values()) {
 				if(g.toString().equals(gender)) {
@@ -859,7 +855,7 @@ public class ManagerAddPageController implements Initializable {
 				}
 			}
 
-			if(control.addCookFromGUI(id,firstName, LastName, localDate, selectedG,selectedN, isChef)) {
+			if(control.addCookFromGUI(id,firstName, LastName, localDate, selectedG,selectedN, isCookChef)) {
 				successAdded(section, "Success");
 				Restaurant.save(Input);				
 			}
@@ -1097,7 +1093,10 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id already exists in the orders database!");
 			}
-			System.out.println("orders : " + Restaurant.getInstance().getOrders().values());
+			for(Order or : Restaurant.getInstance().getOrders().values()) {
+				System.out.println(or.getDelivery());
+			}
+//			System.out.println("orders : " + Restaurant.getInstance().getOrders().values());
 			refreshGui();
 
 		}
@@ -1213,9 +1212,9 @@ public class ManagerAddPageController implements Initializable {
 			boolean isEXP = isExpress.isSelected();
 			//if the combo box of express delivery is selected, then use the express delivery method
 			if(isEXP) {
-				double custPost = Double.parseDouble(customPostage.getText());
-				System.out.println(custPost);
-				if(custPost == 0) {				
+
+				//if no new postage was entered, use default 5.0
+				if(customPostage.getText() != null) {				
 					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, 5, ordersListToDelivery)) {
 						successAdded(section, "Success");
 						Restaurant.save(Input);	
@@ -1225,7 +1224,8 @@ public class ManagerAddPageController implements Initializable {
 					}
 					
 				}
-				else {				
+				else {	
+					double custPost = Double.parseDouble(customPostage.getText());
 					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, custPost, ordersListToDelivery)) {
 						successAdded(section, "Success");
 						Restaurant.save(Input);	
@@ -1459,14 +1459,14 @@ public class ManagerAddPageController implements Initializable {
 	
 	
 	public void addCDeliveriesInOrderToList(ActionEvent e) {
-		//order can have several dishes
-		
-		DeliveriesInOrderList.add(deliveriesInOrder.getValue());
-		String list="";
-		for(String s : DeliveriesInOrderList) {
-			list += s+"\n";
-		}
-		deliveriesInOrderShow.setText(list);
+//		//order can have several dishes
+//		
+//		DeliveriesInOrderList.add(deliveriesInOrder.getValue());
+//		String list="";
+//		for(String s : DeliveriesInOrderList) {
+//			list += s+"\n";
+//		}
+//		deliveriesInOrderShow.setText(list);
 	}
 	/**
 	 * a method to clear the list of dishes in the list view
@@ -1727,7 +1727,7 @@ public class ManagerAddPageController implements Initializable {
 		/**Resetting the Order**/
 		orderId.setText("");
 		dishesInOrderShow.setText("");
-		deliveryIDToOrder.setText("");
+//		deliveryIDToOrder.setText("");
 		
 		
 		/**Resetting the Delivery**/
@@ -1911,7 +1911,7 @@ public class ManagerAddPageController implements Initializable {
 		}
 		ObservableList<String> ObservableListDeliveries=FXCollections.observableArrayList();
 		ObservableListDeliveries.addAll(deliveriesDb);
-		deliveriesInOrder.setItems(ObservableListDeliveries);
+//		deliveriesInOrder.setItems(ObservableListDeliveries);
 		currentDelivery.setItems(ObservableListDeliveries);
 
 /****************************************************************************/		

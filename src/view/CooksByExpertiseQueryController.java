@@ -14,6 +14,7 @@ import Utils.DishType;
 import Utils.Expertise;
 import Utils.Gender;
 import controller.Sounds;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,6 +30,7 @@ public class CooksByExpertiseQueryController implements Initializable{
 	
 	
 	/**********For getRelevantDishes()************/
+	
 	public static String givenExp;
 	@FXML
 	private TableView<Cook> cooksTable;
@@ -57,8 +59,9 @@ public class CooksByExpertiseQueryController implements Initializable{
 		cookBD.setCellValueFactory(new PropertyValueFactory<Cook, LocalDate>("birthDay"));
 		cookGender.setCellValueFactory(new PropertyValueFactory<Cook, Gender>("gender"));
 		cookExpertise.setCellValueFactory(new PropertyValueFactory<Cook, Expertise>("expert"));
-//		cookIsChef.setCellValueFactory(new PropertyValueFactory<Cook, String>("isChef"));
+		cookIsChef.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isChef())));
 		cooksTable.setItems(getCooksByExp());
+
 		
 	}
 	

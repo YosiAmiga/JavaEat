@@ -383,14 +383,8 @@ public class PrimaryController {
 			}		
 		}
 		
-//		Delivery del=null;
-//		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
-//			if(d.getId() == deliveryID) {
-//				del = d;
-//			}		
-//		}
 		
-		Order order = new Order(id,c,AlDishes);
+		Order order = new Order(id,c,AlDishes,null);
 		
 		return Restaurant.getInstance().addOrder(order);
 	}

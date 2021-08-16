@@ -114,7 +114,7 @@
                         <TableColumn fx:id="orderID" prefWidth="78.4000244140625" text="ID" />
                         <TableColumn fx:id="orderCustomer" prefWidth="216.79998779296875" text="Customer" />
                         <TableColumn fx:id="orderDishes" prefWidth="207.20004272460938" text="Dishes" />
-                        <TableColumn prefWidth="340.79998779296875" text="Delivery" />
+                        <TableColumn fx:id="orderDelivery" prefWidth="340.79998779296875" text="Delivery" />
                      </columns>
                   </TableView>
                </children>

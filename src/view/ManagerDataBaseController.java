@@ -269,7 +269,7 @@ public class ManagerDataBaseController implements Initializable {
 		orderID.setCellValueFactory(new PropertyValueFactory<Order, Integer>("id"));
 		orderCustomer.setCellValueFactory(new PropertyValueFactory<Order, Customer>("customer"));
 		orderDishes.setCellValueFactory(new PropertyValueFactory<Order, ArrayList<Dish>>("dishes"));
-//		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
+		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
 		ordersTable.setItems(getOrders());
 
 		/*set in the table all the express deliveries data from database for each of their fields*/
@@ -421,75 +421,6 @@ public class ManagerDataBaseController implements Initializable {
 	}	
 	
 
-	
 
-	
-//	private ObservableList<GroupTrip> getTrips() {
-//		ObservableList<GroupTrip> trips=FXCollections.observableArrayList();
-//		ArrayList<GroupTrip> query=new ArrayList<GroupTrip>(Shared.getInstance().getTrips().values());
-//
-//		trips.addAll(query);
-//		return trips;	
-//	}
-
-//	private ObservableList<Guide> getGuides() {
-//		ObservableList<Guide> guides=FXCollections.observableArrayList();
-//		ArrayList<Guide> query=new ArrayList<Guide>(Shared.getInstance().getGuides().values());
-//
-//		guides.addAll(query);
-//		return guides;	
-//	}
-//
-//	private ObservableList<Customer> getCustomers() {
-//		ObservableList<Customer> customer=FXCollections.observableArrayList();
-//		ArrayList<Customer> query=new ArrayList<Customer>(Shared.getInstance().getCustomers().values());
-//
-//		customer.addAll(query);
-//		return customer;	
-//	}
-//
-//	private ObservableList<Destination> getDests() {
-//		ObservableList<Destination> dest=FXCollections.observableArrayList();
-//		ArrayList<String> query=new ArrayList<String>(Shared.getInstance().getDestinations().keySet());
-//		ArrayList<Destination> tmp=new ArrayList<Destination> ();
-//		for(String s:query)
-//			tmp.addAll(Shared.getInstance().getDestinations().get(s));
-//		dest.addAll(tmp);
-//		return dest;	
-//	}
-//
-//	private ObservableList<AccommodationForTable> getAcc() {
-//		ObservableList<AccommodationForTable> acc=FXCollections.observableArrayList();
-//		ArrayList<Accommodation> query=new ArrayList<Accommodation>(Shared.getInstance().getAccommodations().values());
-//		ArrayList<AccommodationForTable> convertedForTable=new ArrayList<AccommodationForTable>();
-//		for(Accommodation a:query)
-//			convertedForTable.add(new AccommodationForTable(a));
-//		acc.addAll(convertedForTable);
-//		return acc;
-//	}
-//
-
-//
-//	private ObservableList<TravelPackageForTable> getPackageItems() {
-//		ObservableList<TravelPackageForTable> packages=FXCollections.observableArrayList();
-//		ArrayList<TravelPackage> query=new ArrayList<TravelPackage>(Shared.getInstance().getPackages().values());
-//		ArrayList<TravelPackageForTable> convertedForTable=new ArrayList<TravelPackageForTable>();
-//		for(TravelPackage o:query)
-//			convertedForTable.add(new TravelPackageForTable(o));
-//		packages.addAll(convertedForTable);
-//		return packages;
-//	}
-//
-//	private ObservableList<OrdersForTable> getItems() {
-//		ObservableList<OrdersForTable> orders=FXCollections.observableArrayList();
-//		ArrayList<Order> query=new ArrayList<Order>(Shared.getInstance().getOrders().values());
-//		ArrayList<OrdersForTable> convertedForTable=new ArrayList<OrdersForTable>();
-//		for(Order o:query)
-//			convertedForTable.add(new OrdersForTable(o));
-//		orders.addAll(convertedForTable);
-//		System.out.println(convertedForTable.get(1).getOwner());
-//		return orders;
-
-//	}
 
 }

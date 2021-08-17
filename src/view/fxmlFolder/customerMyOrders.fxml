@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="770.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CustomerMyOrdersController">
@@ -35,9 +34,8 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="currentCustomerOrders" layoutX="320.0" layoutY="59.0" prefWidth="150.0" promptText="current orders" />
-                  <TextField fx:id="removeOrderCustomerID" layoutX="320.0" layoutY="122.0" promptText="order id to remove" />
-                  <Button fx:id="customerRemoveOrder" layoutX="349.0" layoutY="196.0" mnemonicParsing="false" text="remove order" />
+                  <ComboBox fx:id="currentOrders" layoutX="236.0" layoutY="59.0" prefHeight="26.0" prefWidth="291.0" promptText="Select Order to remove" />
+                  <Button fx:id="removeOrder" layoutX="306.0" layoutY="369.0" mnemonicParsing="false" text="remove order" />
                </children>
             </AnchorPane>
          </content>
@@ -46,11 +44,13 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView layoutX="-2.0" prefHeight="315.0" prefWidth="489.0">
-                     <columns>
-                        <TableColumn fx:id="orderIdForCustomer" prefWidth="75.0" text="order id" />
-                        <TableColumn fx:id="dishesInOrder" prefWidth="413.0" text="dishes in order" />
-                     </columns>
+                  <TableView fx:id="ordersTable" prefHeight="481.0" prefWidth="770.0">
+                    <columns>
+                        <TableColumn fx:id="orderID" prefWidth="78.4000244140625" text="ID" />
+                        <TableColumn fx:id="orderCustomer" prefWidth="216.79998779296875" text="Customer" />
+                        <TableColumn fx:id="orderDishes" prefWidth="207.20004272460938" text="Dishes" />
+                        <TableColumn fx:id="orderDelivery" prefWidth="340.79998779296875" text="Delivery" />
+                    </columns>
                   </TableView>
                </children>
             </AnchorPane>

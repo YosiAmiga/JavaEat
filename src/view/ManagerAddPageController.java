@@ -98,7 +98,10 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private Button addCustomer;
-
+	@FXML
+	private Button fillDataCust;
+	@FXML
+	private Button updateCustomer;
 	
 	@FXML
 	private ComboBox<String> customerDelete;	
@@ -130,7 +133,10 @@ public class ManagerAddPageController implements Initializable {
 	private ComboBox<String> delPersonDelete;
 	@FXML
 	private Button deleteDelPerson;
-
+	@FXML
+	private Button fiilDataDelPerson;
+	@FXML
+	private Button updateDelPerson;
 	
 
 	
@@ -165,6 +171,10 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button removeCookBtn;
 	
+	@FXML
+	private Button fillDataCook;
+	@FXML
+	private Button updateCook;
 
 	
 	/**************************************Component Page****************************************/
@@ -189,7 +199,8 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button delComponent;
 
-	
+	@FXML
+	private Button componentFillData;
 	
 	@FXML
 	private Button updateComponentData;
@@ -228,6 +239,11 @@ public class ManagerAddPageController implements Initializable {
 
 	@FXML
 	private Button removeDish;
+	
+	@FXML
+	private Button fillDataDish;
+	@FXML
+	private Button updateDish;
 	
 	/**************************************Order Page*****************************************/
 	
@@ -269,6 +285,11 @@ public class ManagerAddPageController implements Initializable {
 	
 	@FXML
 	private Button clearDeliveriesInOrder;
+	
+	@FXML
+	private Button fillDataOrder;
+	@FXML
+	private Button updateOrder;
 	
 	/************************************Delivery Page*******************************************/
 	
@@ -348,6 +369,10 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button areaToReplace;
 
+	@FXML
+	private Button fillDataDeliveryArea;
+	@FXML
+	private Button updateDeliveryArea;
 
 	/*************************************Blacklist Page*************************************/
 
@@ -478,15 +503,21 @@ public class ManagerAddPageController implements Initializable {
 				
 		/***************Load list of customers in the system***************/
 		ArrayList<String> customerDB = new ArrayList<>();
+		ArrayList<String> customerNotInBLDB = new ArrayList<>();
 		for(Customer c : Restaurant.getInstance().getCustomers().values()) {
+			if(!Restaurant.getInstance().getBlackList().contains(c)) {
+				customerNotInBLDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
+			}
 			customerDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
 		}
 		ObservableList<String> ObservableListCustomers = FXCollections.observableArrayList();
 		ObservableListCustomers.addAll(customerDB);
 		customerDelete.setItems(ObservableListCustomers);
-		customerList.setItems(ObservableListCustomers);
 		customersForOrder.setItems(ObservableListCustomers);
 		
+		ObservableList<String> ObservableListCustomersBL = FXCollections.observableArrayList();
+		ObservableListCustomersBL.addAll(customerNotInBLDB);
+		customerList.setItems(ObservableListCustomersBL);
 
 		/***************Load the Blacklist in the system***************/
 		ArrayList<String> blacklistDB = new ArrayList<>();
@@ -555,6 +586,94 @@ public class ManagerAddPageController implements Initializable {
 	/**************************************Methods*****************************************/
 	/**************************************Customer Methods*****************************************/
 
+	/*************Fill data for update************/
+	public void fillDataCustomer(ActionEvent e) {
+		try {
+			if(customerId.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(customerId.getText());
+			
+			Customer temp = Restaurant.getInstance().getRealCustomer(id);
+			
+			customerFirst.setText(temp.getFirstName());
+			customerLast.setText(temp.getLastName());
+			customerBirth.setValue(temp.getBirthDay());
+			customerPass.setText(String.valueOf(temp.getPassword()));
+			customerPassVerify.setText(String.valueOf(temp.getPassword()));
+			customerGenderCombo.setValue(String.valueOf(temp.getGender()));
+			customerHoodCombo.setValue(String.valueOf(temp.getNeighberhood()));
+			customerGluten.setSelected(temp.isSensitiveToGluten());
+			customerLactose.setSelected(temp.isSensitiveToLactose());
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No update ", e1.toString());
+		}
+	}
+	
+	/**************Update a Customer*************/
+	public void updateCustomer(ActionEvent e) {
+		String section = "Customer";
+		try {
+			//check if the combo box were selected
+			if(customerGenderCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerHoodCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(customerBirth.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			
+			int id=Integer.parseInt(customerId.getText());
+			String password=customerPass.getText();
+			String passwordVerify=customerPassVerify.getText();
+			if(!password.equals(passwordVerify)) {
+				throw new PasswordMismatchException();
+			}
+			String firstName=customerFirst.getText();
+			String LastName=customerLast.getText();
+			LocalDate localDate =customerBirth.getValue();
+			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+			Date date = Date.from(instant);
+			String gender = customerGenderCombo.getValue();
+
+			Gender selectedG = null;
+			String neighberhood = customerHoodCombo.getValue();
+			
+			Neighberhood selectedN = null;
+			
+			for(Gender g : Gender.values()) {
+				if(g.toString().equals(gender)) {
+					selectedG = g;
+				}
+			}
+			for(Neighberhood n : Neighberhood.values()) {
+				if(n.toString().equals(neighberhood)) {
+					selectedN = n;
+				}
+			}
+			boolean lactose = customerLactose.isSelected();
+			boolean gluten = customerGluten.isSelected();
+
+			//if no new id, use the same id to be updated as the "new id"
+			if(control.updateCustomerGUI(id,firstName, LastName, localDate, selectedG, password, passwordVerify, selectedN, lactose, gluten)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
 	
 	/**************Delete a customer*************/
 	public void removeCustomer(ActionEvent e) {
@@ -692,7 +811,82 @@ public class ManagerAddPageController implements Initializable {
 	
 	/**************************************Delivery Person Methods****************************************/
 
-	
+	/*************Fill data for update************/
+	public void fillDataDeliveryPerson(ActionEvent e) {
+		try {
+			if(delPersonId.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(delPersonId.getText());
+			
+			DeliveryPerson temp = Restaurant.getInstance().getRealDeliveryPerson(id);
+			
+			delPersonFName.setText(temp.getFirstName());
+			delPersonLName.setText(temp.getLastName());
+			delPersonBirth.setValue(temp.getBirthDay());
+			genderCombo.setValue(String.valueOf(temp.getGender()));
+			delPersonVehicle.setValue(String.valueOf(temp.getVehicle()));
+			delPersonArea.setValue(String.valueOf(temp.getArea()));
+
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data ", e1.toString());
+		}
+	}
+	/**************Update a Delivery Person*************/
+	public void updateDeliveryPerson(ActionEvent e) {
+		String section = "Delivery Person";
+		try {
+			if(genderCombo.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonVehicle.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonArea.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(delPersonBirth.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			int id = Integer.parseInt(delPersonId.getText());			
+			String fName = delPersonFName.getText();
+			String lName = delPersonLName.getText();
+			LocalDate localDate = delPersonBirth.getValue();
+			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+			Date date = Date.from(instant);
+			String gender = genderCombo.getValue();
+			Gender selectedG = null;
+			String vehicle = delPersonVehicle.getValue();
+			Vehicle selectedV = null;
+			String dArea = delPersonArea.getValue();
+			for(Gender g : Gender.values()) {
+				if(g.toString().equals(gender)) {
+					selectedG = g;
+				}
+			}
+			for(Vehicle v : Vehicle.values()) {
+				if(v.toString().equals(vehicle)) {
+					selectedV = v;
+				}
+			}
+			//if no new id, use the same id to be updated as the "new id"
+			if(control.updateDeliveryPersonGUI(id, fName, lName, localDate, selectedG, selectedV,dArea)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
 	/**************Remove a Delivery Person*******/
 	public void removeDeliveryPerson(ActionEvent e) {
 		String section = "Delivery Person";
@@ -726,8 +920,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	/**************Add a Delivery Person**********/
 	public void addDeliveryPerson(ActionEvent e) {
-//		public DeliveryPerson(int id,String firstName, String lastName, LocalDate birthDay, Gender gender, Vehicle vehicle,
-//		DeliveryArea area)
+
 		String section = "Delivery Person";
 		try {
 			if(genderCombo.getValue() == null) {
@@ -785,6 +978,83 @@ public class ManagerAddPageController implements Initializable {
 	
 	
 	/**************************************Cook Methods****************************************/
+	/*************Fill data for update************/
+	public void fillDataCook(ActionEvent e) {
+		try {
+			if(cookId.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(cookId.getText());
+			
+			Cook temp = Restaurant.getInstance().getRealCook(id);
+			
+			cookFirstName.setText(temp.getFirstName());
+			cookLastName.setText(temp.getLastName());
+			cookDate.setValue(temp.getBirthDay());
+			cookExpertise.setValue(String.valueOf(temp.getExpert()));
+			cookGender.setValue(String.valueOf(temp.getGender()));
+			isChef.setSelected(temp.isChef());
+
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data", e1.toString());
+		}
+	}
+	
+	/**************Update a Customer*************/
+	public void updateCook(ActionEvent e) {
+		String section = "Cook";
+		try {
+			if(cookDate.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(cookGender.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(cookExpertise.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			int id=Integer.parseInt(cookId.getText());// get id
+			String firstName=cookFirstName.getText();//get the first name
+			String LastName=cookLastName.getText();// get the last name
+			LocalDate localDate =cookDate.getValue();
+			Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));// get the date
+			Date date = Date.from(instant);
+			String gender = cookGender.getValue();
+			Gender selectedG = null;
+			String expertise = cookExpertise.getValue();
+			Expertise selectedN = null;
+			boolean isCookChef=isChef.isSelected();// create an option to choose if chef or not
+			
+			for(Gender g : Gender.values()) {
+				if(g.toString().equals(gender)) {
+					selectedG = g;
+				}
+			}
+			for(Expertise n : Expertise.values()) {
+				if(n.toString().equals(expertise)) {
+					selectedN = n;
+				}
+			}
+
+			//if no new id, use the same id to be updated as the "new id"
+			if(control.updateCookGUI(id,firstName, LastName, localDate, selectedG,selectedN, isCookChef)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
+	
 	
 	/**************Remove a Cook*************/
 	public void removeCook(ActionEvent e) {
@@ -885,6 +1155,26 @@ public class ManagerAddPageController implements Initializable {
 	}
 	/**************************************Component Methods****************************************/
 
+	/*************Fill data for update************/
+	public void fillData(ActionEvent e) {
+		try {
+			if(componentID.getText() == null) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(componentID.getText());
+			
+			Component temp = Restaurant.getInstance().getRealComponent(id);
+			
+			componentName.setText(temp.getComponentName());
+			hasLactose.setSelected(temp.isHasLactose());
+			hasGluten.setSelected(temp.isHasGluten());
+			componentPrice.setText(String.valueOf(temp.getPrice()));
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No update ", e1.toString());
+		}
+	}
 	
 	/**************Update a component*************/
 	public void updateComponent(ActionEvent e) {
@@ -916,6 +1206,8 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -988,6 +1280,87 @@ public class ManagerAddPageController implements Initializable {
 	
 	
 	/**************************************Dish Methods****************************************/
+	/*************Fill data for update************/
+	public void fillDataDish(ActionEvent e) {
+		try {
+			if(dishId.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(dishId.getText());
+			
+			Dish temp = Restaurant.getInstance().getRealDish(id);
+			dishName.setText(temp.getDishName());
+			timeToMake.setText(String.valueOf(temp.getTimeToMake()));
+			TypeOfTheDish.setValue(String.valueOf(temp.getType()));
+//			
+//			componentsInDishList.removeAll(componentsInDishList);
+//			componentsInDishToShow.removeAll(componentsInDishToShow);
+
+			for(Component c : temp.getComponenets()) {
+				
+				String str = "ID: "+c.getId() + " Name: " + c.getComponentName();
+				componentsInDishToShow.add(str);
+//				String numberOnly= str.replaceAll("[^0-9]", "");		
+//				componentsInDishList.add(Integer.parseInt(numberOnly));
+			}
+
+			String list="";		
+			for(String s : componentsInDishToShow) {
+				list += s+"\n";
+			}
+			componentsList.setText(list);	
+
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data ", e1.toString());
+		}
+	}
+	
+	/**************Update a Dish*************/
+	public void updateDish(ActionEvent e) {
+		String section = "Dish";
+		try {
+			if(TypeOfTheDish.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+			if(componentsInDishList.isEmpty()) {
+				throw new NoComponentsExceptions();
+			}
+			int id = Integer.parseInt(dishId.getText());
+			String dName = dishName.getText();
+			String type = TypeOfTheDish.getValue();
+			DishType selectedD = null;
+			int toMake = Integer.parseInt(timeToMake.getText());
+			for(DishType g : DishType.values()) {
+				if(g.toString().equals(type)) {
+					selectedD = g;
+				}
+			}
+
+
+			if(control.updateDishGUI(id, dName,selectedD, componentsInDishList, toMake)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+		catch(NoComponentsExceptions e1) {
+			failSelection(section,e1.toString());
+		}
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
+	
 	
 	/*************Remove a Dish**********/
 	public void removeDish(ActionEvent e) {
@@ -1068,6 +1441,74 @@ public class ManagerAddPageController implements Initializable {
 	}
 	/**************************************Order Methods****************************************/
 	
+	/*************Fill data for update************/
+	public void fillDataOrder(ActionEvent e) {
+		String section = "Order";
+
+		try {
+			if(orderId.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(orderId.getText());
+			
+			Order temp =  Restaurant.getInstance().getRealOrder(id);
+			int customerID= temp.getCustomer().getId();
+			Customer customerOrder = Restaurant.getInstance().getRealCustomer(customerID);		
+			customersForOrder.setValue("ID: " + customerOrder.getId() + " Name: " + customerOrder.getFirstName()+ " " +customerOrder.getLastName());
+
+			ArrayList<String> dishesInOrder = new ArrayList<>();
+			for(Dish d : temp.getDishes()) {
+				String str = "ID: " + d.getId() + " Name: " + d.getDishName();
+				dishesInOrder.add(str);
+			}
+			String list="";		
+			for(String s : dishesInOrder) {
+				list += s+"\n";
+			}
+			dishesInOrderShow.setText(list);
+			
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data ", e1.toString());
+		}
+	}
+	
+	/**************Update a Order*************/
+	public void updateOrder(ActionEvent e) {
+		String section = "Order";
+		try {
+			if(customersForOrder.getValue() == null) {
+				throw new EmptyComboBoxException();
+			}
+
+			int id=Integer.parseInt(orderId.getText());// get id			
+			
+			String custID = customersForOrder.getValue();
+			//Extract only the Order ID in order to remove him
+			String numberOnlyCustomer= custID.replaceAll("[^0-9]", "");	
+			int custForOrder=Integer.parseInt(numberOnlyCustomer);//get the customer's id after viewing the combo box	
+			
+			if(control.updateOrderGUI(id,custForOrder, dishesInOrderList)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+
+		catch(EmptyComboBoxException e1) {
+			failSelection(section,e1.toString());
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
+	
 	/**************Add an Order*************/
 	public void addOrder(ActionEvent e)
 	{
@@ -1096,7 +1537,6 @@ public class ManagerAddPageController implements Initializable {
 			for(Order or : Restaurant.getInstance().getOrders().values()) {
 				System.out.println(or.getDelivery());
 			}
-//			System.out.println("orders : " + Restaurant.getInstance().getOrders().values());
 			refreshGui();
 
 		}
@@ -1267,6 +1707,62 @@ public class ManagerAddPageController implements Initializable {
 	}
 	/**************************************Delivery Area Methods****************************************/
 	
+	/*************Fill data for update************/
+	public void fillDataDeliveryArea(ActionEvent e) {
+		String section = "Delivery Area";
+
+		try {
+			if(delAreaID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(delAreaID.getText());
+			
+			DeliveryArea temp = Restaurant.getInstance().getRealDeliveryArea(id);
+			delAreaName.setText(temp.getAreaName());
+			delAreaTime.setText(String.valueOf(temp.getDeliverTime()));
+			hoodsInDeliveryArea.removeAll(hoodsInDeliveryArea);
+			for(Neighberhood n : temp.getNeighberhoods()) {
+				hoodsInDeliveryArea.add(String.valueOf(n));
+			}
+			String list="";
+			for(String s : hoodsInDeliveryArea) {
+				list += s+"\n";
+			}
+			hoodList.setText(list);
+
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data ", e1.toString());
+		}
+	}
+	
+	/**************Update a Delivery Area*************/
+	//TODO FIX!!
+	public void updateDeliveryArea(ActionEvent e) {
+		String section = "Delivery Area";
+		try {
+			int id = Integer.parseInt(delAreaID.getText());
+			String aName = delAreaName.getText();
+			int deliveryTime = Integer.parseInt(delAreaTime.getText());
+			
+			if(control.updateDeliveryAreaGUI(id, aName, hoodsInDeliveryArea, deliveryTime)) {
+				successUpdate(section, "Success");
+				Restaurant.save(Input);
+			}
+		}
+
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		successUpdate(section, "Success");
+		Restaurant.save(Input);
+		refreshGui();
+	}
+	
 	/**************Add a Delivery Area************/
 	public void addDeliveryArea(ActionEvent e) {
 
@@ -1296,7 +1792,6 @@ public class ManagerAddPageController implements Initializable {
 	}
 	
 	/**************replace a Delivery Area*********/
-	//TODO Finish method + in PrimaryController
 	public void replaceDeliveryArea(ActionEvent e) {
 		String section = "Delivery Area";
 		try {
@@ -1316,7 +1811,7 @@ public class ManagerAddPageController implements Initializable {
 			fail(section, e1.toString());
 		}
 		catch(Exception e1) {
-			System.out.println("hey in del area");
+			e1.printStackTrace();
 		}
 		refreshGui();
 	}
@@ -1454,31 +1949,22 @@ public class ManagerAddPageController implements Initializable {
 		}
 	}
 
-	//TODO FIX!!
+
 	
 	
-	
-	public void addCDeliveriesInOrderToList(ActionEvent e) {
-//		//order can have several dishes
-//		
-//		DeliveriesInOrderList.add(deliveriesInOrder.getValue());
-//		String list="";
-//		for(String s : DeliveriesInOrderList) {
-//			list += s+"\n";
-//		}
-//		deliveriesInOrderShow.setText(list);
-	}
+
 	/**
 	 * a method to clear the list of dishes in the list view
 	 * @param e 
 	 */
 	public void clearDishesInOrderList(ActionEvent e) {
 		dishesInOrderText.removeAll(dishesInOrderText);
+		dishesInOrderList.removeAll(dishesInOrderList);
 		dishesInOrderShow.setText("");
 	}
 	
 	public void clearDeliveriesInOrderList(ActionEvent e) {
-//		DeliveriesInOrderList.removeAll(dishesInOrderList);
+		DeliveriesInOrderList.removeAll(DeliveriesInOrderList);
 		deliveriesInOrderShow.setText("");
 	}
 	
@@ -1841,15 +2327,21 @@ public class ManagerAddPageController implements Initializable {
 				
 		/***************Load list of customers in the system***************/
 		ArrayList<String> customerDB = new ArrayList<>();
+		ArrayList<String> customerNotInBLDB = new ArrayList<>();
 		for(Customer c : Restaurant.getInstance().getCustomers().values()) {
+			if(!Restaurant.getInstance().getBlackList().contains(c)) {
+				customerNotInBLDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
+			}
 			customerDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
 		}
 		ObservableList<String> ObservableListCustomers = FXCollections.observableArrayList();
 		ObservableListCustomers.addAll(customerDB);
 		customerDelete.setItems(ObservableListCustomers);
-		customerList.setItems(ObservableListCustomers);
 		customersForOrder.setItems(ObservableListCustomers);
 		
+		ObservableList<String> ObservableListCustomersBL = FXCollections.observableArrayList();
+		ObservableListCustomersBL.addAll(customerNotInBLDB);
+		customerList.setItems(ObservableListCustomersBL);
 
 		/***************Load the Blacklist in the system***************/
 		ArrayList<String> blacklistDB = new ArrayList<>();

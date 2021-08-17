@@ -214,7 +214,9 @@ public class ManagerDataBaseController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
 		/*set in the table all the customers data from database for each of their fields*/
+		
 		theCustomerID.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
+		theCustomerID.setEditable(true);
 		customerFirstName.setCellValueFactory(new PropertyValueFactory<Customer, String>("firstName"));
 		customerLastName.setCellValueFactory(new PropertyValueFactory<Customer, String>("lastName"));
 		customerBD.setCellValueFactory(new PropertyValueFactory<Customer, LocalDate>("birthDay"));
@@ -224,7 +226,7 @@ public class ManagerDataBaseController implements Initializable {
 		customerLactose.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToLactose())));
 		customerGluten.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().isSensitiveToGluten())));
 		customersTable.setItems(getCustomers());
-		
+		customersTable.setEditable(true);
 		
 		/*set in the table all the delivery persons data from database for each of their fields*/
 		deliveryPersonID.setCellValueFactory(new PropertyValueFactory<DeliveryPerson, Integer>("id"));

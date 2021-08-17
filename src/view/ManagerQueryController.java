@@ -169,7 +169,7 @@ public class ManagerQueryController implements Initializable{
 		ObservableListExpertise.addAll(cookExpertiseAL);
 		cookExpertise.setItems(ObservableListExpertise);
 
-
+		Restaurant.save(Input);
 	}
 	
 	/*************** .1. ReleventDishList() Query*****************/

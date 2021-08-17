@@ -77,6 +77,12 @@
                   </Button>
                   <Button fx:id="customerAddPic" layoutX="441.0" layoutY="295.0" mnemonicParsing="false" onAction="#uploadFile" text="Upload profile picture" />
                   <ImageView fx:id="customerProfile" fitHeight="218.0" fitWidth="188.0" layoutX="400.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="fillDataCust" layoutX="243.0" layoutY="283.0" mnemonicParsing="false" onAction="#fillDataCustomer" prefHeight="26.0" prefWidth="127.0" text="Fill data for Update" />
+                  <Button fx:id="updateCustomer" layoutX="103.0" layoutY="506.0" mnemonicParsing="false" onAction="#updateCustomer" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
       </content>
     </Tab>
@@ -107,6 +113,12 @@
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
+                  </Button>
+                  <Button fx:id="fiilDataDelPerson" layoutX="286.0" layoutY="103.0" mnemonicParsing="false" onAction="#fillDataDeliveryPerson" prefHeight="26.0" prefWidth="127.0" text="Fill data for Update" />
+                  <Button fx:id="updateDelPerson" layoutX="225.0" layoutY="462.0" mnemonicParsing="false" onAction="#updateDeliveryPerson" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
                   </Button>
                </children>
             </AnchorPane>
@@ -155,6 +167,12 @@
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
+                  </Button>
+                  <Button fx:id="fillDataCook" layoutX="416.0" layoutY="83.0" mnemonicParsing="false" onAction="#fillDataCook" prefHeight="26.0" prefWidth="127.0" text="Fill data for Update" />
+                  <Button fx:id="updateCook" layoutX="217.0" layoutY="464.0" mnemonicParsing="false" onAction="#updateCook" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
                   </Button>
                </children></AnchorPane>
       </content>
@@ -211,6 +229,7 @@
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </Button>
+                  <Button fx:id="componentFillData" layoutX="374.0" layoutY="46.0" mnemonicParsing="false" onAction="#fillData" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
          </content>
       </Tab>
@@ -255,6 +274,12 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
+                  <Button fx:id="updateDish" layoutX="250.0" layoutY="489.0" mnemonicParsing="false" onAction="#updateDish" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="fillDataDish" layoutX="439.0" layoutY="79.0" mnemonicParsing="false" onAction="#fillDataDish" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
             
          </content>
@@ -290,6 +315,12 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                   </Button>
+                  <Button fx:id="updateOrder" layoutX="224.0" layoutY="485.0" mnemonicParsing="false" onAction="#updateOrder" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="fillDataOrder" layoutX="413.0" layoutY="95.0" mnemonicParsing="false" onAction="#fillDataOrder" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
             
          </content>
@@ -374,6 +405,12 @@
                   </Button>
                   <TextField fx:id="oldAreaID" layoutX="320.0" layoutY="379.0" prefHeight="26.0" prefWidth="106.0" promptText="ID old area" />
                   <TextField fx:id="newAreaID" layoutX="445.0" layoutY="379.0" promptText="ID new area" />
+                  <Button fx:id="updateDeliveryArea" layoutX="221.0" layoutY="475.0" mnemonicParsing="false" onAction="#updateDeliveryArea" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="fillDataDeliveryArea" layoutX="412.0" layoutY="67.0" mnemonicParsing="false" onAction="#fillDataDeliveryArea" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
          </content>
       </Tab>

@@ -446,7 +446,7 @@ public class Restaurant implements Serializable {
 				d.removeComponent(comp);
 				if(d.getComponenets().isEmpty()) {
 					removeDish = d;
-					throw new NoComponentsExceptions(d);
+					throw new NoComponentsExceptions();
 				}
 			}
 		}catch(NoComponentsExceptions e) {

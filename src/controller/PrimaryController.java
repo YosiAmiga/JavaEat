@@ -23,7 +23,59 @@ import javafx.scene.image.Image;
 public class PrimaryController {
 	
 	/**************************************Customer Page*****************************************/
-	
+	/**
+	 * a method to update the data of an existing Customer
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateCustomerGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender,String password,String verifyPass, Neighberhood hood, boolean lactose, boolean gluten) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		//get the current Customer by its id from the database
+		Customer customerUpdate = Restaurant.getInstance().getRealCustomer(id);
+		//check each non empty parameter to update
+
+		//if new Customer name is different, update it
+		if(firstName != customerUpdate.getFirstName() && require(firstName)) {
+			customerUpdate.setFirstName(firstName);
+		}
+		if(LastName != customerUpdate.getFirstName() && require(LastName)) {
+			customerUpdate.setLastName(LastName);;
+		}
+
+		if(birthday != customerUpdate.getBirthDay() && require(birthday)) {
+			customerUpdate.setBirthDay(birthday);;
+		}
+
+		if(gender != customerUpdate.getGender() && require(gender)) {
+			customerUpdate.setGender(gender);;
+		}
+
+		if(password != customerUpdate.getPassword() && require(password)) {
+			customerUpdate.setPassword(password);
+		}
+
+		if(hood != customerUpdate.getNeighberhood() && require(hood)) {
+			customerUpdate.setNeighberhood(hood);;
+		}
+
+		if(lactose != customerUpdate.isSensitiveToLactose() && require(lactose)) {
+			customerUpdate.setSensitiveToLactose(lactose);;
+		}
+		if(gluten != customerUpdate.isSensitiveToGluten() && require(gluten)) {
+			customerUpdate.setSensitiveToGluten(gluten);;
+		}
+		
+		//after all changes were checked, update the component in the database
+		return Restaurant.getInstance().getCustomers().put(customerUpdate.getId(), customerUpdate) == null;
+	}
 
 	/**
 	 * This method is used to remove a customer from the database.
@@ -89,6 +141,64 @@ public class PrimaryController {
 	}
 	
 	/**************************************Delivery Person Page****************************************/
+	/**
+	 * a method to update the data of an existing delivery person
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateDeliveryPersonGUI(int id,String fName, String lName, LocalDate bDay, Gender g, Vehicle v ,String da) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		DeliveryArea tempArea = null;
+		int areaID = 0;
+		for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
+			if(d.getAreaName().equals(da)) {
+				areaID = d.getId();
+			}
+		}
+		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+		//get the current Customer by its id from the database
+		DeliveryPerson delPUpdate = Restaurant.getInstance().getRealDeliveryPerson(id);
+		//check each non empty parameter to update
+
+		//if new Customer name is different, update it
+		if(fName != delPUpdate.getFirstName() && require(fName)) {
+			delPUpdate.setFirstName(fName);
+		}
+		if(lName != delPUpdate.getFirstName() && require(lName)) {
+			delPUpdate.setLastName(lName);;
+		}
+
+		if(bDay != delPUpdate.getBirthDay() && require(bDay)) {
+			delPUpdate.setBirthDay(bDay);;
+		}
+
+		if(g != delPUpdate.getGender() && require(g)) {
+			delPUpdate.setGender(g);;
+		}
+
+
+		if(v != delPUpdate.getVehicle() && require(v)) {
+			delPUpdate.setVehicle(v);;
+		}
+
+		if(tempArea != delPUpdate.getArea() && require(tempArea)) {
+			delPUpdate.setArea(tempArea);;
+		}
+		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+
+		
+		//after all changes were checked, update the component in the database
+		return Restaurant.getInstance().getDeliveryPersons().put(delPUpdate.getId(), delPUpdate) == null;
+	}
+
 	
 	/**
 	 * a method to remove a delivery person from the database
@@ -125,7 +235,6 @@ public class PrimaryController {
 		if(!validate) {
 			throw new IllegelInputException();
 		}
-		//TODO ADD DELIVERY AREA!!!
 		DeliveryArea tempArea = null;
 		int areaID = 0;
 		for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
@@ -140,6 +249,57 @@ public class PrimaryController {
 	}
 	
 	/**************************************Cook Page*****************************************/
+	/**
+	 * a method to update the data of an existing Cook
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateCookGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender, Expertise expert,boolean isChef) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		
+		//get the current cook by its id from the database
+		Cook cookUpdate =Restaurant.getInstance().getRealCook(id);
+		
+		//check each non empty parameter to update
+
+		//if new Customer name is different, update it
+		if(firstName != cookUpdate.getFirstName() && require(firstName)) {
+			cookUpdate.setFirstName(firstName);
+		}
+		if(LastName != cookUpdate.getFirstName() && require(LastName)) {
+			cookUpdate.setLastName(LastName);;
+		}
+
+		if(birthday != cookUpdate.getBirthDay() && require(birthday)) {
+			cookUpdate.setBirthDay(birthday);;
+		}
+
+		if(gender != cookUpdate.getGender() && require(gender)) {
+			cookUpdate.setGender(gender);;
+		}
+
+
+		if(expert != cookUpdate.getExpert() && require(expert)) {
+			cookUpdate.setExpert(expert);
+		}
+
+		if(isChef != cookUpdate.isChef() && require(isChef)) {
+			cookUpdate.setChef(isChef);;
+		}
+
+		
+		//after all changes were checked, update the Cook in the database
+		return Restaurant.getInstance().getCooks().put(cookUpdate.getId(), cookUpdate) == null;
+	}
+	
 	/**
 	 * This method is used to remove a cook from the database.
 	 * @param id - the id of the cook.
@@ -265,6 +425,63 @@ public class PrimaryController {
 	/**************************************Dish Page*****************************************/
 
 	/**
+	 * a method to update the data of an existing Dish
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateDishGUI(int id, String dName,DishType type, ArrayList<Integer> componentsInDishList, int toMake) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		
+		//get the current Dish by its id from the database
+		Dish dishUpdate = Restaurant.getInstance().getRealDish(id);
+		//check each non empty parameter to update
+
+		//if new Customer name is different, update it
+		if(dName != dishUpdate.getDishName() && require(dName)) {
+			dishUpdate.setDishName(dName);
+		}
+		if(type != dishUpdate.getType() && require(type)) {
+			dishUpdate.setType(type);;
+		}
+
+		if(toMake != dishUpdate.getTimeToMake() && require(toMake)) {
+			dishUpdate.setTimeToMake(toMake);;
+		}
+		//first remove all current dishes so no duplicates will be added
+		for(Component c : dishUpdate.getComponenets()) {
+			dishUpdate.removeComponent(c);
+		}
+		
+		ArrayList<Component> components = new ArrayList<>();
+		for(int compID : componentsInDishList) {
+			//if the id of the component in componentsInDishList from user exist in system, add the component to the dish
+			if(Restaurant.getInstance().getComponenets().containsKey(compID)){
+				//get the component data by his id
+				Component temp = Restaurant.getInstance().getRealComponent(compID);
+				//add it to the ArrayList of components in the dish
+				components.add(temp);
+			}
+		}
+		//add new components after change
+		for(Component c : components) {
+			dishUpdate.addComponent(c);
+		}
+
+		
+		
+		//after all changes were checked, update the Cook in the database
+		return Restaurant.getInstance().getDishes().put(dishUpdate.getId(), dishUpdate) == null;
+	}
+	
+	/**
 	 * a method to remove a dish from the database
 	 * @param id
 	 * @return
@@ -301,7 +518,6 @@ public class PrimaryController {
 			if(Restaurant.getInstance().getComponenets().containsKey(compID)){
 				//get the component data by his id
 				Component temp = Restaurant.getInstance().getRealComponent(compID);
-				System.out.println(temp);
 				//add it to the ArrayList of components in the dish
 				components.add(temp);
 			}
@@ -314,7 +530,56 @@ public class PrimaryController {
 	
 	
 	/**************************************Order Page*****************************************/
+	/**
+	 * a method to update the data of an existing Order
+	 * @param id
+	 * @param cName
+	 * @param lactose
+	 * @param gluten
+	 * @param price
+	 * @return
+	 * @throws IllegelInputException
+	 */
+	public boolean updateOrderGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws IllegelInputException {
+		boolean validate = (requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		
+		//get the current Order by its id from the database
+		Order orderUpdate = Restaurant.getInstance().getRealOrder(id);
+		//check each non empty parameter to update
 
+		//if new customer to the updated order was entered, set him
+		if(custForOrder != orderUpdate.getCustomer().getId() && require(custForOrder)) {
+			orderUpdate.setCustomer(Restaurant.getInstance().getRealCustomer(custForOrder));
+		}
+
+		//first remove all current dishes so no duplicates will be added
+		for(Dish d : orderUpdate.getDishes()) {
+			orderUpdate.removeDish(d);
+		}
+		
+		ArrayList<Dish> dishes = new ArrayList<>();
+		for(int dishID : dishesInOrderList) {
+			//if the id of the Dish in dishesInOrderList from user exist in system, add the Dish to the Order
+			if(Restaurant.getInstance().getDishes().containsKey(dishID)){
+				//get the Dish data by his id
+				Dish temp = Restaurant.getInstance().getRealDish(dishID);
+				//add it to the ArrayList of components in the dish
+				dishes.add(temp);
+			}
+		}
+		//add new dishes after change
+		for(Dish d2 : dishes) {
+			orderUpdate.addDish(d2);
+		}
+
+		
+		
+		//after all changes were checked, update the Cook in the database
+		return Restaurant.getInstance().getOrders().put(orderUpdate.getId(), orderUpdate) == null;
+	}
 	
 	/**
 	 * a method to add an order to the database
@@ -325,39 +590,7 @@ public class PrimaryController {
 	 * @return true if success, false if failed.
 	 * @throws Exception
 	 */
-//	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList,int deliveryID) throws Exception{
-//
-//		//check for parameters of class order and validate id
-//		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
-//
-//		// if not valid throw exception
-//		if(!validate) {
-//			throw new IllegelInputException();			
-//		}
-//
-//		// create a new customer instance with the data we got from GUI		
-//		Customer c= Restaurant.getInstance().getRealCustomer(custForOrder);
-//		
-//		ArrayList<Dish> AlDishes=new ArrayList<Dish>();
-//			
-//		for(Dish d : Restaurant.getInstance().getDishes().values()) {
-//			for(int i : dishesInOrderList) {
-//				if(d.getId().equals(i)) {
-//					AlDishes.add(d);
-//				}
-//			}		
-//		}
-//		
-//		Delivery del=null;
-//		for(Delivery d : Restaurant.getInstance().getDeliveries().values()) {
-//			if(d.getId() == deliveryID) {
-//				del = d;
-//			}		
-//		}
-//		Order order = new Order(id,c,AlDishes,del);
-//		
-//		return Restaurant.getInstance().addOrder(order);
-//	}
+
 	
 	//trying to create order without creating a delivery, and only after linking delivery to it, add the order to HashSet again
 	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws Exception{
@@ -569,7 +802,51 @@ public class PrimaryController {
 
 	
 	/**************************************Delivery Area Page****************************************/
+	
+	/**
+	 * a method to add add a delivery area from GUI
+	 * @param id - the id of the delivery area
+	 * @param aName - the name of the delivery area
+	 * @param hoods - the neighborhoods in the delivery area
+	 * @param deliveryTime - the delivery time of the delivery area
+	 * @return true if added successfully, false if not
+	 * @throws IllegelInputException 
+	 */
+	public boolean updateDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods, int deliveryTime) throws IllegelInputException {
+		//create a HashSet of neighborhoods to set in the delivery area, convert the ArrayList of strings into HashSet of Neighberhood
+		boolean validate = (require(id, aName,deliveryTime) && requireNotZeroOrNegative(id));
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		HashSet<Neighberhood> aHoods = new HashSet<>();
+		for(String h : hoods) {
+			for(Neighberhood n : Neighberhood.values()) {
+				if(n.toString().equals(h)) {
+					aHoods.add(n);
+				}
+				
+			}
+		}
+		DeliveryArea oldArea = Restaurant.getInstance().getRealDeliveryArea(id);
+		
+		for(Neighberhood n : oldArea.getNeighberhoods()) {
+			oldArea.removeNeighberhood(n);
+		}
+		for(Neighberhood n : aHoods) {
+			oldArea.addNeighberhood(n);			
+		}
 
+		for(DeliveryPerson dp : oldArea.getDelPersons()) {
+			dp.setArea(oldArea);
+		}
+		for(Delivery d : oldArea.getDelivers()) {
+			d.setArea(oldArea);
+		}
+
+		
+		
+		return Restaurant.getInstance().getAreas().put(oldArea.getId(), oldArea) == null;	
+	}
 	
 	/**
 	 * a method to replace a given delivery area with a new one, both of them has to exist in the system!
@@ -586,7 +863,6 @@ public class PrimaryController {
 
 		DeliveryArea newArea = Restaurant.getInstance().getRealDeliveryArea(newAreaID);
 		DeliveryArea oldArea = Restaurant.getInstance().getRealDeliveryArea(oldAreaID);
-		System.out.println(oldArea);
 		return Restaurant.getInstance().removeDeliveryArea(oldArea, newArea);
 	}
 	

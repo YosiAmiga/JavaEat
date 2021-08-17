@@ -74,44 +74,25 @@ public class CustomerMainPageController implements Initializable  {
 		}
 	}
 
-//	public void loadCancelOrder(ActionEvent e)
-//	{
-//		try {
-//			if(cancel.isSelected())
-//			{
-////				CustomerCancelPageController.setCustomer(customer);
-//				newOrder.setSelected(false);
-//				orders.setSelected(false);
-//				AnchorPane pane=FXMLLoader.load(getClass().getResource("CustomerCancelPage.fxml"));
-//				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-//				rootPane.getChildren().removeAll(rootPane.getChildren());
-//				rootPane.getChildren().add(pane);
-//			}
-//
-//		} catch (IOException ex) {
-//			// TODO Auto-generated catch block
-//			ex.printStackTrace();
-//		}
-//	}
 	
-	public void loadOrders(ActionEvent e)
-	{
-		try {
-			if(orders.isSelected())
-			{
-//				customerOrdersPageController.setCustomer(customer);
-				newOrder.setSelected(false);
-				TableView pane=FXMLLoader.load(getClass().getResource("CustomerOrdersPage.fxml"));
-				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-				rootPane.getChildren().removeAll(rootPane.getChildren());
-				rootPane.getChildren().add(pane);
-			}
-
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-	}
+////	public void loadOrders(ActionEvent e)
+////	{
+////		try {
+////			if(orders.isSelected())
+////			{
+//////				customerOrdersPageController.setCustomer(customer);
+////				newOrder.setSelected(false);
+////				TableView pane=FXMLLoader.load(getClass().getResource("CustomerOrdersPage.fxml"));
+////				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
+////				rootPane.getChildren().removeAll(rootPane.getChildren());
+////				rootPane.getChildren().add(pane);
+////			}
+////
+////		} catch (IOException ex) {
+////			// TODO Auto-generated catch block
+////			ex.printStackTrace();
+////		}
+//	}
 	
 	public void logOutSys(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);

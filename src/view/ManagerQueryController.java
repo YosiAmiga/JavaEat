@@ -168,8 +168,8 @@ public class ManagerQueryController implements Initializable{
 		ObservableList<String> ObservableListExpertise=FXCollections.observableArrayList();
 		ObservableListExpertise.addAll(cookExpertiseAL);
 		cookExpertise.setItems(ObservableListExpertise);
-
-		Restaurant.save(Input);
+//
+//		Restaurant.save(Input);
 	}
 	
 	/*************** .1. ReleventDishList() Query*****************/

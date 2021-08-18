@@ -34,9 +34,12 @@ public class CustomerMainPageController implements Initializable  {
 	    @FXML
 	    private ToggleButton newOrder;
 
-
 	    @FXML
-	    private ToggleButton orders;
+	    private ToggleButton query;
+	    
+	    @FXML
+	    private ToggleButton settings;
+	    
 	    @FXML
 		private ToggleButton logout;
 
@@ -48,7 +51,8 @@ public class CustomerMainPageController implements Initializable  {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	    newOrder.setSelected(false);
-	    orders.setSelected(false);
+	    query.setSelected(false);
+	    settings.setSelected(false);
 	    logout.setSelected(false);
 	    exit.setSelected(false);
 	    successLogin(customer.getFirstName() + " " + customer.getLastName(),"Welcome to JavaEat!");
@@ -61,7 +65,7 @@ public class CustomerMainPageController implements Initializable  {
 			if(newOrder.isSelected())
 			{
 				CustomerMyOrdersController.customer = customer;
-				orders.setSelected(false);
+				query.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\customerMyOrders.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
 				rootPane.getChildren().removeAll(rootPane.getChildren());
@@ -75,24 +79,44 @@ public class CustomerMainPageController implements Initializable  {
 	}
 
 	
-////	public void loadOrders(ActionEvent e)
-////	{
-////		try {
-////			if(orders.isSelected())
-////			{
-//////				customerOrdersPageController.setCustomer(customer);
-////				newOrder.setSelected(false);
-////				TableView pane=FXMLLoader.load(getClass().getResource("CustomerOrdersPage.fxml"));
-////				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-////				rootPane.getChildren().removeAll(rootPane.getChildren());
-////				rootPane.getChildren().add(pane);
-////			}
-////
-////		} catch (IOException ex) {
-////			// TODO Auto-generated catch block
-////			ex.printStackTrace();
-////		}
-//	}
+	public void loadQueries(ActionEvent e)
+	{
+		try {
+			if(query.isSelected())
+			{
+				CustomerQueryController.customer = customer;
+				newOrder.setSelected(false);
+				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerQueryPage.fxml"));
+				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
+				rootPane.getChildren().removeAll(rootPane.getChildren());
+				rootPane.getChildren().add(pane);
+			}
+
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+	}
+	public void loadSettings(ActionEvent e)
+	{
+		try {
+			if(settings.isSelected())
+			{
+				CustomerSettingsController.customer = customer;
+				newOrder.setSelected(false);
+				AnchorPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerUpdateSettings.fxml"));
+				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
+				rootPane.getChildren().removeAll(rootPane.getChildren());
+				rootPane.getChildren().add(pane);
+			}
+
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+	}
+	
+	/*TODO ADD SETTINGS!!!*/
 	
 	public void logOutSys(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);

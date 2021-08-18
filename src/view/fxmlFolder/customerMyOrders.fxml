@@ -11,36 +11,52 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="770.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CustomerMyOrdersController">
    <tabs>
-      <Tab text="new order">
+      <Tab text="New Order">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="669.0">
                <children>
-                  <Button layoutX="341.0" layoutY="321.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="89.0" text="add order" />
-                  <ComboBox fx:id="starters" layoutX="41.0" layoutY="22.0" prefWidth="150.0" promptText="starters" />
-                  <Button layoutX="29.0" layoutY="65.0" minHeight="20.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="103.0" text="add starters" />
-                  <Button layoutX="140.0" layoutY="65.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="103.0" text="clear starters" />
-                  <ComboBox fx:id="MainDishes" layoutX="327.0" layoutY="22.0" prefWidth="150.0" promptText="Main dishes" />
-                  <ComboBox fx:id="desserts" layoutX="582.0" layoutY="22.0" prefWidth="150.0" promptText="desserts" />
-                  <Button layoutX="410.0" layoutY="60.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="89.0" text="clear order" />
-                  <Button layoutX="281.0" layoutY="60.0" minHeight="20.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="121.0" text="add main dishes" />
-                  <Button layoutX="553.0" layoutY="60.0" minHeight="20.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" text="add dish" />
-                  <Button layoutX="657.0" layoutY="60.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="89.0" text="clear order" />
-                  <TextArea layoutX="74.0" layoutY="114.0" prefHeight="200.0" prefWidth="648.0" />
+                  <Button fx:id="addOrder" layoutX="340.0" layoutY="425.0" mnemonicParsing="false" onAction="#addOrder" prefHeight="42.0" prefWidth="89.0" text="add order" />
+                  <ComboBox fx:id="starters" layoutX="41.0" layoutY="22.0" prefWidth="150.0" promptText="Starters" />
+                  <Button fx:id="addStarter" layoutX="69.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addStartersToOrder" prefHeight="27.0" prefWidth="103.0" text="add starter" />
+                  <ComboBox fx:id="MainDishes" layoutX="310.0" layoutY="22.0" prefWidth="150.0" promptText="Main dishes" />
+                  <ComboBox fx:id="desserts" layoutX="573.0" layoutY="22.0" prefWidth="150.0" promptText="Desserts" />
+                  <Button fx:id="addMainDish" layoutX="332.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addMainDishToOrder" prefHeight="28.0" prefWidth="121.0" text="add main dish" />
+                  <Button fx:id="addDessert" layoutX="608.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addDessertsToOrder" prefHeight="27.0" prefWidth="80.0" text="add dessert" />
+                  <Button fx:id="clearDishesInOrder" layoutX="295.0" layoutY="336.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" prefHeight="30.0" prefWidth="180.0" text="clear order" />
+                  <TextArea fx:id="dishesInOrderShow" layoutX="69.0" layoutY="124.0" prefHeight="200.0" prefWidth="648.0" promptText="List of dishes in order" />
                </children>
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="remove order">
+      <Tab text="Customize your dishes">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="componentsInDish" layoutX="35.0" layoutY="176.0" prefHeight="26.0" prefWidth="214.0" promptText="Select components in the dish" />
+                  <Button fx:id="addComp" layoutX="35.0" layoutY="215.0" mnemonicParsing="false" onAction="#addComponentToDish" text="add" />
+                  <Button fx:id="clearComp" layoutX="114.0" layoutY="215.0" mnemonicParsing="false" onAction="#clearComponentsFromDish" text="Clear list" />
+                  <TextArea fx:id="compList" layoutX="11.0" layoutY="255.0" prefHeight="200.0" prefWidth="247.0" promptText="Components List" />
+                  <Button fx:id="addCustomDish" layoutX="269.0" layoutY="399.0" mnemonicParsing="false" onAction="#addCustomDish" prefHeight="41.0" prefWidth="166.0" text="Add custom dish to order " />
+                  <Button fx:id="clearCustomDishes" layoutX="483.0" layoutY="86.0" mnemonicParsing="false" onAction="#clearDishesFromOrder" prefHeight="30.0" prefWidth="180.0" text="Clear dishes from order" />
+                  <TextArea fx:id="customDishesList" layoutX="459.0" layoutY="137.0" prefHeight="254.0" prefWidth="254.0" promptText="List of dishes in order" />
+                  <Button fx:id="addCustomOrder" layoutX="498.0" layoutY="407.0" mnemonicParsing="false" onAction="#addCustomOrder" prefHeight="26.0" prefWidth="150.0" text="Add custom order" />
+                  <ComboBox fx:id="dishesInMenu" layoutX="39.0" layoutY="28.0" prefHeight="26.0" prefWidth="211.0" promptText="Select a dish to customise" />
+                  <Button fx:id="addDishToEdit" layoutX="279.0" layoutY="28.0" mnemonicParsing="false" onAction="#loadComponents" prefHeight="26.0" prefWidth="146.0" text="Load dish components" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Remove an Order">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ComboBox fx:id="currentOrders" layoutX="236.0" layoutY="59.0" prefHeight="26.0" prefWidth="291.0" promptText="Select Order to remove" />
-                  <Button fx:id="removeOrder" layoutX="306.0" layoutY="369.0" mnemonicParsing="false" text="remove order" />
+                  <Button fx:id="removeOrder" layoutX="306.0" layoutY="369.0" mnemonicParsing="false" onAction="#removeOrder" text="remove order" />
                </children>
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="orders history">
+      <Tab text="Orders history">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -55,6 +71,27 @@
                </children>
             </AnchorPane>
          </content>
+      </Tab>
+      <Tab text="View Dishes in Menu">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="482.0" prefWidth="770.0">
+                     <children>
+                        <TableView fx:id="dishesTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="dishID" prefWidth="40.00002896785736" text="ID" />
+                              <TableColumn fx:id="dishName" prefWidth="96.79998779296875" text="Dish Name" />
+                              <TableColumn fx:id="dishType" prefWidth="127.19998168945312" text="Dish Type" />
+                              <TableColumn fx:id="dishComponents" prefWidth="200.0" text="Dish Components" />
+                              <TableColumn fx:id="dishTime" prefWidth="391.9999694824219" text="Time to make" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+        </content>
       </Tab>
    </tabs>
 </TabPane>

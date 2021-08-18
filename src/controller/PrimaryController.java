@@ -10,9 +10,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.PasswordMismatchException;
+import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
 import Exceptions.expressDeliveryMissMatchException;
 import javafx.collections.ObservableList;
@@ -74,7 +76,7 @@ public class PrimaryController {
 		}
 		
 		//after all changes were checked, update the component in the database
-		return Restaurant.getInstance().getCustomers().put(customerUpdate.getId(), customerUpdate) == null;
+		return Restaurant.getInstance().getCustomers().put(customerUpdate.getId(), customerUpdate) != null;
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class PrimaryController {
 
 		
 		//after all changes were checked, update the component in the database
-		return Restaurant.getInstance().getDeliveryPersons().put(delPUpdate.getId(), delPUpdate) == null;
+		return Restaurant.getInstance().getDeliveryPersons().put(delPUpdate.getId(), delPUpdate) != null;
 	}
 
 	
@@ -297,7 +299,7 @@ public class PrimaryController {
 
 		
 		//after all changes were checked, update the Cook in the database
-		return Restaurant.getInstance().getCooks().put(cookUpdate.getId(), cookUpdate) == null;
+		return Restaurant.getInstance().getCooks().put(cookUpdate.getId(), cookUpdate) != null;
 	}
 	
 	/**
@@ -384,7 +386,7 @@ public class PrimaryController {
 		}
 		
 		//after all changes were checked, update the component in the database
-		return Restaurant.getInstance().getComponenets().put(componentUpdate.getId(), componentUpdate) == null;
+		return Restaurant.getInstance().getComponenets().put(componentUpdate.getId(), componentUpdate) != null;
 	}
 	
 	
@@ -478,7 +480,7 @@ public class PrimaryController {
 		
 		
 		//after all changes were checked, update the Cook in the database
-		return Restaurant.getInstance().getDishes().put(dishUpdate.getId(), dishUpdate) == null;
+		return Restaurant.getInstance().getDishes().put(dishUpdate.getId(), dishUpdate) != null;
 	}
 	
 	/**
@@ -530,6 +532,25 @@ public class PrimaryController {
 	
 	
 	/**************************************Order Page*****************************************/
+	
+	/**
+	 * a method to add custom made dishes by the customer to his order
+	 * @param custForOrder - the customer for the order
+	 * @param dishesInOrderList - the custom made dishes for the order
+	 * @return
+	 * @throws IllegelInputException 
+	 * @throws SensitiveException 
+	 * @throws IllegalCustomerException 
+	 */
+	public boolean addCustomOrder(int id, int custForOrder, ArrayList<Dish> dishesInOrderList) throws IllegelInputException, IllegalCustomerException, SensitiveException {
+		boolean validate = (requireNotZeroOrNegative(custForOrder) );
+		if(!validate) {
+			throw new IllegelInputException();
+		}
+		Customer c= Restaurant.getInstance().getRealCustomer(custForOrder);
+		Order order = new Order(id,c,dishesInOrderList,null);
+		return Restaurant.getInstance().addCustomOrder(order);
+	}
 	/**
 	 * a method to update the data of an existing Order
 	 * @param id
@@ -541,7 +562,7 @@ public class PrimaryController {
 	 * @throws IllegelInputException
 	 */
 	public boolean updateOrderGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws IllegelInputException {
-		boolean validate = (requireNotZeroOrNegative(id));
+		boolean validate = (requireNotZeroOrNegative(id,custForOrder) );
 		if(!validate) {
 			throw new IllegelInputException();
 		}
@@ -578,7 +599,7 @@ public class PrimaryController {
 		
 		
 		//after all changes were checked, update the Cook in the database
-		return Restaurant.getInstance().getOrders().put(orderUpdate.getId(), orderUpdate) == null;
+		return Restaurant.getInstance().getOrders().put(orderUpdate.getId(), orderUpdate) != null;
 	}
 	
 	/**
@@ -596,7 +617,7 @@ public class PrimaryController {
 	public boolean addOrderFromGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws Exception{
 
 		//check for parameters of class order and validate id
-		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id));
+		boolean validate = (require(id,custForOrder,dishesInOrderList)) && (requireNotZeroOrNegative(id,custForOrder));
 
 		// if not valid throw exception
 		if(!validate) {

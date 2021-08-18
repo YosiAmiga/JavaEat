@@ -134,7 +134,6 @@ public class Dish implements Serializable{
 			price += c.getPrice();
 		}
 		price = price*3;
-//		MyFileLogWriter.println(this+" Price is "+price);
 		return price;
 	}
 	

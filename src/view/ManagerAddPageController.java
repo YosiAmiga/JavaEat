@@ -418,7 +418,7 @@ public class ManagerAddPageController implements Initializable {
 		/**************Load list of dishes in system*********/
 		ArrayList<String> dishesDB = new ArrayList<>();
 		for(Dish d :  Restaurant.getInstance().getDishes().values()) {
-			dishesDB.add("ID: " + d.getId() + " Name: " + d.getDishName());
+			dishesDB.add("Dish ID: " + d.getId() + " Dish Name: " + d.getDishName());
 		}
 		ObservableList<String> ObservableListDishes = FXCollections.observableArrayList();
 		ObservableListDishes.addAll(dishesDB);
@@ -439,7 +439,7 @@ public class ManagerAddPageController implements Initializable {
 		/***************Load list of cooks in system*********/
 		ArrayList<String> cooksDB = new ArrayList<>();
 		for(Cook c :  Restaurant.getInstance().getCooks().values()) {
-			cooksDB.add("ID: " + c.getId() + " Name: " + c.getFirstName()+ " " +c.getLastName());
+			cooksDB.add("Cook ID: " + c.getId() + " Cook Name: " + c.getFirstName()+ " " +c.getLastName());
 		}
 		ObservableList<String> ObservableListCooks = FXCollections.observableArrayList();
 		ObservableListCooks.addAll(cooksDB);
@@ -476,7 +476,6 @@ public class ManagerAddPageController implements Initializable {
 		deliveryAreasByID.setItems(comboAreas2);
 		
 		/***************Load list of components in the system***************/
-		//will be only the id of the component
 		ArrayList<String> componentsDB = new ArrayList<>();
 		for(Component c : Restaurant.getInstance().getComponenets().values()) {
 			componentsDB.add("ID: "+c.getId() + " Name: " + c.getComponentName());
@@ -670,8 +669,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -1050,8 +1047,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -1206,8 +1201,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -1356,8 +1349,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -1504,8 +1495,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
 		refreshGui();
 	}
 	
@@ -2191,7 +2180,6 @@ public class ManagerAddPageController implements Initializable {
 		cookExpertise.setPromptText("Expertise");
 		cookGender.setPromptText("Gender");
 		cooksInSys.setPromptText("Current Cook");
-		/*TODO cookDate reset*/
 		isChef.setSelected(false);;
 
 		

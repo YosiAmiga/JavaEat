@@ -35,7 +35,7 @@
                         <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="orders" contentDisplay="TOP" mnemonicParsing="false" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Queries">
+                  <ToggleButton fx:id="query" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadQueries" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Queries">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -53,7 +53,7 @@
                         <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="orders1" contentDisplay="TOP" layoutX="15.0" layoutY="309.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Change Details">
+                  <ToggleButton fx:id="settings" contentDisplay="TOP" layoutX="15.0" layoutY="309.0" mnemonicParsing="false" onAction="#loadSettings" prefHeight="94.0" prefWidth="153.0" styleClass="button" stylesheets="@background.css" text="Change Settings">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>

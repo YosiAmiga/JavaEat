@@ -353,7 +353,6 @@ public class ManagerDataBaseController implements Initializable {
 		return deliveryPerson;	
 	}	
 	
-	
 	/*get all the components from the database*/
 	private ObservableList<Component> getComponents(){
 		ObservableList<Component> components=FXCollections.observableArrayList();

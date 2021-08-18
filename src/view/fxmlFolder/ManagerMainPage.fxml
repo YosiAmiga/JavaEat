@@ -52,24 +52,6 @@
                         <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </ToggleButton>
-                  <ToggleButton fx:id="manage" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadManage" prefHeight="126.0" prefWidth="208.0" selected="true" styleClass="button" stylesheets="@background.css" text="to delete?">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" top="5.0" />
-                     </padding>
-                     <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../img/cancel.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="15.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                  </ToggleButton>
                   <ToggleButton fx:id="queries" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadQueries" prefHeight="126.0" prefWidth="208.0" selected="true" styleClass="button" stylesheets="@background.css" text="Queries">
                      <padding>
                         <Insets bottom="5.0" left="5.0" top="5.0" />

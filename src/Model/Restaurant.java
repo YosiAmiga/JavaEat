@@ -310,6 +310,32 @@ public class Restaurant implements Serializable {
 		
 		return getOrders().put(order.getId(), order) == null;
 	}
+	
+	/* add a custom order to the orders hash map, it contains dish that was edited by the customer*/
+	public boolean addCustomOrder(Order order) throws IllegalCustomerException, SensitiveException {
+		//if order is null OR if orders hash map contains order OR if customers hash map does not contain the customer in the order return false
+		if(order == null || getOrders().containsKey(order.getId()))
+			return false;
+		if(order.getCustomer() == null || !getCustomers().containsKey(order.getCustomer().getId()))
+			return false;
+		//if the customers is in the blacklist, can not add him to the order and throw IllegalCustomerException exception
+		if(getBlackList().contains(order.getCustomer())) {
+			throw new IllegalCustomerException();
+		}
+		//no need to check if the dish is in the dishes HashMap because it is a custom dish
+		for(Dish d : order.getDishes()){
+			for(Component c: d.getComponenets()) {
+				if(order.getCustomer().isSensitiveToGluten() && c.isHasGluten()) {
+					throw new SensitiveException(order.getCustomer().getFirstName() + " " +order.getCustomer().getLastName(), d.getDishName());
+				}
+				else if(order.getCustomer().isSensitiveToLactose() && c.isHasLactose()) {
+					throw new SensitiveException(order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName(), d.getDishName());
+				}
+			}
+		}
+				
+		return getOrders().put(order.getId(), order) == null;
+	}
 
 	public boolean addDelivery(Delivery delivery) {
 		try {

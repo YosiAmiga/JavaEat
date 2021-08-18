@@ -22,8 +22,6 @@ public class ManagerMainController implements Initializable {
 	private AnchorPane rootPane;
 	@FXML
 	private ToggleButton add;
-	@FXML
-	private ToggleButton manage;
 
 	@FXML
 	private ToggleButton queries;
@@ -40,7 +38,6 @@ public class ManagerMainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		manage.setSelected(false);
 		queries.setSelected(false);
 		db.setSelected(false);
 		add.setSelected(false);
@@ -56,7 +53,7 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(add.isSelected())
 			{
-				manage.setSelected(false);
+
 				queries.setSelected(false);
 				db.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerAddPage.fxml"));
@@ -77,7 +74,6 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(db.isSelected())
 			{
-				manage.setSelected(false);
 				queries.setSelected(false);
 				add.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerDataBasePage.fxml"));
@@ -92,25 +88,6 @@ public class ManagerMainController implements Initializable {
 		}
 	}
 
-	public void loadManage(ActionEvent e)
-	{
-		try {
-			if(manage.isSelected())
-			{
-				add.setSelected(false);
-				queries.setSelected(false);
-				db.setSelected(false);
-				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\AdminManageOrders.fxml"));
-				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());
-				rootPane.getChildren().removeAll(rootPane.getChildren());
-				rootPane.getChildren().add(pane);
-			}
-
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-	}
 
 
 	public void loadQueries(ActionEvent e)
@@ -119,7 +96,6 @@ public class ManagerMainController implements Initializable {
 			if(queries.isSelected())
 			{
 				add.setSelected(false);
-				manage.setSelected(false);
 				db.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerQueryPage.fxml"));
 				pane.setPrefSize(rootPane.getWidth(), rootPane.getHeight());

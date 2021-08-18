@@ -8,7 +8,7 @@
       <TableColumn fx:id="dishID" prefWidth="55.20004117488861" text="ID" />
       <TableColumn fx:id="dishName" prefWidth="115.9999771118164" text="dish Name" />
       <TableColumn fx:id="dishType" prefWidth="99.20001220703125" text="Dish Type" />
-      <TableColumn fx:id="dishComponents" prefWidth="282.3999328613281" text="Components" />
-      <TableColumn fx:id="dishTime" prefWidth="98.39996337890625" text="Time to make" />
+      <TableColumn fx:id="dishComponents" prefWidth="240.79989624023438" text="Components" />
+      <TableColumn fx:id="dishTime" prefWidth="140.0" text="Time to make" />
    </columns>
 </TableView>

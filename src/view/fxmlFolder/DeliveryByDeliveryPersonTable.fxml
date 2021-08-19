@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<TableView fx:id="deliveryTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="747.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="view.GetDeliveriesByPersonQueryController">
+   <columns>
+      <TableColumn fx:id="deliveryID" prefWidth="68.0" text="ID" />
+      <TableColumn fx:id="deliveryDelPerson" prefWidth="134.4000244140625" text=" Delivery Person" />
+      <TableColumn fx:id="deliveryDelArea" prefWidth="156.79998779296875" text="Delivery Area" />
+      <TableColumn fx:id="deliveryIsDelivered" prefWidth="116.79998779296875" text="Is Delivered" />
+      <TableColumn fx:id="deliveryDate" prefWidth="202.4000244140625" text="Delivery Date" />
+   </columns>
+</TableView>

@@ -1593,13 +1593,18 @@ public class ManagerAddPageController implements Initializable {
 	public void removeDelivery(ActionEvent e) {
 		String section = "Delivery";
 		try {
-			
+			if(delIDToRemove.getText() == null) {
+				throw new EmptyTextFieldException();
+			}
 			int id = Integer.parseInt(delIDToRemove.getText());
 			if(control.removeDeliveryFromGUI(id)) {
-				successAdded(section, "Success");
+				successRemove(section, "Success");
 				Restaurant.save(Input);	
 			}
 			
+		}
+		catch(EmptyTextFieldException e1) {
+			fail(section, e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());

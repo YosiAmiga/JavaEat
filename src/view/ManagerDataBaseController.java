@@ -302,7 +302,7 @@ public class ManagerDataBaseController implements Initializable {
 		deliveryAreaName.setCellValueFactory(new PropertyValueFactory<DeliveryArea, String>("areaName"));
 		deliveryAreaHoods.setCellValueFactory(new PropertyValueFactory<DeliveryArea, HashSet<Neighberhood>>("neighberhoods"));
 		deliveryAreaDelPersons.setCellValueFactory(new PropertyValueFactory<DeliveryArea, HashSet<DeliveryPerson>>("delPersons"));
-//		deliveryAreaDeliveries.setCellValueFactory(new PropertyValueFactory<DeliveryArea, HashSet<Delivery>>("delivers"));
+		deliveryAreaDeliveries.setCellValueFactory(new PropertyValueFactory<DeliveryArea, HashSet<Delivery>>("delivers"));
 		deliveryAreaTime.setCellValueFactory(new PropertyValueFactory<DeliveryArea, Integer>("deliverTime"));
 		deliveryAreaTable.setItems(getDeliveryAreas());
 

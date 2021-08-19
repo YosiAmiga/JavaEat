@@ -520,7 +520,8 @@ public class Restaurant implements Serializable {
 			ed.getOrder().setDelivery(null);
 			getOrders().put(ed.getOrder().getId(), ed.getOrder());
 		}
-		return getDeliveries().remove(delivery.getId()) != null && delivery.getArea().removeDelivery(delivery);
+		delivery.getArea().removeDelivery(delivery);
+		return getDeliveries().remove(delivery.getId()) != null;
 	}
 
 	public boolean removeDeliveryArea(DeliveryArea oldArea, DeliveryArea newArea) {
@@ -749,8 +750,7 @@ public class Restaurant implements Serializable {
 		}
 		return profit;
 	}
-	
-	
+		
 	/**
 	 Create an AI Machine, that gets a delivery person, delivery area, and a tree set of orders as parameters 
 	 * it will return a sorted tree set of deliveries, according to the express and regular deliveries in the given tree set of orders.
@@ -760,7 +760,7 @@ public class Restaurant implements Serializable {
 	 * @param orders - the tree set of orders
 	 * @return sorted tree of deliveries
 	 */
-	public TreeSet<Delivery> createAIMacine(DeliveryPerson dp, DeliveryArea da, TreeSet<Order> orders){
+	public TreeSet<Delivery> createAIMacine(int deliveryID, DeliveryPerson dp, DeliveryArea da, TreeSet<Order> orders){
 		TreeSet<Delivery> AIDecision = new TreeSet<>(new Comparator<Delivery>() {
 
 			@Override
@@ -775,25 +775,37 @@ public class Restaurant implements Serializable {
 		TreeSet<Order> toRegularDelivery = new TreeSet<>();
 		if(orders.size()<=2) {
 			for(Order o: orders) {
-				ExpressDelivery ed = new ExpressDelivery(dp, da, false, o,LocalDate.of(2021,1,1));
+				ExpressDelivery ed = new ExpressDelivery(deliveryID,dp, da, false, o,LocalDate.of(2021,1,1));
 				AIDecision.add(ed);
+				o.setDelivery(ed);
+				//if 2 orders, increase the second delivery id
+				deliveryID++;
 			}
 		}
 		else {
 			for(Order o: orders) {
 				if(o.getCustomer().isSensitiveToGluten() || o.getCustomer().isSensitiveToLactose()) {
-					ExpressDelivery ed = new ExpressDelivery(dp, da, false, o,LocalDate.of(2021,1,1));
+					ExpressDelivery ed = new ExpressDelivery(deliveryID,dp, da, false, o,LocalDate.of(2021,1,1));
+					o.setDelivery(ed);
 					AIDecision.add(ed);
 				}
 				else
 					toRegularDelivery.add(o);
 			}
 			if(toRegularDelivery.size()<2) {
-				ExpressDelivery ed = new ExpressDelivery(dp, da, false, toRegularDelivery.first(),LocalDate.of(2021, 1, 1));
+				ExpressDelivery ed = new ExpressDelivery(deliveryID,dp, da, false, toRegularDelivery.first(),LocalDate.of(2021, 1, 1));
+				toRegularDelivery.first().setDelivery(ed);
 				AIDecision.add(ed);
 			}
 			else {
-				RegularDelivery rd = new RegularDelivery(toRegularDelivery, dp, da, false, LocalDate.of(2021, 1, 1));
+				for(Order o : toRegularDelivery) {
+					System.out.println(o.getDelivery());
+				}
+				RegularDelivery rd = new RegularDelivery(deliveryID,toRegularDelivery, dp, da, false, LocalDate.of(2021, 1, 1));
+				for(Order o : toRegularDelivery) {
+					o.setDelivery(rd);
+					System.out.println(o.getDelivery());
+				}
 				AIDecision.add(rd);
 			}
 		}

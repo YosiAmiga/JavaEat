@@ -7,11 +7,12 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="699.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerQueryController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="653.0" prefWidth="807.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerQueryController">
   <tabs>
       <Tab text="Relevant Dishes">
         <content>
@@ -19,7 +20,7 @@
                <children>
                   <ComboBox fx:id="customersInSystem" layoutX="51.0" layoutY="28.0" prefHeight="23.0" prefWidth="196.0" promptText="Select a customer" />
                   <Button fx:id="searchForCustomer" layoutX="274.0" layoutY="27.0" mnemonicParsing="false" onAction="#getCustomerToQueryFromGUI" prefHeight="26.0" prefWidth="105.0" text="Search dishes" />
-                  <AnchorPane fx:id="relDishesWrapper" layoutX="1.0" layoutY="73.0" prefHeight="463.0" prefWidth="782.0" />
+                  <AnchorPane fx:id="relDishesWrapper" layoutX="1.0" layoutY="73.0" prefHeight="549.0" prefWidth="807.0" />
                </children>
             </AnchorPane>
         </content>
@@ -39,14 +40,20 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Button fx:id="searchForCook" layoutX="363.0" layoutY="37.0" mnemonicParsing="false" onAction="#getExpertiesToQueryFromGUI" text="Search Cook" />
-                  <AnchorPane fx:id="cookByExpWrapper" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="430.0" prefWidth="757.0" />
+                  <AnchorPane fx:id="cookByExpWrapper" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="562.0" prefWidth="801.0" />
                   <ComboBox fx:id="cookExpertise" layoutX="70.0" layoutY="38.0" prefHeight="23.0" prefWidth="193.0" promptText="Select Expertie" />
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="&quot;delivery by del person&quot;">
+      <Tab text="Delivery by delivery person">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="deliveryPersonInSystem" layoutX="14.0" layoutY="22.0" prefHeight="23.0" prefWidth="196.0" promptText="Select a delivery person" />
+                  <TextField fx:id="deliveryMonth" layoutX="252.0" layoutY="22.0" promptText="Enter month by number" />
+                  <Button fx:id="searchForDeliveryPerson" layoutX="461.0" layoutY="21.0" mnemonicParsing="false" onAction="#getDeliveriesByPersonGUI" prefHeight="26.0" prefWidth="105.0" text="Search deliveries" />
+                  <AnchorPane fx:id="delByPersonWrapper" layoutX="-2.0" layoutY="81.0" prefHeight="545.0" prefWidth="807.0" />
+               </children></AnchorPane>
         </content>
       </Tab>
       <Tab text="Delivery Type Counter">
@@ -118,21 +125,33 @@
                <children>
                   <TableView fx:id="dishesTable" layoutX="20.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="509.6" prefWidth="699.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="dishID" editable="false" prefWidth="59.999998569488525" sortable="false" text="ID" />
-                        <TableColumn fx:id="dishName" editable="false" prefWidth="119.20001983642578" sortable="false" text="Dish Name" />
-                        <TableColumn fx:id="dishType" editable="false" prefWidth="109.5999755859375" sortable="false" text="Dish Type" />
-                        <TableColumn fx:id="dishTime" editable="false" prefWidth="133.5999755859375" sortable="false" text="Time to make" />
+                        <TableColumn fx:id="dishID" editable="false" prefWidth="113.60003662109375" sortable="false" text="ID" />
+                        <TableColumn fx:id="dishName" editable="false" prefWidth="177.59991455078125" sortable="false" text="Dish Name" />
+                        <TableColumn fx:id="dishType" editable="false" prefWidth="173.5999755859375" sortable="false" text="Dish Type" />
+                        <TableColumn fx:id="dishTime" editable="false" prefWidth="346.4000244140625" sortable="false" text="Time to make (minutes)" />
                      </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
                   </TableView>
                </children></AnchorPane>
          </content>
       </Tab>
-      <Tab text="&quot;createAIMacine&quot;">
+      <Tab text="A.I Machine">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="deliveryPersonInSystem2" layoutX="14.0" layoutY="21.0" prefHeight="23.0" prefWidth="196.0" promptText="Select a delivery person" />
+                  <ComboBox fx:id="deliveryAreas" layoutX="224.0" layoutY="21.0" prefHeight="23.0" prefWidth="196.0" promptText="Select a delivery area" />
+                  <ComboBox fx:id="ordersInAI" layoutX="443.0" layoutY="20.0" prefHeight="26.0" prefWidth="299.0" promptText="Select Order (all orders are without delivery)" />
+                  <TextArea fx:id="ordersAI" layoutX="443.0" layoutY="88.0" prefHeight="67.0" prefWidth="286.0" promptText="List of orders" />
+                  <Button fx:id="addOrderToList" layoutX="481.0" layoutY="51.0" mnemonicParsing="false" onAction="#addOrderIDToDelivery" text="add" />
+                  <Button fx:id="clearOrdersList" layoutX="556.0" layoutY="51.0" mnemonicParsing="false" onAction="#clearOrdersInDelivery" text="Clear list" />
+                  <AnchorPane fx:id="aiWrapper" layoutX="-7.0" layoutY="155.0" prefHeight="470.0" prefWidth="818.0" />
+                  <Button fx:id="searchAI" layoutX="255.0" layoutY="108.0" mnemonicParsing="false" onAction="#createAI" prefHeight="26.0" prefWidth="134.0" text="Send to A.I" />
+                  <Label layoutX="21.0" layoutY="108.0" prefHeight="27.0" prefWidth="202.0" text="Deliveries created:">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
         </content>
       </Tab>
   </tabs>

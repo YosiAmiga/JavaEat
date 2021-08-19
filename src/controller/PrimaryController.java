@@ -658,8 +658,7 @@ public class PrimaryController {
 		return Restaurant.getInstance().removeOrder(orderDelete);
 	}
 	
-	/************************************Delivery Page
-	 * @throws IllegelInputException *******************************************/
+	/************************************Delivery Page *******************************************/
 	public boolean removeDeliveryFromGUI(int id) throws IllegelInputException {
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {

@@ -60,12 +60,11 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="ordersTable" prefHeight="481.0" prefWidth="770.0">
+                  <TableView fx:id="ordersTable" prefHeight="557.0" prefWidth="843.0">
                     <columns>
                         <TableColumn fx:id="orderID" prefWidth="78.4000244140625" text="ID" />
-                        <TableColumn fx:id="orderCustomer" prefWidth="216.79998779296875" text="Customer" />
-                        <TableColumn fx:id="orderDishes" prefWidth="207.20004272460938" text="Dishes" />
-                        <TableColumn fx:id="orderDelivery" prefWidth="340.79998779296875" text="Delivery" />
+                        <TableColumn fx:id="orderCustomer" prefWidth="307.19998931884766" text="Customer" />
+                        <TableColumn fx:id="orderDishes" prefWidth="357.5999450683594" text="Dishes" />
                     </columns>
                   </TableView>
                </children>

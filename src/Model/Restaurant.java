@@ -816,10 +816,10 @@ public class Restaurant implements Serializable {
 	public void successRemove(String content, String header) {
 		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);
-		al.setContentText(content+" Removed Successfully");
 		al.setHeaderText(header);
 		al.setTitle("Database");
 		al.setResizable(false);
+		al.setContentText(content+" Removed Successfully");
 		al.showAndWait();
 	}
 	

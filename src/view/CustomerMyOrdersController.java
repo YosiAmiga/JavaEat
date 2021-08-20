@@ -107,8 +107,8 @@ public class CustomerMyOrdersController implements Initializable {
 	private TableColumn<Order, Customer> orderCustomer;
 	@FXML
 	private TableColumn<Order, ArrayList<Dish>> orderDishes;
-	@FXML
-	private TableColumn<Order, Delivery> orderDelivery;
+//	@FXML
+//	private TableColumn<Order, Delivery> orderDelivery;
 
 	/*******************View dishes in menu page********************/
 	
@@ -215,7 +215,6 @@ public class CustomerMyOrdersController implements Initializable {
 		orderID.setCellValueFactory(new PropertyValueFactory<Order, Integer>("id"));
 		orderCustomer.setCellValueFactory(new PropertyValueFactory<Order, Customer>("customer"));
 		orderDishes.setCellValueFactory(new PropertyValueFactory<Order, ArrayList<Dish>>("dishes"));
-		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
 		ordersTable.setItems(getOrders());
 		
 		
@@ -264,7 +263,7 @@ public class CustomerMyOrdersController implements Initializable {
 			fail(section, e1.toString());
 		}
 		finally {
-			refreshGui();
+			refreshScreen();
 		}
 	}
 	
@@ -457,7 +456,7 @@ public class CustomerMyOrdersController implements Initializable {
 			fail(section, e1.toString());
 		}
 		finally {
-			refreshGui();
+			refreshScreen();
 		}
 	}
 	
@@ -493,7 +492,7 @@ public class CustomerMyOrdersController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/*get all the orders from the database*/
@@ -607,7 +606,7 @@ public class CustomerMyOrdersController implements Initializable {
 	}
 	
 	
-	public void refreshGui(){ 
+	public void refreshScreen(){ 
 		/************load list of orders in the system **************/
 		ArrayList<String> ordersDB = new ArrayList<>();
 		for(Order o :  Restaurant.getInstance().getOrders().values()) {
@@ -623,7 +622,6 @@ public class CustomerMyOrdersController implements Initializable {
 		orderID.setCellValueFactory(new PropertyValueFactory<Order, Integer>("id"));
 		orderCustomer.setCellValueFactory(new PropertyValueFactory<Order, Customer>("customer"));
 		orderDishes.setCellValueFactory(new PropertyValueFactory<Order, ArrayList<Dish>>("dishes"));
-		orderDelivery.setCellValueFactory(new PropertyValueFactory<Order, Delivery>("delivery"));
 		ordersTable.setItems(getOrders());
 		
 	}

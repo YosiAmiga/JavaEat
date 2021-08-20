@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="634.0" prefWidth="622.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerAddPageController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="678.0" prefWidth="739.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerAddPageController">
   <tabs>
     <Tab text="Customer">
       <content>
@@ -329,7 +329,7 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addDelivery" layoutX="82.0" layoutY="509.0" mnemonicParsing="false" onAction="#addDelivery" prefHeight="39.0" prefWidth="138.0" text="Add Delivery" textFill="#00a650">
+                  <Button fx:id="addDelivery" layoutX="65.0" layoutY="528.0" mnemonicParsing="false" onAction="#addDelivery" prefHeight="39.0" prefWidth="138.0" text="Add Delivery" textFill="#00a650">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -346,7 +346,7 @@
                   <ComboBox fx:id="deliveryAreaInDelivery" layoutX="61.0" layoutY="153.0" prefHeight="26.0" prefWidth="347.0" promptText="Select Delivery Area" />
                   <DatePicker fx:id="deliveryDate" layoutX="65.0" layoutY="462.0" promptText="delivery date" />
                   <CheckBox fx:id="isDelivered" layoutX="65.0" layoutY="424.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="102.0" text="Is Delivered" />
-                  <Button fx:id="removeDelivery" layoutX="357.0" layoutY="508.0" mnemonicParsing="false" onAction="#removeDelivery" prefHeight="42.0" prefWidth="191.0" text="Remove Delivery" textFill="#e11b18">
+                  <Button fx:id="removeDelivery" layoutX="486.0" layoutY="519.0" mnemonicParsing="false" onAction="#removeDelivery" prefHeight="42.0" prefWidth="191.0" text="Remove Delivery" textFill="#e11b18">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -360,8 +360,14 @@
                   <Button fx:id="clearOrdersList" layoutX="220.0" layoutY="244.0" mnemonicParsing="false" onAction="#clearOrdersInDelivery" text="Clear list" />
                   <CheckBox fx:id="isExpress" layoutX="369.0" layoutY="244.0" mnemonicParsing="false" text="Express Delivery" />
                   <TextField fx:id="customPostage" layoutX="367.0" layoutY="265.0" prefHeight="26.0" prefWidth="238.0" promptText="Enter express delivery fee (only if selected)" />
-                  <TextField fx:id="delIDToRemove" layoutX="378.0" layoutY="475.0" promptText="Enter Delivery ID" />
-                  <ComboBox fx:id="currentDelivery" layoutX="367.0" layoutY="303.0" prefHeight="26.0" prefWidth="179.0" promptText="Select delivery to delete" />
+                  <TextField fx:id="delIDToRemove" layoutX="507.0" layoutY="486.0" promptText="Enter Delivery ID" />
+                  <ComboBox fx:id="currentDelivery" layoutX="496.0" layoutY="314.0" prefHeight="26.0" prefWidth="179.0" promptText="Select delivery to delete" />
+                  <Button fx:id="updateDelivery" layoutX="296.0" layoutY="519.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="fillDataDelivery" layoutX="451.0" layoutY="77.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
             
          </content>

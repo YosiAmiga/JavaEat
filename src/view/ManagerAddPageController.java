@@ -327,6 +327,12 @@ public class ManagerAddPageController implements Initializable {
 	private Button addDelivery;
 	
 	@FXML
+	private Button fillDataDelivery;
+	
+	@FXML
+	private Button updateDelivery;
+	
+	@FXML
 	private ComboBox<String> currentDelivery;
 	@FXML
 	private TextField delIDToRemove;
@@ -396,10 +402,6 @@ public class ManagerAddPageController implements Initializable {
 	}
 
 //	PrimaryController control=new PrimaryController();
-	ArrayList<String> GuideExp=new ArrayList<String>();
-	ArrayList<String> packageFlightList=new ArrayList<String>();
-	ArrayList<Integer> packageTripList=new ArrayList<Integer>();
-	ArrayList<Long> packageAccommodationList=new ArrayList<Long>();
 	ArrayList<String> hoodsInDeliveryArea = new ArrayList<>();
 	ArrayList<Integer> componentsInDishList = new ArrayList<>();
 	ArrayList<String> componentsInDishToShow = new ArrayList<>();
@@ -669,7 +671,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************Delete a customer*************/
@@ -703,7 +705,7 @@ public class ManagerAddPageController implements Initializable {
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 
 	/**************Add a customer*************/
@@ -766,7 +768,7 @@ public class ManagerAddPageController implements Initializable {
 //			}
 
 			System.out.println(Restaurant.getInstance().getCustomers());
-			refreshGui();
+			refreshScreen();
 
 			//pop up with success
 			//exception-Customer adding failed,Customer already exists/illegal input
@@ -882,7 +884,7 @@ public class ManagerAddPageController implements Initializable {
 		}
 		successUpdate(section, "Success");
 		Restaurant.save(Input);
-		refreshGui();
+		refreshScreen();
 	}
 	/**************Remove a Delivery Person*******/
 	public void removeDeliveryPerson(ActionEvent e) {
@@ -970,7 +972,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	
@@ -1047,7 +1049,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	
@@ -1080,7 +1082,7 @@ public class ManagerAddPageController implements Initializable {
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************Add a Cook*************/
@@ -1129,7 +1131,7 @@ public class ManagerAddPageController implements Initializable {
 				fail(section,"This id already exists in the cooks database!");
 			}
 			System.out.println("cooks: " + Restaurant.getInstance().getCooks());
-			refreshGui();
+			refreshScreen();
 
 		}
 		catch(EmptyComboBoxException e1) {
@@ -1201,7 +1203,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************Delete a component*************/
@@ -1225,7 +1227,7 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the components database!");
 			}
 			System.out.println(Restaurant.getInstance().getComponenets());
-			refreshGui();
+			refreshScreen();
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());
@@ -1236,7 +1238,7 @@ public class ManagerAddPageController implements Initializable {
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************Add a component***************/
@@ -1266,7 +1268,7 @@ public class ManagerAddPageController implements Initializable {
 			e1.printStackTrace();
 		}
 
-		refreshGui();
+		refreshScreen();
 	}
 	
 	
@@ -1349,7 +1351,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	
@@ -1384,7 +1386,7 @@ public class ManagerAddPageController implements Initializable {
 			e1.printStackTrace();
 		}
 
-		refreshGui();
+		refreshScreen();
 	}
 	
 	
@@ -1428,7 +1430,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	/**************************************Order Methods****************************************/
 	
@@ -1447,10 +1449,12 @@ public class ManagerAddPageController implements Initializable {
 			Customer customerOrder = Restaurant.getInstance().getRealCustomer(customerID);		
 			customersForOrder.setValue("ID: " + customerOrder.getId() + " Name: " + customerOrder.getFirstName()+ " " +customerOrder.getLastName());
 
+			
 			ArrayList<String> dishesInOrder = new ArrayList<>();
 			for(Dish d : temp.getDishes()) {
-				String str = "ID: " + d.getId() + " Name: " + d.getDishName();
+				String str = "Dish ID: " + d.getId() + " Dish Name: " + d.getDishName();
 				dishesInOrder.add(str);
+//				dishesInOrderList.add(d.getId());
 			}
 			String list="";		
 			for(String s : dishesInOrder) {
@@ -1472,15 +1476,22 @@ public class ManagerAddPageController implements Initializable {
 			if(customersForOrder.getValue() == null) {
 				throw new EmptyComboBoxException();
 			}
-
-			int id=Integer.parseInt(orderId.getText());// get id			
-			
+			int id=Integer.parseInt(orderId.getText());// get id						
 			String custID = customersForOrder.getValue();
 			//Extract only the Order ID in order to remove him
 			String numberOnlyCustomer= custID.replaceAll("[^0-9]", "");	
 			int custForOrder=Integer.parseInt(numberOnlyCustomer);//get the customer's id after viewing the combo box	
 			
-			if(control.updateOrderGUI(id,custForOrder, dishesInOrderList)) {
+			ArrayList<Integer> dishesInOrder = new ArrayList<>();
+			
+			for(String s : dishesInOrderShow.getText().split("\\n")) {
+				String tempDish = s;
+				String dishOnlyID = tempDish.replaceAll("[^0-9]", "");
+				int dishID = Integer.parseInt(dishOnlyID);
+				dishesInOrder.add(dishID);
+			}
+			
+			if(control.updateOrderGUI(id,custForOrder, dishesInOrder)) {
 				successUpdate(section, "Success");
 				Restaurant.save(Input);
 			}
@@ -1493,9 +1504,10 @@ public class ManagerAddPageController implements Initializable {
 			fail(section, e1.toString());
 		}
 		catch(Exception e1) {
-			failUpdate(section, e1.toString());
+			e1.printStackTrace();
+//			failUpdate(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************Add an Order*************/
@@ -1526,7 +1538,7 @@ public class ManagerAddPageController implements Initializable {
 			for(Order or : Restaurant.getInstance().getOrders().values()) {
 				System.out.println(or.getDelivery());
 			}
-			refreshGui();
+			refreshScreen();
 
 		}
 		catch(EmptyComboBoxException e1) {
@@ -1585,11 +1597,84 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		refreshGui();
+		refreshScreen();
 	}
 
 
 	/**************************************Delivery Methods****************************************/
+	
+	/*************Fill data for update************/
+	public void fillDataDelivery(ActionEvent e) {
+		String section = "Delivery";
+
+		try {
+			if(deliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(deliveryID.getText());
+			
+			Delivery temp = Restaurant.getInstance().getRealDelivery(id);
+			deliveryPersonInDelivery.setValue(String.valueOf(temp.getDeliveryPerson()));
+			deliveryAreaInDelivery.setValue(String.valueOf(temp.getArea()));
+			
+			//remove all current orders to place new ones
+			ordersListShow.removeAll(ordersListShow);
+			
+			
+//			delAreaName.setText(temp.getAreaName());
+//			delAreaTime.setText(String.valueOf(temp.getDeliverTime()));
+//			hoodsInDeliveryArea.removeAll(hoodsInDeliveryArea);
+//			for(Neighberhood n : temp.getNeighberhoods()) {
+//				hoodsInDeliveryArea.add(String.valueOf(n));
+//			}
+			String list="";
+			for(String s : hoodsInDeliveryArea) {
+				list += s+"\n";
+			}
+			ordersListInDelivery.setText(list);
+
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("No id to fill data ", e1.toString());
+		}
+	}
+	
+	/**************Update a Delivery Area*************/
+	//TODO FIX!!
+	public void updateDelivery(ActionEvent e) {
+		String section = "Delivery";
+		try {
+			if(deliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(deliveryID.getText());
+			String aName = delAreaName.getText();
+			boolean isSent = isDelivered.isSelected();
+			
+			if(isSent) {
+				//TODO Create a CantUpdateDeliveredDeliveryException
+				throw new Exception();
+			}else {
+				//TODO FIX!!!
+//				if(control.updateDelivery(id, aName, ordersListToDelivery)) {
+//					successUpdate(section, "Success");
+//					Restaurant.save(Input);
+//				}
+				
+			}
+			
+		}
+
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(Exception e1) {
+			failUpdate(section, e1.toString());
+		}
+		refreshScreen();
+	}
+	
 	public void removeDelivery(ActionEvent e) {
 		String section = "Delivery";
 		try {
@@ -1619,6 +1704,7 @@ public class ManagerAddPageController implements Initializable {
 		
 	
 	}
+	
 	/**********Add a delivery********/
 	public void addDelivery(ActionEvent e){
 		String section = "Delivery";
@@ -1681,7 +1767,7 @@ public class ManagerAddPageController implements Initializable {
 				
 			}
 			System.out.println(Restaurant.getInstance().getDeliveries().values());
-			refreshGui();
+			refreshScreen();
 
 		}
 		catch(EmptyComboBoxException e1) {
@@ -1738,9 +1824,8 @@ public class ManagerAddPageController implements Initializable {
 		try {
 			int id = Integer.parseInt(delAreaID.getText());
 			String aName = delAreaName.getText();
-			int deliveryTime = Integer.parseInt(delAreaTime.getText());
-			
-			if(control.updateDeliveryAreaGUI(id, aName, hoodsInDeliveryArea, deliveryTime)) {
+
+			if(control.updateDeliveryAreaGUI(id, aName, hoodsInDeliveryArea)) {
 				successUpdate(section, "Success");
 				Restaurant.save(Input);
 			}
@@ -1752,9 +1837,8 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			failUpdate(section, e1.toString());
 		}
-		successUpdate(section, "Success");
-		Restaurant.save(Input);
-		refreshGui();
+
+		refreshScreen();
 	}
 	
 	/**************Add a Delivery Area************/
@@ -1782,7 +1866,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			fail(section, e1.toString());
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/**************replace a Delivery Area*********/
@@ -1807,7 +1891,7 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		refreshGui();
+		refreshScreen();
 	}
 	/**************************************Blacklist Methods****************************************/
 	
@@ -1844,7 +1928,7 @@ public class ManagerAddPageController implements Initializable {
 			e1.printStackTrace();
 		}
 		System.out.println(Restaurant.getInstance().getBlackList());
-		refreshGui();
+		refreshScreen();
 	}
 	
 	/****************************Add and Clear methods*******************************************/
@@ -2041,25 +2125,9 @@ public class ManagerAddPageController implements Initializable {
 
 	}
 	
-//	@Override
-//    public void handle(ActionEvent t) {
-//        FileChooser fileChooser = new FileChooser();
-//        
-//        //Set extension filter
-//        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-//        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-//        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-//         
-//        //Show open file dialog
-//        File file = fileChooser.showOpenDialog(null);
-//                  
-//        try {
-//        } catch (IOException ex) {
-//            Logger.getLogger(JavaFXPixel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
-
+	
+	/***After action sound and alert***/
+	
 	public void successUpload() {
 		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);
@@ -2120,6 +2188,9 @@ public class ManagerAddPageController implements Initializable {
 		al.showAndWait();
 	}
 	
+	
+	/******Sounds*****/
+	
 	public void fail(String content, String header) {
 		badSound();
 		Alert al = new Alert(Alert.AlertType.ERROR);
@@ -2158,7 +2229,7 @@ public class ManagerAddPageController implements Initializable {
 	}
 
 	/*A method to refresh the GUI after adding to the database*/
-	public void refreshGui(){     
+	public void refreshScreen(){     
 
 
 		

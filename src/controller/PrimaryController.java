@@ -551,6 +551,7 @@ public class PrimaryController {
 		Order order = new Order(id,c,dishesInOrderList,null);
 		return Restaurant.getInstance().addCustomOrder(order);
 	}
+	
 	/**
 	 * a method to update the data of an existing Order
 	 * @param id
@@ -572,14 +573,12 @@ public class PrimaryController {
 		//check each non empty parameter to update
 
 		//if new customer to the updated order was entered, set him
+		//works
 		if(custForOrder != orderUpdate.getCustomer().getId() && require(custForOrder)) {
+			System.out.println(custForOrder);
 			orderUpdate.setCustomer(Restaurant.getInstance().getRealCustomer(custForOrder));
 		}
 
-		//first remove all current dishes so no duplicates will be added
-		for(Dish d : orderUpdate.getDishes()) {
-			orderUpdate.removeDish(d);
-		}
 		
 		ArrayList<Dish> dishes = new ArrayList<>();
 		for(int dishID : dishesInOrderList) {
@@ -591,12 +590,23 @@ public class PrimaryController {
 				dishes.add(temp);
 			}
 		}
+		
+		System.out.println("the new dishes " + dishes);
+
 		//add new dishes after change
-		for(Dish d2 : dishes) {
+		for(Dish d2 : dishes) {			
 			orderUpdate.addDish(d2);
 		}
 
-		
+		System.out.println("dishes after update before delete " + orderUpdate.getDishes());
+
+		//first remove all current dishes so no duplicates will be added
+		for(Dish d : orderUpdate.getDishes()) {
+			if(!dishes.contains(d)) {
+				orderUpdate.removeDish(d);
+			}
+		}
+		System.out.println("dishes after delete " + orderUpdate.getDishes());
 		
 		//after all changes were checked, update the Cook in the database
 		return Restaurant.getInstance().getOrders().put(orderUpdate.getId(), orderUpdate) != null;
@@ -659,6 +669,10 @@ public class PrimaryController {
 	}
 	
 	/************************************Delivery Page *******************************************/
+	
+	//TODO add updateDelivery
+	
+	
 	public boolean removeDeliveryFromGUI(int id) throws IllegelInputException {
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {
@@ -828,16 +842,16 @@ public class PrimaryController {
 	 * @param id - the id of the delivery area
 	 * @param aName - the name of the delivery area
 	 * @param hoods - the neighborhoods in the delivery area
-	 * @param deliveryTime - the delivery time of the delivery area
 	 * @return true if added successfully, false if not
 	 * @throws IllegelInputException 
 	 */
-	public boolean updateDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods, int deliveryTime) throws IllegelInputException {
+	public boolean updateDeliveryAreaGUI(int id,String aName,ArrayList<String> hoods) throws IllegelInputException {
 		//create a HashSet of neighborhoods to set in the delivery area, convert the ArrayList of strings into HashSet of Neighberhood
-		boolean validate = (require(id, aName,deliveryTime) && requireNotZeroOrNegative(id));
+		boolean validate = (require(id, aName) && requireNotZeroOrNegative(id));
 		if(!validate) {
 			throw new IllegelInputException();
 		}
+		
 		HashSet<Neighberhood> aHoods = new HashSet<>();
 		for(String h : hoods) {
 			for(Neighberhood n : Neighberhood.values()) {
@@ -847,14 +861,25 @@ public class PrimaryController {
 				
 			}
 		}
+
 		DeliveryArea oldArea = Restaurant.getInstance().getRealDeliveryArea(id);
+
+		
+		for(Neighberhood n : aHoods) {
+			//if a new hood was added
+			if(!oldArea.getNeighberhoods().contains(n)) {
+				System.out.println("im ok");
+				oldArea.addNeighberhood(n);
+			}
+		}
 		
 		for(Neighberhood n : oldArea.getNeighberhoods()) {
-			oldArea.removeNeighberhood(n);
+			//if a hood was deleted from the area, remove it
+			if(!aHoods.contains(n)) {
+				oldArea.removeNeighberhood(n);
+			}
 		}
-		for(Neighberhood n : aHoods) {
-			oldArea.addNeighberhood(n);			
-		}
+		
 
 		for(DeliveryPerson dp : oldArea.getDelPersons()) {
 			dp.setArea(oldArea);
@@ -862,10 +887,11 @@ public class PrimaryController {
 		for(Delivery d : oldArea.getDelivers()) {
 			d.setArea(oldArea);
 		}
-
+		if(!oldArea.getAreaName().equals(aName)) {
+			oldArea.setAreaName(aName);
+		}
 		
-		
-		return Restaurant.getInstance().getAreas().put(oldArea.getId(), oldArea) == null;	
+		return Restaurant.getInstance().getAreas().put(oldArea.getId(), oldArea) != null;	
 	}
 	
 	/**

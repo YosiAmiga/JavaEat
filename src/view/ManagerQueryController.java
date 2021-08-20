@@ -120,7 +120,7 @@ public class ManagerQueryController implements Initializable{
 	@FXML
 	private TableColumn<Dish, Integer> dishTime;
 
-	/***************TODO .9. createAIMacine() Query*****************/
+	/*************** .9. createAIMacine() Query*****************/
 	@FXML
 	private ComboBox<String> deliveryPersonInSystem2;
 	@FXML
@@ -228,8 +228,7 @@ public class ManagerQueryController implements Initializable{
 		ObservableList<String> ObservableListExpertise=FXCollections.observableArrayList();
 		ObservableListExpertise.addAll(cookExpertiseAL);
 		cookExpertise.setItems(ObservableListExpertise);
-//
-//		Restaurant.save(Input);
+
 	}
 	
 	/*************** .1. ReleventDishList() Query*****************/
@@ -442,7 +441,7 @@ public class ManagerQueryController implements Initializable{
 			e1.printStackTrace();
 		}
 		finally {
-			refreshGui();
+			refreshScreen();
 			Restaurant.save(Input);			
 		}
 	}
@@ -481,7 +480,7 @@ public class ManagerQueryController implements Initializable{
 	
 	
 	/*A method to refresh the GUI after adding to the database*/
-	public void refreshGui(){ 
+	public void refreshScreen(){ 
 		deliveryID.setText("");
 		deliveryMonth.setText("");
 		ordersAI.setText("");
@@ -571,8 +570,7 @@ public class ManagerQueryController implements Initializable{
 		ObservableList<String> ObservableListExpertise=FXCollections.observableArrayList();
 		ObservableListExpertise.addAll(cookExpertiseAL);
 		cookExpertise.setItems(ObservableListExpertise);
-//
-//		Restaurant.save(Input);
+
 	}
 
 	/***********************************************/

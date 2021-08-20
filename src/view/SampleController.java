@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import Exceptions.EmptyTextFieldException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.IllegelUserNameException;
 import Exceptions.IncorrectPasswordException;
@@ -86,6 +87,9 @@ public class SampleController implements Initializable{
 			Person userType;			
 			/*if the user input for both username and password is manager, then login as an manager*/
 			//works, only let you get into manager page if you enter correctly 
+			if(username.getText().isBlank()) {
+				throw new EmptyTextFieldException();
+			}
 			if(password.getText().isBlank()) {
 				throw new IllegelPasswordException();
 			}
@@ -97,13 +101,16 @@ public class SampleController implements Initializable{
 				mainPane.getChildren().removeAll(mainPane.getChildren());
 				mainPane.getChildren().add(pane);
 			}
+			//check if the user name is valid
 			else {
 				if(!Restaurant.getInstance().getCustomers().containsKey(Integer.parseInt(username.getText()))){
 					throw new IllegelUserNameException();
 				}
+				//if it is valid, get the correct password to check if entered correctly
 				Customer tempCustomer = Restaurant.getInstance().getCustomers().get(Integer.parseInt(username.getText()));
 				String correctPass = tempCustomer.getPassword();
 				
+				//check if it's the correct password
 				if(!correctPass.equals(password.getText())) {
 					throw new IncorrectPasswordException();
 				}
@@ -116,36 +123,14 @@ public class SampleController implements Initializable{
 					pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 					mainPane.getChildren().removeAll(mainPane.getChildren());
 					mainPane.getChildren().add(pane);
-//					if(correctPass.equals(password.getText())) {
-//					}
-					
+
 				}
 			}
 			
-			/*if the user enter any username (his id) or any password, create this user and check him in the database*/
-//			else {
-//				userType = loginCheck(Integer.parseInt(username.getText()),password.getText());
-//			}
-
-//			if(username.getText().equals("User") && password.getText().equals("User")) {
-//				goodSound();
-//				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
-//				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-//				mainPane.getChildren().removeAll(mainPane.getChildren());
-//				mainPane.getChildren().add(pane);
-//			}
-//			
-//			if(userType instanceof Customer) {
-//				//move to customer xml
-//				goodSound();
-//				CustomerMainPageController.setCustomer(Restaurant.getInstance().getCustomers().get(Integer.parseInt(username.getText())));
-//				StackPane pane=FXMLLoader.load(getClass().getResource("ManagerMainPage.fxml"));
-//				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-//				mainPane.getChildren().removeAll(mainPane.getChildren());
-//				mainPane.getChildren().add(pane);
-//			}
 			
-			
+		}
+		catch(EmptyTextFieldException e1) {
+			failLogin(e1.toString());
 		}
 		catch(IncorrectPasswordException e1) {
 			failLogin(e1.toString());
@@ -161,144 +146,12 @@ public class SampleController implements Initializable{
 		}
 	}
 	
-	/*a method to check the login of a user if he is in the database*/
-	/**
-	 * 
-	 * @param id - the id of the given customer
-	 * @param password - the full name of the given customer -> first name + last name, combined
-	 * @return the customer itself
-	 */
-	public Customer loginCheck(int id, String password) {
-		//take the given 
-		Customer cust = Restaurant.getInstance().getRealCustomer(id);
-		System.out.println(cust);
-//		if(cust == null) {
-//			//throw new exception of illegal user
-//		}
-//		
-		if(cust.getPassword().equals(password)) {
-			return cust;
-		}
-		//TODO else{ new exception of illegal password
-		return null;
-	}
 
-	public void ForgotPassword(ActionEvent e)
-	{
-		goodSound();
-//		try {
-//			FXMLLoader loader=new FXMLLoader(getClass().getResource("ForgotPassword.fxml"));
-//			Parent root1=(Parent)loader.load();
-//			Stage stage=new Stage();
-//			stage.setTitle("Forgot Password");
-//			stage.setScene(new Scene(root1));
-//			ForgotPasswordController.stage=stage;
-//			stage.show();
-//			
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-	}
-	
 
 
     
-    
+	/***After action sound and alert***/
 
-
-    
-//    public void Login(ActionEvent e) throws IOException
-//    {
-//    	try {
-//    		Person user;
-//    		/*if the given user name and password were "admin" then login to the system as an admin*/
-//    		if(username.getText().equals("admin") && password.getText().equals("admin"))
-//    		{
-//    			user = Manager.getInstance();
-//    		}
-//    		else
-//    			user=loginSystem(Long.parseLong(username.getText()),password.getText());
-//    		if(user instanceof Customer)
-//    		{
-//    			goodSound();
-//    			CustomerMainPageController.setCustomer(Restaurant.getInstance().getCustomers().get(Long.parseLong(username.getText())));
-//    			StackPane pane=FXMLLoader.load(getClass().getResource("CustomerMainPage.fxml"));
-//    			pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-//    			mainPane.getChildren().removeAll(mainPane.getChildren());
-//    			mainPane.getChildren().add(pane);
-//    		}
-//    		else if(user instanceof Guide)
-//    		{
-//    			goodSound();
-//    			GuideMainPageController.setGuide(Shared.getInstance().getGuides().get(Long.parseLong(id.getText())));
-//    			StackPane pane=FXMLLoader.load(getClass().getResource("GuideMainPage.fxml"));
-//    			pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-//    			mainPane.getChildren().removeAll(mainPane.getChildren());
-//    			mainPane.getChildren().add(pane);
-//    		}
-//    		else
-//    		{
-//    			goodSound();
-//    			StackPane pane=FXMLLoader.load(getClass().getResource("AdminMainPage.fxml"));
-//    			pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
-//    			mainPane.getChildren().removeAll(mainPane.getChildren());
-//    			mainPane.getChildren().add(pane);
-//    		}
-//    	} 
-//    	catch (IllegelPasswordException e1) {
-//    		badSound();
-//    		Alert al = new Alert(Alert.AlertType.ERROR);
-//    		al.setContentText("Please try again");
-//    		al.setHeaderText("Wrong Password");
-//    		al.setTitle("Error");
-//    		al.setResizable(false);
-//    		al.showAndWait();
-//    	}
-//    	catch (NumberFormatException e1) {
-//    		badSound();
-//    		Alert al = new Alert(Alert.AlertType.ERROR);
-//    		al.setContentText("Please try again");
-//    		al.setHeaderText("Wrong User Name");
-//    		al.setTitle("Error");
-//    		al.setResizable(false);
-//    		al.showAndWait();
-//    	}
-//    	catch (IllegelUserNameException e1) {
-//    		badSound();
-//    		Alert al = new Alert(Alert.AlertType.ERROR);
-//    		al.setContentText("Please try again");
-//    		al.setHeaderText("Wrong User Name");
-//    		al.setTitle("Error");
-//    		al.setResizable(false);
-//    		al.showAndWait();
-//    	}
-//    	catch (Exception e1) {
-//    		e1.printStackTrace();
-//    	}
-//    	
-//    }
-//    
-//    
-//    /**
-//     * method to login to the system
-//     * @param id of person
-//     * @param password of person
-//     */
-//    public Person loginSystem(long id, String password) throws Exception{
-//    	Person user = Restaurant.getInstance().getUserConfirmation().get(id);
-//    	if(user == null)
-//    		throw new IllegelUserNameException();
-//    	
-//    	if(user.getPassword().equals(password))
-//    	{
-//    		return user;
-//    	}
-//    	else
-//    		throw new IllegelPasswordException();
-//    }
-//    
-    
 	public void failLogin(String header) {
 		badSound();
 		Alert al = new Alert(Alert.AlertType.ERROR);
@@ -309,9 +162,7 @@ public class SampleController implements Initializable{
 		al.showAndWait();
 	}    
     
-    
-    
-    
+  
 	public void fail(String content, String header) {
 		badSound();
 		Alert al = new Alert(Alert.AlertType.ERROR);
@@ -324,7 +175,7 @@ public class SampleController implements Initializable{
     
     
     
-/*sounds methods */
+	/******Sounds*****/
 	
 	public void badSound() {
 		Sounds s = new Sounds();

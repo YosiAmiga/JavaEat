@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -16,6 +17,8 @@ import Utils.Gender;
 import Utils.Neighberhood;
 import controller.PrimaryController;
 import controller.Sounds;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,6 +58,7 @@ public class CustomerSettingsController implements Initializable  {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		/*load customer current settings*/
 		customerId.setText(String.valueOf(customer.getId()));
 		customerFirst.setText(customer.getFirstName());
 		customerLast.setText(customer.getLastName());
@@ -64,7 +68,27 @@ public class CustomerSettingsController implements Initializable  {
 		customerGenderCombo.setValue(String.valueOf(customer.getGender()));
 		customerHoodCombo.setValue(String.valueOf(customer.getNeighberhood()));
 		customerGluten.setSelected(customer.isSensitiveToGluten());
-		customerLactose.setSelected(customer.isSensitiveToLactose());		
+		customerLactose.setSelected(customer.isSensitiveToLactose());
+		
+		/*load options for other setting to chose from*/
+		/******************Load genders enum****************/
+		ArrayList<String> gendersDB=new ArrayList<String>();
+		for(Gender g : Gender.values()) {
+
+			gendersDB.add(String.valueOf(g));
+		}		
+		ObservableList<String> observableListGenders=FXCollections.observableArrayList();
+		observableListGenders.addAll(gendersDB);
+		customerGenderCombo.setItems(observableListGenders);
+		/******************Load Neighborhood enum****************/
+		ArrayList<String> neighberhoodsDB=new ArrayList<String>();
+		for(Neighberhood n : Neighberhood.values()) {
+
+			neighberhoodsDB.add(String.valueOf(n));
+		}
+		ObservableList<String> ObservableListNeighborhoods=FXCollections.observableArrayList();
+		ObservableListNeighborhoods.addAll(neighberhoodsDB);
+		customerHoodCombo.setItems(ObservableListNeighborhoods);
 	}
 	
 	/**************Update a Customer*************/

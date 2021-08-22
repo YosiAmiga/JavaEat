@@ -7,55 +7,54 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
    <children>
-      <TextField fx:id="customerId" layoutX="24.0" layoutY="70.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your ID">
+      <TextField fx:id="customerId" layoutX="94.0" layoutY="70.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your ID">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="customerFirst" layoutX="24.0" layoutY="107.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your First Name">
+      <TextField fx:id="customerFirst" layoutX="94.0" layoutY="107.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your First Name">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="customerLast" layoutX="24.0" layoutY="143.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your Last Name">
+      <TextField fx:id="customerLast" layoutX="94.0" layoutY="143.0" prefHeight="24.0" prefWidth="348.0" promptText="Enter your Last Name">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </TextField>
-      <DatePicker fx:id="customerBirth" layoutX="24.0" layoutY="179.0" prefHeight="25.0" prefWidth="348.0" promptText="Enter your Birth Date">
+      <DatePicker fx:id="customerBirth" layoutX="94.0" layoutY="179.0" prefHeight="25.0" prefWidth="348.0" promptText="Enter your Birth Date">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </DatePicker>
-      <TextField fx:id="customerPass" layoutX="24.0" layoutY="316.0" prefHeight="24.0" prefWidth="348.0" promptText="Password">
+      <TextField fx:id="customerPass" layoutX="94.0" layoutY="316.0" prefHeight="24.0" prefWidth="348.0" promptText="Password">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </TextField>
-      <TextField fx:id="customerPassVerify" layoutX="24.0" layoutY="353.0" prefHeight="24.0" prefWidth="348.0" promptText="Verify Password">
+      <TextField fx:id="customerPassVerify" layoutX="94.0" layoutY="353.0" prefHeight="24.0" prefWidth="348.0" promptText="Verify Password">
          <opaqueInsets>
             <Insets top="5.0" />
          </opaqueInsets>
       </TextField>
-      <ComboBox fx:id="customerGenderCombo" layoutX="24.0" layoutY="219.0" prefWidth="150.0" promptText="Gender" />
-      <ComboBox fx:id="customerHoodCombo" layoutX="24.0" layoutY="256.0" prefWidth="150.0" promptText="Neighborhood" />
-      <CheckBox fx:id="customerGluten" layoutX="220.0" layoutY="258.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to gluten">
+      <ComboBox fx:id="customerGenderCombo" layoutX="94.0" layoutY="219.0" prefWidth="150.0" promptText="Gender" />
+      <ComboBox fx:id="customerHoodCombo" layoutX="94.0" layoutY="256.0" prefWidth="150.0" promptText="Neighborhood" />
+      <CheckBox fx:id="customerGluten" layoutX="290.0" layoutY="258.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to gluten">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="customerLactose" layoutX="220.0" layoutY="221.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to lactose">
+      <CheckBox fx:id="customerLactose" layoutX="290.0" layoutY="221.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="232.0" text="Sensitive to lactose">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
       </CheckBox>
-      <Button fx:id="addCustomer" layoutX="70.0" layoutY="451.0" mnemonicParsing="false" onAction="#addCustomer" prefHeight="39.0" prefWidth="138.0" text="Add Customer" textFill="#00a650">
+      <Button fx:id="addCustomer" layoutX="140.0" layoutY="451.0" mnemonicParsing="false" onAction="#addCustomer" prefHeight="39.0" prefWidth="138.0" text="Add Customer" textFill="#00a650">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -63,12 +62,12 @@
             <Insets top="5.0" />
          </opaqueInsets>
       </Button>
-      <Label layoutX="162.0" layoutY="29.0" prefHeight="26.0" prefWidth="113.0" text="Registration">
+      <Label layoutX="232.0" layoutY="29.0" prefHeight="26.0" prefWidth="113.0" text="Registration">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="getBack" layoutX="247.0" layoutY="451.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="138.0" text="Go Back" textFill="#0a00a6">
+      <Button fx:id="getBack" layoutX="317.0" layoutY="451.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="138.0" text="Go Back" textFill="#0a00a6">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -76,7 +75,5 @@
             <Insets top="5.0" />
          </opaqueInsets>
       </Button>
-      <Button fx:id="customerAddPic" layoutX="461.0" layoutY="256.0" mnemonicParsing="false" onAction="#uploadFile" text="Upload picture" />
-      <ImageView fx:id="customerProfile" fitHeight="197.0" fitWidth="185.0" layoutX="407.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

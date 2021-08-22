@@ -11,19 +11,19 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="770.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CustomerMyOrdersController">
    <tabs>
-      <Tab text="New Order">
+      <Tab text="My Shopping Cart">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="669.0">
                <children>
-                  <Button fx:id="addOrder" layoutX="340.0" layoutY="425.0" mnemonicParsing="false" onAction="#addOrder" prefHeight="42.0" prefWidth="89.0" text="add order" />
+                  <Button fx:id="addOrder" layoutX="295.0" layoutY="425.0" mnemonicParsing="false" onAction="#addOrder" prefHeight="42.0" prefWidth="131.0" text="Create new order" />
                   <ComboBox fx:id="starters" layoutX="41.0" layoutY="22.0" prefWidth="150.0" promptText="Starters" />
                   <Button fx:id="addStarter" layoutX="69.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addStartersToOrder" prefHeight="27.0" prefWidth="103.0" text="add starter" />
                   <ComboBox fx:id="MainDishes" layoutX="310.0" layoutY="22.0" prefWidth="150.0" promptText="Main dishes" />
                   <ComboBox fx:id="desserts" layoutX="573.0" layoutY="22.0" prefWidth="150.0" promptText="Desserts" />
                   <Button fx:id="addMainDish" layoutX="332.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addMainDishToOrder" prefHeight="28.0" prefWidth="121.0" text="add main dish" />
                   <Button fx:id="addDessert" layoutX="608.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addDessertsToOrder" prefHeight="27.0" prefWidth="80.0" text="add dessert" />
-                  <Button fx:id="clearDishesInOrder" layoutX="295.0" layoutY="336.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" prefHeight="30.0" prefWidth="180.0" text="clear order" />
-                  <TextArea fx:id="dishesInOrderShow" layoutX="69.0" layoutY="124.0" prefHeight="200.0" prefWidth="648.0" promptText="List of dishes in order" />
+                  <Button fx:id="clearDishesInOrder" layoutX="221.0" layoutY="338.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" prefHeight="30.0" prefWidth="278.0" text="Clear list" />
+                  <TextArea fx:id="dishesInOrderShow" editable="false" layoutX="69.0" layoutY="124.0" prefHeight="200.0" prefWidth="648.0" promptText="List of dishes in order" />
                </children>
             </AnchorPane>
          </content>
@@ -51,7 +51,7 @@
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ComboBox fx:id="currentOrders" layoutX="236.0" layoutY="59.0" prefHeight="26.0" prefWidth="291.0" promptText="Select Order to remove" />
-                  <Button fx:id="removeOrder" layoutX="306.0" layoutY="369.0" mnemonicParsing="false" onAction="#removeOrder" text="remove order" />
+                  <Button fx:id="removeOrder" layoutX="330.0" layoutY="369.0" mnemonicParsing="false" onAction="#removeOrder" prefHeight="38.0" prefWidth="102.0" text="Remove Order" />
                </children>
             </AnchorPane>
          </content>

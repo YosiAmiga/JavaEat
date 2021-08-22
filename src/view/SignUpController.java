@@ -50,10 +50,7 @@ public class SignUpController implements Initializable {
 	
 	/*The controller to add and remove everything from the GUI to the database*/
 	PrimaryController control=new PrimaryController();
-	@FXML
-	private ImageView customerProfile;
-	@FXML
-	private Button customerAddPic;
+
 	/**************************************Customer Page*****************************************/
 	@FXML
 	private AnchorPane mainPane;
@@ -169,7 +166,7 @@ public class SignUpController implements Initializable {
 //			}
 
 			System.out.println(Restaurant.getInstance().getCustomers());
-			refreshGui();
+			refreshScreen();
 
 			//pop up with success
 			//exception-Customer adding failed,Customer already exists/illegal input
@@ -209,50 +206,10 @@ public class SignUpController implements Initializable {
 	}
 	
 	
-	/***************a method to save a photo*******************/
-	public void uploadFile(ActionEvent e)
-	{
-		FileChooser fc=new FileChooser();
-		fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpg", "*.png") );
-		File file= fc.showOpenDialog(null);
+	/***************a method to refresh the screen*******************/
 
-
-		if(file!=null)
-		{
-//			labelForFile.setFont(new Font(20));
-//			labelForFile.setText("Uploaded successfully");	
-
-			successUpload();
-			File toFile = new File(file.getName());
-
-			try {
-
-				java.nio.file.Files.move( 
-						file.toPath(), 
-						toFile.toPath() ,StandardCopyOption.REPLACE_EXISTING);
-				//get the file name using input stream
-				InputStream stream = new FileInputStream(file.getName());
-				//create a new image and use the uploaded file
-			    Image image = new Image(stream);
-			    //set the image in the image view
-			    customerProfile.setImage(image);
-			    
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-
-		}
-//		else
-//		{
-//			labelForFile.setFont(new Font(20));
-//			labelForFile.setText("Add photo to procceed");		
-//		}
-	}
 	
-	public void refreshGui(){}
+	public void refreshScreen(){}
 	/*log out from the system and back to the JavaEat main page*/
 	//works
 	public void goBack(ActionEvent e) {

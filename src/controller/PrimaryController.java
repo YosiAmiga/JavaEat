@@ -762,9 +762,6 @@ public class PrimaryController {
 		}
 		
 		
-		boolean isDel= isDelivered;
-		LocalDate delDate= diliveredDate;
-		
 		//search for the given delivery person
 		DeliveryPerson delPer = null;
 		for(DeliveryPerson dp : Restaurant.getInstance().getDeliveryPersons().values()) {

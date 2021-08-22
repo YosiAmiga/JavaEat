@@ -29,10 +29,35 @@
 
 
 }
+
+.button:hover{
+    
+    
+    -fx-background-color: white;
+    -fx-text-fill: #39b5ff;
+    -fx-border-color: #39b5ff;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    
+    
+    
+}
+
+.button:pressed{
+    
+    -fx-background-color: white;
+    -fx-text-fill:  #39b5ff;
+    -fx-border-color:  #39b5ff;
+    -fx-border-width: 2;
+    
+    /*fix -fx-rotate: 0.25;*/ 
+    
+}
 .table-view .table-cell{
     -fx-text-fill: black;
     -fx-text-style:bold;
 }
+
 .table-view {
     -fx-base: #1d1d1d;
     -fx-control-inner-background: transparent;

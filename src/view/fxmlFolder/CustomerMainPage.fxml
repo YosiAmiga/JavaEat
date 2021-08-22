@@ -14,9 +14,8 @@
    <children>
       <BorderPane prefHeight="730.0" prefWidth="892.0">
          <right>
-            <VBox prefHeight="671.0" prefWidth="162.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="671.0" prefWidth="162.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="customerProfile" fitHeight="161.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true" />
                   <ToggleButton fx:id="newOrder" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadNewOrder" prefHeight="118.0" prefWidth="136.0" styleClass="button" stylesheets="@background.css" text="Manage Orders">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -60,7 +59,7 @@
                      <graphic>
                         <ImageView fitHeight="60.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../img/info.png" />
+                              <Image url="@../../img/settings.png" />
                            </image>
                         </ImageView>
                      </graphic>

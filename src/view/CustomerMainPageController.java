@@ -25,8 +25,7 @@ import Model.Customer;
 public class CustomerMainPageController implements Initializable  {
 		//the customer currently logged in
 		static Customer customer;
-		@FXML
-		private ImageView customerProfile;
+
 		
 	 	@FXML
 	    private StackPane mainPane;
@@ -126,7 +125,7 @@ public class CustomerMainPageController implements Initializable  {
 		Optional<ButtonType> result = al.showAndWait();
 		if(result.get() == ButtonType.OK)
 		{
-			goodSound();
+			exitSound();
 			try {
 				AnchorPane pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
@@ -146,7 +145,7 @@ public class CustomerMainPageController implements Initializable  {
 		al.setResizable(false);
 		Optional<ButtonType> result = al.showAndWait();
 		if(result.get() == ButtonType.OK) {
-			goodSound();
+			exitSound();
 			System.exit(0);
 		}
 	}
@@ -173,6 +172,16 @@ public class CustomerMainPageController implements Initializable  {
 		CustomerMainPageController.customer = customer;
 	}
 
+	
+	public void exitSound() {
+		Sounds s = new Sounds();
+		try {
+			s.exitSound();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+	}
+	
 	public void successSound() {
 		Sounds s = new Sounds();
 		try {

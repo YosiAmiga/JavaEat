@@ -1,6 +1,7 @@
 package view;
 	
 import Model.Restaurant;
+import controller.Sounds;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -26,6 +27,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			programOnSound();
 			Parent root = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 			Scene scene = new Scene(root,1060,700);
 			scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
@@ -37,6 +39,15 @@ public class Main extends Application {
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void programOnSound() {
+		Sounds s = new Sounds();
+		try {
+			s.programOnSound();
+		} catch (Exception e2) {
+			e2.printStackTrace();
 		}
 	}
 	

@@ -120,7 +120,7 @@ public class ManagerMainController implements Initializable {
 		Optional<ButtonType> result = al.showAndWait();
 		if(result.get() == ButtonType.OK)
 		{
-			goodSound();
+			exitSound();
 			try {
 				AnchorPane pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
@@ -143,11 +143,21 @@ public class ManagerMainController implements Initializable {
 		Optional<ButtonType> result = al.showAndWait();
 		if(result.get() == ButtonType.OK)
 		{
-			goodSound();
+			exitSound();
 			System.exit(0);
 		}
 	}
 	
+	
+	
+	public void exitSound() {
+		Sounds s = new Sounds();
+		try {
+			s.exitSound();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+	}
 	
 	public void goodSound() {
 		Sounds s = new Sounds();

@@ -71,7 +71,6 @@ public class SampleController implements Initializable{
 		try {
 			goodSound();
 			AnchorPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\SignUpPage.fxml"));
-			System.out.println("hey");
 			pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 			mainPane.getChildren().removeAll(mainPane.getChildren());
 			mainPane.getChildren().add(pane);			
@@ -95,7 +94,8 @@ public class SampleController implements Initializable{
 			}
 			if(username.getText().equals("m") && password.getText().equals("m")) {
 				userType = Manager.getInstance();
-				goodSound();
+				loginSound();
+//				goodSound();
 				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerMainPage.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 				mainPane.getChildren().removeAll(mainPane.getChildren());
@@ -118,7 +118,6 @@ public class SampleController implements Initializable{
 					//save the customer password from the database to check if it matches the one that was entered in the input
 					//save the customer object in CustomerMainPageController with his data
 					CustomerMainPageController.customer = tempCustomer;
-					goodSound();
 					StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\CustomerMainPage.fxml"));
 					pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 					mainPane.getChildren().removeAll(mainPane.getChildren());
@@ -176,6 +175,15 @@ public class SampleController implements Initializable{
     
     
 	/******Sounds*****/
+	
+	public void loginSound() {
+		Sounds s = new Sounds();
+		try {
+			s.loginSound();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+	}
 	
 	public void badSound() {
 		Sounds s = new Sounds();

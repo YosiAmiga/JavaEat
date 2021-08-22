@@ -401,7 +401,7 @@ public class ManagerAddPageController implements Initializable {
 		return true;
 	}
 
-//	PrimaryController control=new PrimaryController();
+
 	ArrayList<String> hoodsInDeliveryArea = new ArrayList<>();
 	ArrayList<Integer> componentsInDishList = new ArrayList<>();
 	ArrayList<String> componentsInDishToShow = new ArrayList<>();
@@ -763,15 +763,10 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"Could not add customer to system!");
 			}
-//			Customer custToAdd = new Customer(firstName,LastName,localDate,selectedG,selectedN,lactose,gluten);
-//			if(Restaurant.getInstance().addCustomer(custToAdd)) {
-//			}
 
 			System.out.println(Restaurant.getInstance().getCustomers());
 			refreshScreen();
 
-			//pop up with success
-			//exception-Customer adding failed,Customer already exists/illegal input
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection("Gender/Neighborhood",e1.toString());
@@ -833,6 +828,7 @@ public class ManagerAddPageController implements Initializable {
 			fail("No id to fill data ", e1.toString());
 		}
 	}
+	
 	/**************Update a Delivery Person*************/
 	public void updateDeliveryPerson(ActionEvent e) {
 		String section = "Delivery Person";
@@ -886,6 +882,7 @@ public class ManagerAddPageController implements Initializable {
 		Restaurant.save(Input);
 		refreshScreen();
 	}
+	
 	/**************Remove a Delivery Person*******/
 	public void removeDeliveryPerson(ActionEvent e) {
 		String section = "Delivery Person";
@@ -977,6 +974,7 @@ public class ManagerAddPageController implements Initializable {
 	
 	
 	/**************************************Cook Methods****************************************/
+	
 	/*************Fill data for update************/
 	public void fillDataCook(ActionEvent e) {
 		try {
@@ -1037,7 +1035,6 @@ public class ManagerAddPageController implements Initializable {
 				}
 			}
 
-			//if no new id, use the same id to be updated as the "new id"
 			if(control.updateCookGUI(id,firstName, LastName, localDate, selectedG,selectedN, isCookChef)) {
 				successUpdate(section, "Success");
 				Restaurant.save(Input);
@@ -1273,8 +1270,8 @@ public class ManagerAddPageController implements Initializable {
 	
 	
 	
-	
 	/**************************************Dish Methods****************************************/
+	
 	/*************Fill data for update************/
 	public void fillDataDish(ActionEvent e) {
 		try {
@@ -1535,9 +1532,9 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id already exists in the orders database!");
 			}
-			for(Order or : Restaurant.getInstance().getOrders().values()) {
-				System.out.println(or.getDelivery());
-			}
+//			for(Order or : Restaurant.getInstance().getOrders().values()) {
+//				System.out.println(or.getDelivery());
+//			}
 			refreshScreen();
 
 		}

@@ -2,12 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="770.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CustomerMyOrdersController">
    <tabs>
@@ -22,8 +24,18 @@
                   <ComboBox fx:id="desserts" layoutX="573.0" layoutY="22.0" prefWidth="150.0" promptText="Desserts" />
                   <Button fx:id="addMainDish" layoutX="332.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addMainDishToOrder" prefHeight="28.0" prefWidth="121.0" text="add main dish" />
                   <Button fx:id="addDessert" layoutX="608.0" layoutY="78.0" minHeight="20.0" mnemonicParsing="false" onAction="#addDessertsToOrder" prefHeight="27.0" prefWidth="80.0" text="add dessert" />
-                  <Button fx:id="clearDishesInOrder" layoutX="221.0" layoutY="338.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" prefHeight="30.0" prefWidth="278.0" text="Clear list" />
+                  <Button fx:id="clearDishesInOrder" layoutX="82.0" layoutY="352.0" mnemonicParsing="false" onAction="#clearDishesInOrderList" prefHeight="30.0" prefWidth="278.0" text="Clear list" />
                   <TextArea fx:id="dishesInOrderShow" editable="false" layoutX="69.0" layoutY="124.0" prefHeight="200.0" prefWidth="648.0" promptText="List of dishes in order" />
+                  <Label layoutX="395.0" layoutY="354.0" prefHeight="32.0" prefWidth="200.0" text="Total amount (in NIS):">
+                     <font>
+                        <Font name="Arial Black" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="amount" layoutX="620.0" layoutY="352.0" prefHeight="35.0" prefWidth="54.0" text="0" textFill="RED">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </content>

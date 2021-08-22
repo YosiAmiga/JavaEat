@@ -10,12 +10,12 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
 public class Sounds {
-	private final static String badSound = "error.wav";
-	private final static String goodSound = "toggle.wav";
-	private final static String addSound = "success.wav";
-	private final static String programOn = "programOn.wav";
-	private final static String login = "loginOK.wav";
-	private final static String exit = "exit.wav";
+	private final static String badSound = "sounds\\error.wav";
+	private final static String goodSound = "sounds\\toggle.wav";
+	private final static String addSound = "sounds\\success.wav";
+	private final static String programOn = "sounds\\programOn.wav";
+	private final static String login = "sounds\\loginOK.wav";
+	private final static String exit = "sounds\\exit.wav";
 	
 	
 	public void exitSound() throws Exception{

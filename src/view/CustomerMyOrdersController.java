@@ -25,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,7 +51,7 @@ public class CustomerMyOrdersController implements Initializable {
 	PrimaryController control=new PrimaryController();
 	//the customer currently logged in
 	static Customer customer;
-	/***********New order Page************/
+	/***********Shopping Cart Page************/
 	@FXML
 	private ComboBox<String> starters;
 	@FXML
@@ -69,6 +70,11 @@ public class CustomerMyOrdersController implements Initializable {
 	private Button clearDishesInOrder;
 	@FXML
 	private Button addOrder;
+	
+	@FXML
+	private Label amount;
+	
+	double currentAmount = 0;
 	
 	/*******************Customize your dish page********************/
 	@FXML
@@ -139,10 +145,12 @@ public class CustomerMyOrdersController implements Initializable {
 	ArrayList<Integer> componentsInDishList = new ArrayList<>();
 	ArrayList<String> componentsInDishesStrings = new ArrayList<>();
 	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		
+		//TODO set amount label = 0
+		amount.setText(String.valueOf(0));
 		/*set in the table all the dishes data from database for each of their fields*/
 		dishID.setCellValueFactory(new PropertyValueFactory<Dish, Integer>("id"));
 		dishName.setCellValueFactory(new PropertyValueFactory<Dish, String>("dishName"));
@@ -526,6 +534,11 @@ public class CustomerMyOrdersController implements Initializable {
 			//Extract only the component ID in order to add him to the dish
 			String numberOnly= str.replaceAll("[^0-9]", "");	
 			dishesInOrderList.add(Integer.parseInt(numberOnly));
+			Dish temp = Restaurant.getInstance().getRealDish(Integer.parseInt(numberOnly));
+			double dishPrice = temp.getPrice();
+			currentAmount += dishPrice;
+			amount.setText(String.valueOf(currentAmount));
+			
 			String list="";
 			for(String s : dishesInOrderText) {
 				list += s+"\n";
@@ -556,6 +569,12 @@ public class CustomerMyOrdersController implements Initializable {
 			//Extract only the component ID in order to add him to the dish
 			String numberOnly= str.replaceAll("[^0-9]", "");	
 			dishesInOrderList.add(Integer.parseInt(numberOnly));
+			
+			Dish temp = Restaurant.getInstance().getRealDish(Integer.parseInt(numberOnly));
+			double dishPrice = temp.getPrice();
+			currentAmount += dishPrice;
+			amount.setText(String.valueOf(currentAmount));
+
 			String list="";
 			for(String s : dishesInOrderText) {
 				list += s+"\n";
@@ -586,6 +605,13 @@ public class CustomerMyOrdersController implements Initializable {
 			//Extract only the component ID in order to add him to the dish
 			String numberOnly= str.replaceAll("[^0-9]", "");	
 			dishesInOrderList.add(Integer.parseInt(numberOnly));
+			
+			Dish temp = Restaurant.getInstance().getRealDish(Integer.parseInt(numberOnly));
+			double dishPrice = temp.getPrice();
+			currentAmount += dishPrice;
+			amount.setText(String.valueOf(currentAmount));
+
+			
 			String list="";
 			for(String s : dishesInOrderText) {
 				list += s+"\n";
@@ -603,6 +629,7 @@ public class CustomerMyOrdersController implements Initializable {
 		dishesInOrderText.removeAll(dishesInOrderText);
 		dishesInOrderList.removeAll(dishesInOrderList);
 		dishesInOrderShow.setText("");
+		amount.setText(String.valueOf(0));
 	}
 	
 	

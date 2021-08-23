@@ -66,10 +66,7 @@ public class ManagerAddPageController implements Initializable {
 	PrimaryController control=new PrimaryController();
 	
 	///***************////////
-	@FXML
-	private ImageView customerProfile;
-	@FXML
-	private Button customerAddPic;
+
 
 
 
@@ -593,6 +590,9 @@ public class ManagerAddPageController implements Initializable {
 			if(customerId.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getCustomers().containsKey(Integer.parseInt(customerId.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(customerId.getText());
 			
 			Customer temp = Restaurant.getInstance().getRealCustomer(id);
@@ -609,7 +609,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No update ", e1.toString());
+			fail("Wrong id to update ", e1.toString());
 		}
 	}
 	
@@ -811,6 +811,9 @@ public class ManagerAddPageController implements Initializable {
 			if(delPersonId.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getDeliveryPersons().containsKey(Integer.parseInt(delPersonId.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(delPersonId.getText());
 			
 			DeliveryPerson temp = Restaurant.getInstance().getRealDeliveryPerson(id);
@@ -825,7 +828,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No id to fill data ", e1.toString());
+			fail("Wrong id to fill data ", e1.toString());
 		}
 	}
 	
@@ -981,6 +984,9 @@ public class ManagerAddPageController implements Initializable {
 			if(cookId.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getCooks().containsKey(Integer.parseInt(cookId.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(cookId.getText());
 			
 			Cook temp = Restaurant.getInstance().getRealCook(id);
@@ -995,7 +1001,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No id to fill data", e1.toString());
+			fail("Wrong id to fill data", e1.toString());
 		}
 	}
 	
@@ -1278,6 +1284,9 @@ public class ManagerAddPageController implements Initializable {
 			if(dishId.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getDishes().containsKey(Integer.parseInt(dishId.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(dishId.getText());
 			
 			Dish temp = Restaurant.getInstance().getRealDish(id);
@@ -1305,7 +1314,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No id to fill data ", e1.toString());
+			fail("Wrong id to fill data ", e1.toString());
 		}
 	}
 	
@@ -1439,6 +1448,9 @@ public class ManagerAddPageController implements Initializable {
 			if(orderId.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getOrders().containsKey(Integer.parseInt(orderId.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(orderId.getText());
 			
 			Order temp =  Restaurant.getInstance().getRealOrder(id);
@@ -1462,7 +1474,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No id to fill data ", e1.toString());
+			fail("Wrong id to fill data ", e1.toString());
 		}
 	}
 	
@@ -1608,15 +1620,26 @@ public class ManagerAddPageController implements Initializable {
 			if(deliveryID.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			//if no key of such sort
+			if(!Restaurant.getInstance().getDeliveries().containsKey(Integer.parseInt(deliveryID.getText()))){
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(deliveryID.getText());
 			
 			Delivery temp = Restaurant.getInstance().getRealDelivery(id);
 			deliveryPersonInDelivery.setValue(String.valueOf(temp.getDeliveryPerson()));
 			deliveryAreaInDelivery.setValue(String.valueOf(temp.getArea()));
+			if(temp instanceof ExpressDelivery) {
+				isExpress.setSelected(true);				
+			}
+			else {
+				isExpress.setSelected(false);				
+			}
+			isDelivered.setSelected(temp.isDelivered());
 			
 			//remove all current orders to place new ones
 			ordersListShow.removeAll(ordersListShow);
-			
+
 			
 //			delAreaName.setText(temp.getAreaName());
 //			delAreaTime.setText(String.valueOf(temp.getDeliverTime()));
@@ -1633,7 +1656,7 @@ public class ManagerAddPageController implements Initializable {
 			
 		}
 		catch(IllegelInputException e1) {
-			fail("No id to fill data ", e1.toString());
+			fail("wrong id to fill data ", e1.toString());
 		}
 	}
 	
@@ -2084,43 +2107,6 @@ public class ManagerAddPageController implements Initializable {
 	}
 
 
-	/***************a method to save a photo*******************/
-	public void uploadFile(ActionEvent e)
-	{
-		FileChooser fc=new FileChooser();
-		fc.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.jpg", "*.png") );
-		File file= fc.showOpenDialog(null);
-
-
-		if(file!=null)
-		{
-
-
-			successUpload();
-			File toFile = new File(file.getName());
-
-			try {
-
-				java.nio.file.Files.move( 
-						file.toPath(), 
-						toFile.toPath() ,StandardCopyOption.REPLACE_EXISTING);
-				//get the file name using input stream
-				InputStream stream = new FileInputStream(file.getName());
-				//create a new image and use the uploaded file
-			    Image image = new Image(stream);
-			    //set the image in the image view
-			    customerProfile.setImage(image);
-
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-
-		}
-
-	}
 	
 	
 	/***After action sound and alert***/

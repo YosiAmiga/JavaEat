@@ -5,8 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -34,11 +32,6 @@
             <Font name="Arial" size="28.0" />
          </font>
       </Label>
-      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="411.0" layoutY="193.0">
-         <image>
-            <Image url="@../JavaEatLogo.png" />
-         </image>
-      </ImageView>
    </children>
    <styleClass>
       <String fx:value="button" />

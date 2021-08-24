@@ -53,7 +53,7 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(add.isSelected())
 			{
-
+				goodSound();
 				queries.setSelected(false);
 				db.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerAddPage.fxml"));
@@ -74,6 +74,7 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(db.isSelected())
 			{
+				goodSound();
 				queries.setSelected(false);
 				add.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerDataBasePage.fxml"));
@@ -95,6 +96,7 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(queries.isSelected())
 			{
+				goodSound();
 				add.setSelected(false);
 				db.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerQueryPage.fxml"));
@@ -120,6 +122,7 @@ public class ManagerMainController implements Initializable {
 		Optional<ButtonType> result = al.showAndWait();
 		if(result.get() == ButtonType.OK)
 		{
+			
 			exitSound();
 			try {
 				AnchorPane pane = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));

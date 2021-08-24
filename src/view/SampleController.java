@@ -68,6 +68,7 @@ public class SampleController implements Initializable{
 	}
 	
 	public void signUpToSystem(ActionEvent e) throws IOException{
+		goodSound();
 		try {
 			goodSound();
 			AnchorPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\SignUpPage.fxml"));
@@ -83,6 +84,7 @@ public class SampleController implements Initializable{
 	@FXML
 	public void login(ActionEvent e) throws IOException {
 		try {
+			goodSound();
 			Person userType;			
 			/*if the user input for both username and password is manager, then login as an manager*/
 			//works, only let you get into manager page if you enter correctly 

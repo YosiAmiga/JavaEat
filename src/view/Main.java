@@ -40,8 +40,9 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 			Scene scene = new Scene(root,1080,750);
 			scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
-			//TODO fix icon 
-//			primaryStage.getIcons().add(new Image("file:icon.ico"));
+			Image icon = new Image("JavaEatLogo.png");
+
+			primaryStage.getIcons().add(icon);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("JavaEat Restaurant");
 			primaryStage.setResizable(false);
@@ -60,25 +61,7 @@ public class Main extends Application {
 		}
 	}
 	
-//	private File file;
-//	private Media media;
-//	private MediaPlayer mediaPlayer;
-//	@FXML
-//	private MediaView video;
-//	@Override
-//	public void initialize(URL arg0, ResourceBundle arg1) {
-//		file= new File ("C:\\Users\\Nitza\\Desktop\\temp.mp4");
-//		media = new Media (file.toURI().toString());
-//		mediaPlayer= new MediaPlayer(media);
-//		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
-//		video.setMediaPlayer(mediaPlayer);
-//		video.setFitHeight(500);
-//		video.setFitWidth(500);
-//		mediaPlayer.setMute(true);
-//		mediaPlayer.play();
-//		
-//		
-//	}
+
 
 	
 }

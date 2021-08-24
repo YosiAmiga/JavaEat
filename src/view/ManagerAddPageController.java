@@ -27,9 +27,11 @@ import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.NoComponentsExceptions;
+import Exceptions.OrderAlreadyInDeliveryException;
 import Exceptions.PasswordMismatchException;
 import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
+import Exceptions.UpdateDeliveredDeliveryException;
 import Exceptions.expressDeliveryMissMatchException;
 import Utils.*;
 import controller.PrimaryController;
@@ -288,7 +290,7 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button updateOrder;
 	
-	/************************************Delivery Page*******************************************/
+	/************************************Regular Delivery Page*******************************************/
 	
 	@FXML
 	private TextField deliveryID;
@@ -312,10 +314,6 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private DatePicker deliveryDate;
 	
-	@FXML
-	private CheckBox isExpress;
-	@FXML
-	private TextField customPostage;
 	
 	@FXML
 	private CheckBox isDelivered;
@@ -336,6 +334,44 @@ public class ManagerAddPageController implements Initializable {
 	@FXML
 	private Button removeDelivery;
 	
+	/************************************Express Delivery Page*******************************************/
+	@FXML
+	private TextField expdeliveryID;
+	@FXML
+	private ComboBox<String> expdeliveryPersonInDelivery;
+	
+	@FXML
+	private ComboBox<String> expdeliveryAreaInDelivery;
+	
+	
+	@FXML
+	private ComboBox<String> exporderInDelivery;	
+
+
+	@FXML
+	private DatePicker expdeliveryDate;
+
+	@FXML
+	private TextField expcustomPostage;
+	
+	@FXML
+	private CheckBox expisDelivered;
+	
+	@FXML
+	private Button addExpDelivery;
+	
+	@FXML
+	private Button fillDataExpDelivery;
+	
+	@FXML
+	private Button updateExpDelivery;
+	
+	@FXML
+	private ComboBox<String> currentExpDelivery;
+	@FXML
+	private TextField expdelIDToRemove;
+	@FXML
+	private Button removeExpDelivery;
 	
 	/**************************************Delivery Area Page****************************************/
 
@@ -433,6 +469,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
 		ordersInDelivery.setItems(ObservableListOrders);
+		exporderInDelivery.setItems(ObservableListOrders);
 
 		
 		/***************Load list of cooks in system*********/
@@ -455,6 +492,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
 		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
+		expdeliveryPersonInDelivery.setItems(ObservableListDelPersons);
 
 		/***************Load list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
@@ -466,6 +504,7 @@ public class ManagerAddPageController implements Initializable {
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
 		deliveryAreaInDelivery.setItems(comboAreas);
+		expdeliveryAreaInDelivery.setItems(comboAreas);
 		
 		ObservableList<String> comboAreas2 = FXCollections.observableArrayList();
 		for(DeliveryArea da :  Restaurant.getInstance().getAreas().values()) {
@@ -579,6 +618,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListDeliveries.addAll(deliveriesDb);
 //		deliveriesInOrder.setItems(ObservableListDeliveries);
 		currentDelivery.setItems(ObservableListDeliveries);
+		currentExpDelivery.setItems(ObservableListDeliveries);
 	}
 	
 	/**************************************Methods*****************************************/
@@ -1588,6 +1628,11 @@ public class ManagerAddPageController implements Initializable {
 			
 			int id = Integer.parseInt(numberOnly);
 			
+			Order orderDelete = Restaurant.getInstance().getRealOrder(id);
+			//if the order is in a delivery, we can not delete it
+			if(orderDelete.getDelivery() != null) {
+				throw new OrderAlreadyInDeliveryException();
+			}
 			if(control.removeOrderFromGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -1596,6 +1641,9 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id does not exists in the orders database!");
 			}
 			
+		}
+		catch(OrderAlreadyInDeliveryException e1) {
+			fail(section, e1.toString());
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());
@@ -1627,28 +1675,24 @@ public class ManagerAddPageController implements Initializable {
 			int id = Integer.parseInt(deliveryID.getText());
 			
 			Delivery temp = Restaurant.getInstance().getRealDelivery(id);
-			deliveryPersonInDelivery.setValue(String.valueOf(temp.getDeliveryPerson()));
-			deliveryAreaInDelivery.setValue(String.valueOf(temp.getArea()));
-			if(temp instanceof ExpressDelivery) {
-				isExpress.setSelected(true);				
-			}
-			else {
-				isExpress.setSelected(false);				
-			}
-			isDelivered.setSelected(temp.isDelivered());
 			
-			//remove all current orders to place new ones
 			ordersListShow.removeAll(ordersListShow);
-
 			
-//			delAreaName.setText(temp.getAreaName());
-//			delAreaTime.setText(String.valueOf(temp.getDeliverTime()));
-//			hoodsInDeliveryArea.removeAll(hoodsInDeliveryArea);
-//			for(Neighberhood n : temp.getNeighberhoods()) {
-//				hoodsInDeliveryArea.add(String.valueOf(n));
-//			}
+			if(temp instanceof RegularDelivery) {
+				RegularDelivery tempRegDel = (RegularDelivery)temp;
+				deliveryPersonInDelivery.setValue(String.valueOf("ID: " + tempRegDel.getDeliveryPerson().getId() + " Name: " + tempRegDel.getDeliveryPerson().getFirstName() + " " + tempRegDel.getDeliveryPerson().getLastName()));
+				deliveryAreaInDelivery.setValue(String.valueOf(tempRegDel.getArea().getAreaName()));
+				isDelivered.setSelected(tempRegDel.isDelivered());
+				deliveryDate.setValue(tempRegDel.getDeliveredDate());
+				for(Order o : tempRegDel.getOrders()) {
+					ordersListShow.add(o.toString());
+				}
+				
+			}
+			
+
 			String list="";
-			for(String s : hoodsInDeliveryArea) {
+			for(String s : ordersListShow) {
 				list += s+"\n";
 			}
 			ordersListInDelivery.setText(list);
@@ -1669,23 +1713,46 @@ public class ManagerAddPageController implements Initializable {
 				throw new IllegelInputException();
 			}
 			int id = Integer.parseInt(deliveryID.getText());
-			String aName = delAreaName.getText();
+			String delPerId = deliveryPersonInDelivery.getValue();
+			//Extract only the delivery person ID 
+			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
+			
+			int dpID = Integer.parseInt(numberOnlyDelPer);
+			String aName = deliveryAreaInDelivery.getValue();
+			LocalDate delDate = deliveryDate.getValue();
 			boolean isSent = isDelivered.isSelected();
 			
+			RegularDelivery temp = (RegularDelivery)Restaurant.getInstance().getRealDelivery(id);
+//			ordersListToDelivery = (HashSet)temp.getOrders();
+			
+			for(String s : ordersListInDelivery.getText().split("\\n")) {
+				String tempDish = s;
+				String dishOnlyID = tempDish.replaceAll("[^0-9]", "");
+				int dishID = Integer.parseInt(dishOnlyID);
+				ordersListToDelivery.add(dishID);
+			}
+			
+			for(Order o : temp.getOrders()) {
+				if(!ordersListToDelivery.contains(o.getId())) {
+					ordersListToDelivery.add(o.getId());
+				}
+			}
+			
 			if(isSent) {
-				//TODO Create a CantUpdateDeliveredDeliveryException
-				throw new Exception();
+				throw new UpdateDeliveredDeliveryException();
 			}else {
 				//TODO FIX!!!
-//				if(control.updateDelivery(id, aName, ordersListToDelivery)) {
-//					successUpdate(section, "Success");
-//					Restaurant.save(Input);
-//				}
+				if(control.updateRegularDelivery(id, dpID, aName,isSent,delDate, ordersListToDelivery)) {
+					successUpdate(section, "Success");
+					Restaurant.save(Input);
+				}
 				
 			}
 			
 		}
-
+		catch(UpdateDeliveredDeliveryException e1) {
+			fail(section, e1.toString());
+		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
 		}
@@ -1695,6 +1762,7 @@ public class ManagerAddPageController implements Initializable {
 		refreshScreen();
 	}
 	
+	/*remove a delivery*/
 	public void removeDelivery(ActionEvent e) {
 		String section = "Delivery";
 		try {
@@ -1721,14 +1789,16 @@ public class ManagerAddPageController implements Initializable {
 		catch (Exception e1) {
 			fail(section, e1.toString());
 		}
-		
-	
+			
 	}
 	
 	/**********Add a delivery********/
 	public void addDelivery(ActionEvent e){
 		String section = "Delivery";
 		try {
+			if(deliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(deliveryID.getText());
 			if(deliveryPersonInDelivery.getValue() == null) {
 				throw new EmptyComboBoxException();
@@ -1749,46 +1819,49 @@ public class ManagerAddPageController implements Initializable {
 			
 			LocalDate delDate = deliveryDate.getValue();
 			boolean isSent = isDelivered.isSelected();
-			boolean isEXP = isExpress.isSelected();
-			//if the combo box of express delivery is selected, then use the express delivery method
-			if(isEXP) {
-
-				//if no new postage was entered, use default 5.0
-				if(customPostage.getText() != null) {				
-					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, 5, ordersListToDelivery)) {
-						successAdded(section, "Success");
-						Restaurant.save(Input);	
-					}
-					else {
-						fail(section,"This id already exists in the deliveries database!");
-					}
-					
-				}
-				else {	
-					double custPost = Double.parseDouble(customPostage.getText());
-					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, custPost, ordersListToDelivery)) {
-						successAdded(section, "Success");
-						Restaurant.save(Input);	
-					}
-					else {
-						fail(section,"This id already exists in the deliveries database!");
-					}				
-				}
+			
+			if(control.addRegularDeliveryFromGUI(id, dpID, dArea, isSent, delDate, ordersListToDelivery)) {
+				successAdded(section, "Success");
+				Restaurant.save(Input);	
 			}
-			//if the combo box of express delivery is NOT selected, then use the regular delivery method
 			else {
-				if(control.addRegularDeliveryFromGUI(id, dpID, dArea, isSent, delDate, ordersListToDelivery)) {
-					successAdded(section, "Success");
-					Restaurant.save(Input);	
-				}
-				else {
-					fail(section,"This id already exists in the deliveries database!");
-				}
-				
+				fail(section,"This id already exists in the deliveries database!");
 			}
+//			boolean isEXP = isExpress.isSelected();
+//			//if the combo box of express delivery is selected, then use the express delivery method
+//			if(isEXP) {
+//
+//				//if no new postage was entered, use default 5.0
+//				if(customPostage.getText() != null) {				
+//					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, 5, ordersListToDelivery)) {
+//						successAdded(section, "Success");
+//						Restaurant.save(Input);	
+//					}
+//					else {
+//						fail(section,"This id already exists in the deliveries database!");
+//					}
+//					
+//				}
+//				else {	
+//					double custPost = Double.parseDouble(customPostage.getText());
+//					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, custPost, ordersListToDelivery)) {
+//						successAdded(section, "Success");
+//						Restaurant.save(Input);	
+//					}
+//					else {
+//						fail(section,"This id already exists in the deliveries database!");
+//					}				
+//				}
+//			}
+			//if the combo box of express delivery is NOT selected, then use the regular delivery method
+				
+			
 			System.out.println(Restaurant.getInstance().getDeliveries().values());
 			refreshScreen();
 
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());
@@ -1805,6 +1878,193 @@ public class ManagerAddPageController implements Initializable {
 		}
 		
 	}
+	
+	/**************************************Express Delivery Methods****************************************/
+	/*remove a delivery*/
+	public void removeExpDelivery(ActionEvent e) {
+		String section = "Express Delivery";
+		try {
+			if(expdelIDToRemove.getText() == null) {
+				throw new EmptyTextFieldException();
+			}
+			int id = Integer.parseInt(expdelIDToRemove.getText());
+			if(control.removeDeliveryFromGUI(id)) {
+				successRemove(section, "Success");
+				Restaurant.save(Input);	
+			}
+			
+		}
+		catch(EmptyTextFieldException e1) {
+			fail(section, e1.toString());
+		}
+		catch(IllegelInputException e1) {
+			fail(section, e1.toString());
+		}
+		catch(NumberFormatException e1) {
+			fail(section, "Wrong Input!");
+			e1.printStackTrace();
+		}
+		catch (Exception e1) {
+			fail(section, e1.toString());
+		}
+			
+	}
+	
+	/*fill express delivery data for update*/
+	public void fillDataExpDelivery(ActionEvent e) {
+		String section = "Express Delivery";
+
+		try {
+			if(expdeliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			//if no key of such sort
+			if(!Restaurant.getInstance().getDeliveries().containsKey(Integer.parseInt(expdeliveryID.getText()))){
+				throw new IllegelInputException();
+			}
+			int id = Integer.parseInt(expdeliveryID.getText());
+			
+			Delivery temp = Restaurant.getInstance().getRealDelivery(id);
+			if(temp instanceof ExpressDelivery) {
+				//cast the delivery to an express delivery
+				ExpressDelivery exp = (ExpressDelivery)temp;	
+				
+				expdeliveryPersonInDelivery.setValue(String.valueOf("ID: " + exp.getDeliveryPerson().getId() + " Name: " + exp.getDeliveryPerson().getFirstName() + " " + exp.getDeliveryPerson().getLastName()));
+				expdeliveryAreaInDelivery.setValue(String.valueOf(exp.getArea().getAreaName()));
+				expdeliveryDate.setValue(exp.getDeliveredDate());
+				exporderInDelivery.setValue(String.valueOf(exp.getOrder()));
+				expisDelivered.setSelected(exp.isDelivered());
+				expcustomPostage.setText(String.valueOf(exp.getPostage()));
+				
+			}
+			else {
+				throw new IllegelInputException();				
+			}
+			
+		}
+		catch(IllegelInputException e1) {
+			fail("Wrong id to fill data ", e1.toString());
+		}
+	}
+	
+	/*add express delivery*/
+	public void addExpDelivery(ActionEvent e) throws Exception {
+		String section = "Express Delivery";
+		try {
+			if(expdeliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+
+			int id = Integer.parseInt(expdeliveryID.getText());
+			String delPerId = expdeliveryPersonInDelivery.getValue();
+			//Extract only the delivery person ID 
+			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
+			
+			int dpID = Integer.parseInt(numberOnlyDelPer);
+			String dArea = expdeliveryAreaInDelivery.getValue();	
+			
+			LocalDate delDate = expdeliveryDate.getValue();
+			boolean isSent = expisDelivered.isSelected();
+			
+			String orderString = exporderInDelivery.getValue();
+			//Extract only the delivery person ID 
+			String numberOnlyOrder= orderString.replaceAll("[^0-9]", "");	
+			
+			int orderID = Integer.parseInt(numberOnlyOrder);
+			
+			
+			//if no new postage was entered, use default 5.0
+			if(expcustomPostage.getText() != null) {				
+				double custPost = Double.parseDouble(expcustomPostage.getText());
+				if(control.addExpressDeliveryFromGUI(id, dpID, dArea, isSent, delDate, custPost, orderID)) {
+					successAdded(section, "Success");
+					Restaurant.save(Input);	
+				}
+				else {
+					fail(section,"This id already exists in the deliveries database!");
+				}
+				
+			}
+			else {	
+				if(control.addExpressDeliveryFromGUI(id, dpID, dArea, isSent, delDate, 5, orderID)) {
+					successAdded(section, "Success");
+					Restaurant.save(Input);	
+				}
+				else {
+					fail(section,"This id already exists in the deliveries database!");
+				}				
+			}
+		}
+		catch(IllegelInputException e1) {
+			fail("Wrong id to fill data ", e1.toString());
+		}
+		refreshScreen();
+	}
+	
+	/*update express delivery*/
+	public void updateExpDelivery(ActionEvent e) throws Exception {
+		String section = "Express Delivery";
+		try {
+			if(expdeliveryID.getText().isBlank()) {
+				throw new IllegelInputException();
+			}
+			if(expcustomPostage.getText().isBlank()) {
+				throw new EmptyTextFieldException();
+			}
+
+			int id = Integer.parseInt(expdeliveryID.getText());
+			String delPerId = expdeliveryPersonInDelivery.getValue();
+			//Extract only the delivery person ID 
+			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
+			
+			int dpID = Integer.parseInt(numberOnlyDelPer);
+			String dArea = expdeliveryAreaInDelivery.getValue();	
+			
+			LocalDate delDate = expdeliveryDate.getValue();
+			boolean isSent = expisDelivered.isSelected();
+			if(isSent) {
+				throw new UpdateDeliveredDeliveryException();
+			}
+			String orderString = exporderInDelivery.getValue();
+			//Extract only the delivery person ID 
+			String numberOnlyOrder= orderString.replaceAll("[^0-9]", "");	
+			
+			int orderID = Integer.parseInt(numberOnlyOrder);
+						
+			//if no new postage was entered, use default 5.0
+			if(expcustomPostage.getText() != null) {				
+				double custPost = Double.parseDouble(expcustomPostage.getText());
+				if(control.updateExpDelivery(id, dpID, dArea, isSent, delDate, custPost, orderID)) {
+					successAdded(section, "Success");
+					Restaurant.save(Input);	
+				}
+				else {
+					fail(section,"This id already exists in the deliveries database!");
+				}
+				
+			}
+			else {	
+				if(control.updateExpDelivery(id, dpID, dArea, isSent, delDate, 5, orderID)) {
+					successAdded(section, "Success");
+					Restaurant.save(Input);	
+				}
+				else {
+					fail(section,"This id already exists in the deliveries database!");
+				}				
+			}
+		}
+		catch(UpdateDeliveredDeliveryException e1) {
+			fail(section, e1.toString());
+		}
+		catch(EmptyTextFieldException e1) {
+			fail(section, e1.toString());
+		}
+		catch(IllegelInputException e1) {
+			fail("Wrong id to fill data ", e1.toString());
+		}
+		refreshScreen();
+	}
+	
 	/**************************************Delivery Area Methods****************************************/
 	
 	/*************Fill data for update************/
@@ -2263,12 +2523,15 @@ public class ManagerAddPageController implements Initializable {
 //		deliveryIDToOrder.setText("");
 		
 		
-		/**Resetting the Delivery**/
+		/**Resetting the Regular Delivery**/
 		deliveryID.setText("");
-		isExpress.setSelected(false);
 		isDelivered.setSelected(false);
 		ordersListInDelivery.setText("");
-		customPostage.setText("");
+		
+		/**Resetting the Express Delivery**/
+		expdeliveryID.setText("");
+		expisDelivered.setSelected(false);
+		expcustomPostage.setText("");
 		
 		
 		/**Resetting the Delivery Area**/
@@ -2305,7 +2568,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListOrders.addAll(ordersDB);
 		currentOrders.setItems(ObservableListOrders);
 		ordersInDelivery.setItems(ObservableListOrders);
-
+		exporderInDelivery.setItems(ObservableListOrders);
 		
 		/***************Load list of cooks in system*********/
 		ArrayList<String> cooksDB = new ArrayList<>();
@@ -2327,6 +2590,7 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListDelPersons.addAll(delPersonDB);
 		delPersonDelete.setItems(ObservableListDelPersons);
 		deliveryPersonInDelivery.setItems(ObservableListDelPersons);
+		expdeliveryPersonInDelivery.setItems(ObservableListDelPersons);
 		
 		/***************Load list of delivery areas in system*********************/
 		ArrayList<String> areasDB = new ArrayList<>();
@@ -2338,6 +2602,7 @@ public class ManagerAddPageController implements Initializable {
 		comboAreas.addAll(areasDB);
 		delPersonArea.setItems(comboAreas);
 		deliveryAreaInDelivery.setItems(comboAreas);
+		expdeliveryAreaInDelivery.setItems(comboAreas);
 
 		
 		ObservableList<String> comboAreas2 = FXCollections.observableArrayList();
@@ -2452,6 +2717,9 @@ public class ManagerAddPageController implements Initializable {
 		ObservableListDeliveries.addAll(deliveriesDb);
 //		deliveriesInOrder.setItems(ObservableListDeliveries);
 		currentDelivery.setItems(ObservableListDeliveries);
+		currentExpDelivery.setItems(ObservableListDeliveries);
+		
+		
 
 /****************************************************************************/		
 

@@ -322,7 +322,7 @@
             
          </content>
       </Tab>
-      <Tab text="Delivery">
+      <Tab text="Regular Delivery">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -355,11 +355,9 @@
                   <TextArea fx:id="ordersListInDelivery" editable="false" layoutX="61.0" layoutY="278.0" prefHeight="142.0" prefWidth="235.0" promptText="List of orders" />
                   <Button fx:id="addOrderToList" layoutX="64.0" layoutY="244.0" mnemonicParsing="false" onAction="#addOrderIDToDelivery" text="add" />
                   <Button fx:id="clearOrdersList" layoutX="220.0" layoutY="244.0" mnemonicParsing="false" onAction="#clearOrdersInDelivery" text="Clear list" />
-                  <CheckBox fx:id="isExpress" layoutX="369.0" layoutY="244.0" mnemonicParsing="false" text="Express Delivery" />
-                  <TextField fx:id="customPostage" layoutX="366.0" layoutY="278.0" prefHeight="26.0" prefWidth="238.0" promptText="Enter express delivery fee (only if selected)" />
                   <TextField fx:id="delIDToRemove" layoutX="497.0" layoutY="461.0" prefHeight="26.0" prefWidth="163.0" promptText="Enter Delivery ID to delete" />
                   <ComboBox fx:id="currentDelivery" layoutX="495.0" layoutY="336.0" prefHeight="26.0" prefWidth="179.0" promptText="Select delivery to delete" />
-                  <Button fx:id="updateDelivery" layoutX="457.0" layoutY="77.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                  <Button fx:id="updateDelivery" layoutX="457.0" layoutY="77.0" mnemonicParsing="false" onAction="#updateDelivery" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -367,6 +365,49 @@
                   <Button fx:id="fillDataDelivery" layoutX="451.0" layoutY="38.0" mnemonicParsing="false" onAction="#fillDataDelivery" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
                </children></AnchorPane>
             
+         </content>
+      </Tab>
+      <Tab text="Express Delivery">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="addExpDelivery" layoutX="65.0" layoutY="528.0" mnemonicParsing="false" onAction="#addExpDelivery" prefHeight="39.0" prefWidth="138.0" text="Add Delivery" textFill="#00a650">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets top="5.0" />
+                     </opaqueInsets>
+                  </Button>
+                  <TextField fx:id="expdeliveryID" layoutX="61.0" layoutY="39.0" prefHeight="24.0" prefWidth="348.0" promptText="Express Delivery ID">
+                     <opaqueInsets>
+                        <Insets top="5.0" />
+                     </opaqueInsets>
+                  </TextField>
+                  <ComboBox fx:id="expdeliveryPersonInDelivery" layoutX="61.0" layoutY="77.0" prefHeight="26.0" prefWidth="347.0" promptText="Select Delivery person" />
+                  <ComboBox fx:id="expdeliveryAreaInDelivery" layoutX="61.0" layoutY="153.0" prefHeight="26.0" prefWidth="347.0" promptText="Select Delivery Area" />
+                  <DatePicker fx:id="expdeliveryDate" layoutX="61.0" layoutY="237.0" promptText="delivery date" />
+                  <CheckBox fx:id="expisDelivered" layoutX="61.0" layoutY="322.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="102.0" text="Is Delivered" />
+                  <Button fx:id="removeExpDelivery" layoutX="489.0" layoutY="526.0" mnemonicParsing="false" onAction="#removeExpDelivery" prefHeight="42.0" prefWidth="191.0" text="Remove Delivery" textFill="#e11b18">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets top="5.0" />
+                     </opaqueInsets>
+                  </Button>
+                  <ComboBox fx:id="exporderInDelivery" layoutX="61.0" layoutY="198.0" prefHeight="26.0" prefWidth="347.0" promptText="Select Order" />
+                  <TextField fx:id="expcustomPostage" layoutX="61.0" layoutY="278.0" prefHeight="26.0" prefWidth="238.0" promptText="Custom delivery fee (optional)" />
+                  <TextField fx:id="expdelIDToRemove" layoutX="497.0" layoutY="461.0" prefHeight="26.0" prefWidth="163.0" promptText="Enter Delivery ID to delete" />
+                  <ComboBox fx:id="currentExpDelivery" layoutX="495.0" layoutY="336.0" prefHeight="26.0" prefWidth="179.0" promptText="Select delivery to delete" />
+                  <Button fx:id="updateExpDelivery" layoutX="457.0" layoutY="77.0" mnemonicParsing="false" onAction="#updateExpDelivery" prefHeight="57.0" prefWidth="121.0" text="Update Data" textFill="#0022ff">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="fillDataExpDelivery" layoutX="451.0" layoutY="38.0" mnemonicParsing="false" onAction="#fillDataExpDelivery" prefHeight="26.0" prefWidth="134.0" text="Fill data for Update" />
+               </children>
+            </AnchorPane>
          </content>
       </Tab>
       <Tab text="Delivery Area">

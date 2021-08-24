@@ -16,6 +16,7 @@ import Exceptions.IllegelPasswordException;
 import Exceptions.PasswordMismatchException;
 import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
+import Exceptions.UpdateDeliveredDeliveryException;
 import Exceptions.expressDeliveryMissMatchException;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -664,15 +665,20 @@ public class PrimaryController {
 		if(!validate) {
 			throw new IllegelInputException();
 		}
-		Order orderDelete = Restaurant.getInstance().getRealOrder(id);		
+		Order orderDelete = Restaurant.getInstance().getRealOrder(id);
 		return Restaurant.getInstance().removeOrder(orderDelete);
 	}
 	
-	/************************************Delivery Page *******************************************/
+	/************************************Regular and Express Delivery Page *******************************************/
 	
 	//TODO add updateDelivery
 	
-	
+	/**
+	 * a method to remove a delivery (does not matter if regular or express) from the database
+	 * @param id
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean removeDeliveryFromGUI(int id) throws IllegelInputException {
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {
@@ -682,6 +688,8 @@ public class PrimaryController {
 		return Restaurant.getInstance().removeDelivery(delToDelete);
 	}
 	
+	/***********************Regular Delivery section ****************************/
+
 	/**
 	 * a method to add a regular delivery to the database
 	 * @param id - the id of the regular delivery
@@ -695,7 +703,7 @@ public class PrimaryController {
 	 */
 	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, HashSet<Integer> orders) throws Exception{
 
-		//check for parameters of class cook and validate id
+		//check for parameters of class delivery and validate id
 		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id,dpID)));
 
 		// if not valid throw exception
@@ -739,6 +747,81 @@ public class PrimaryController {
 	}
 	
 	/**
+	 * a method to update a regular delivery
+	 * @param id
+	 * @param dpID
+	 * @param dArea
+	 * @param isDelivered
+	 * @param diliveredDate
+	 * @param orders
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean updateRegularDelivery(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, HashSet<Integer> orders) throws Exception{
+		//check for parameters of class delivery and validate id
+		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id,dpID)));
+
+		// if not valid throw exception
+		if(!validate) {
+			throw new IllegelInputException();			
+		}
+		RegularDelivery delToUpdate = (RegularDelivery)Restaurant.getInstance().getRealDelivery(id);
+		if(delToUpdate.isDelivered() == true) {
+			//can not update a delivered delivery
+			throw new UpdateDeliveredDeliveryException();
+		}
+		if(delToUpdate.isDelivered() == false) {
+			delToUpdate.setDelivered(isDelivered);
+		}
+		
+		if(delToUpdate.getDeliveryPerson().getId() != dpID) {
+			DeliveryPerson dp = Restaurant.getInstance().getRealDeliveryPerson(dpID);
+			delToUpdate.setDeliveryPerson(dp);
+		}
+		if(delToUpdate.getArea().getAreaName()!= dArea) {
+
+
+			DeliveryArea tempArea = null;
+			int areaID = 0;
+			for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
+				if(d.getAreaName().equals(dArea)) {
+					areaID = d.getId();
+					System.out.println(areaID);
+				}
+			}
+			tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+			System.out.println(tempArea);
+			delToUpdate.setArea(tempArea);		
+			System.out.println(delToUpdate.getArea());
+
+		}
+		if(delToUpdate.getDeliveredDate() != diliveredDate) {
+			delToUpdate.setDeliveredDate(diliveredDate);
+		}
+		/*create the TreeSet of orders in the regular order*/
+		TreeSet<Order> ordersForRegular = new TreeSet<>();
+
+		for(int temp : orders) {
+			for(Order ordersss : Restaurant.getInstance().getOrders().values()) {
+				if(temp == ordersss.getId()) {
+					ordersForRegular.add(ordersss);
+				}
+			}
+		}
+		for(Order o : ordersForRegular) {
+			delToUpdate.addOrder(o);
+		}
+		for(Order o : delToUpdate.getOrders()) {
+			if(!ordersForRegular.contains(o)) {
+				delToUpdate.removeOrder(o);
+			}
+		}
+		
+		return Restaurant.getInstance().getDeliveries().put(delToUpdate.getId(), delToUpdate) != null;
+	}
+	
+	/***********************Express Delivery section ****************************/
+	/**
 	 * a method to add an express delivery to the database
 	 * @param id - the id of the express delivery
 	 * @param dpID - the delivery person of the express delivery
@@ -751,10 +834,10 @@ public class PrimaryController {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean addDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, boolean isEXP, double postage, HashSet<Integer> orders) throws Exception{
+	public boolean addExpressDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, double postage, int order) throws Exception{
 
 		//check for parameters of class cook and validate id
-		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id)));
+		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,order) && (requireNotZeroOrNegative(id)));
 
 		// if not valid throw exception
 		if(!validate) {
@@ -778,56 +861,68 @@ public class PrimaryController {
 			}
 		}
 		tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+		Order o = Restaurant.getInstance().getRealOrder(order);
+		Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,postage,diliveredDate);
+		
+		return Restaurant.getInstance().addDelivery(deliveryToAdd);
 
-		
-		//if it is an express delivery like the user entered AND the orders size is 1 
-		/*isEXP is necessary because if we want to change the postage we can't do it just by putting only 1 order,
-		 * this helps us check if it's really an ExpressDelivery or not
-		 * 
-		 * TODO create an exception where one is true and the other is not -> expressDeliveryMissMatchException*/
-		
-		if((isEXP== true && orders.size()!=1) || (isEXP== false && orders.size()==1)) {
-			throw new expressDeliveryMissMatchException();
+
+	}
+	
+	/**
+	 * a method to update an express delivery
+	 * @param id
+	 * @param dpID
+	 * @param dArea
+	 * @param isDelivered
+	 * @param diliveredDate
+	 * @param postage
+	 * @param order
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean updateExpDelivery(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, double postage, int order)throws Exception{
+		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,order) && (requireNotZeroOrNegative(id)));
+
+		// if not valid throw exception
+		if(!validate) {
+			throw new IllegelInputException();			
 		}
 		
-		if(isEXP && orders.size()==1) {
-			//if a new postage was entered, use it
-			if(postage != 5.0) {
-				Order o = null;
-				for(Order temp : Restaurant.getInstance().getOrders().values()) {
-					for(int i : orders) {
-						if(temp.getId() == i) {
-							o = temp;
-						}
-						
-					}
+		ExpressDelivery expDeliveryUpdate = (ExpressDelivery)Restaurant.getInstance().getRealDelivery(id);
+		if(expDeliveryUpdate.isDelivered() == true) {
+			//can not update a delivered delivery
+			throw new UpdateDeliveredDeliveryException();
+		}
+		
+		if(expDeliveryUpdate.isDelivered() == false) {
+			expDeliveryUpdate.setDelivered(isDelivered);
+		}
+		
+		if(expDeliveryUpdate.getDeliveryPerson().getId() != dpID) {
+			DeliveryPerson dp = Restaurant.getInstance().getRealDeliveryPerson(dpID);
+			expDeliveryUpdate.setDeliveryPerson(dp);
+		}
+		if(expDeliveryUpdate.getArea().getAreaName() != dArea) {
+			DeliveryArea tempArea = null;
+			int areaID = 0;
+			for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
+				if(d.getAreaName().equals(dArea)) {
+					areaID = d.getId();
 				}
-				//use the given postage
-				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,postage,diliveredDate);
-				return Restaurant.getInstance().addDelivery(deliveryToAdd);
-				
 			}
-			//if no new postage, the default is 5.0
-			else {
-				Order o = null;
-				for(Order temp : Restaurant.getInstance().getOrders().values()) {
-					for(int i : orders) {
-						if(temp.getId() == i) {
-							o = temp;
-						}
-						
-					}
-				}
-				Delivery deliveryToAdd = new ExpressDelivery(id,delPer,tempArea,isDelivered,o,diliveredDate);
-				return Restaurant.getInstance().addDelivery(deliveryToAdd);
-
-			}
+			tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
+			expDeliveryUpdate.setArea(tempArea);			
 			
 		}
-		else {
-			 throw new expressDeliveryMissMatchException();
+		
+		
+		if(expDeliveryUpdate.getPostage() != postage) {
+			expDeliveryUpdate.setPostage(postage);
 		}
-
+		
+			
+		return Restaurant.getInstance().getDeliveries().put(expDeliveryUpdate.getId(), expDeliveryUpdate) != null;
 	}
 	
 

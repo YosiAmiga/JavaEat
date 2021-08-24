@@ -121,6 +121,24 @@
             </AnchorPane>
          </content>
       </Tab>
+      <Tab text="Regular Delivery">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="regDeliveryTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TableColumn fx:id="regDeliveryID" prefWidth="68.0" text="ID" />
+                        <TableColumn fx:id="regDeliveryDelPerson" prefWidth="134.4000244140625" text=" Delivery Person" />
+                        <TableColumn fx:id="regDeliveryDelArea" prefWidth="156.79998779296875" text="Delivery Area" />
+                        <TableColumn fx:id="regDeliveryIsDelivered" prefWidth="116.79998779296875" text="Is Delivered" />
+                        <TableColumn fx:id="regDeliveryOrders" prefWidth="173.5999755859375" text="Orders" />
+                        <TableColumn fx:id="regDeliveryDate" prefWidth="202.4000244140625" text="Delivery Date" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
       <Tab text="Express Delivery">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -134,24 +152,6 @@
                         <TableColumn fx:id="expDeliveryOrder" prefWidth="99.199951171875" text="Order" />
                         <TableColumn fx:id="expDeliveryPostage" prefWidth="116.79998779296875" text="Postage" />
                         <TableColumn fx:id="expDeliveryDate" prefWidth="170.4000244140625" text="Delivery Date" />
-                     </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
-      <Tab text="Regular Delivery">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <TableView fx:id="regDeliveryTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <columns>
-                        <TableColumn fx:id="regDeliveryID" prefWidth="68.0" text="ID" />
-                        <TableColumn fx:id="regDeliveryDelPerson" prefWidth="134.4000244140625" text=" Delivery Person" />
-                        <TableColumn fx:id="regDeliveryDelArea" prefWidth="156.79998779296875" text="Delivery Area" />
-                        <TableColumn fx:id="regDeliveryIsDelivered" prefWidth="116.79998779296875" text="Is Delivered" />
-                        <TableColumn fx:id="regDeliveryOrders" prefWidth="173.5999755859375" text="Orders" />
-                        <TableColumn fx:id="regDeliveryDate" prefWidth="202.4000244140625" text="Delivery Date" />
                      </columns>
                   </TableView>
                </children>

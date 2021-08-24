@@ -11,6 +11,7 @@ import Exceptions.EmptyComboBoxException;
 import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelInputException;
 import Exceptions.NoComponentsExceptions;
+import Exceptions.OrderAlreadyInDeliveryException;
 import Exceptions.SensitiveException;
 import Exceptions.SimilarIDInSystemException;
 import controller.PrimaryController;
@@ -482,6 +483,12 @@ public class CustomerMyOrdersController implements Initializable {
 			
 			int id = Integer.parseInt(numberOnly);
 			
+			Order orderDelete = Restaurant.getInstance().getRealOrder(id);
+			//if the order is in a delivery, we can not delete it
+			if(orderDelete.getDelivery() != null) {
+				throw new OrderAlreadyInDeliveryException();
+			}
+			
 			if(control.removeOrderFromGUI(id)) {
 				successRemove(section, "Success");
 				Restaurant.save(Input);
@@ -490,6 +497,9 @@ public class CustomerMyOrdersController implements Initializable {
 				fail(section, "This id does not exists in the orders database!");
 			}
 			
+		}
+		catch(OrderAlreadyInDeliveryException e1) {
+			fail(section, e1.toString());
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());

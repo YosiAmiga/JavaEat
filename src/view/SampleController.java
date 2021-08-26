@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import Exceptions.EmptyTextFieldException;
+import Exceptions.IllegalCustomerException;
 import Exceptions.IllegelPasswordException;
 import Exceptions.IllegelUserNameException;
 import Exceptions.IncorrectPasswordException;
@@ -37,6 +38,9 @@ import Model.*;
 
 public class SampleController implements Initializable{
 	
+	@FXML
+	private Button videoTest;
+	
 	CustomerMainPageController controlCustomer = new CustomerMainPageController();
 
 	@FXML
@@ -59,7 +63,13 @@ public class SampleController implements Initializable{
 	@FXML
 	private Button backPage;
 	
-	
+	public void toVideo(ActionEvent e) throws IOException {
+		
+		StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\videoPage.fxml"));
+		pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
+		mainPane.getChildren().removeAll(mainPane.getChildren());
+		mainPane.getChildren().add(pane);
+	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -97,7 +107,6 @@ public class SampleController implements Initializable{
 			if(username.getText().equals("m") && password.getText().equals("m")) {
 				userType = Manager.getInstance();
 				loginSound();
-//				goodSound();
 				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerMainPage.fxml"));
 				pane.setPrefSize(mainPane.getWidth(), mainPane.getHeight());
 				mainPane.getChildren().removeAll(mainPane.getChildren());
@@ -108,8 +117,13 @@ public class SampleController implements Initializable{
 				if(!Restaurant.getInstance().getCustomers().containsKey(Integer.parseInt(username.getText()))){
 					throw new IllegelUserNameException();
 				}
+				
 				//if it is valid, get the correct password to check if entered correctly
 				Customer tempCustomer = Restaurant.getInstance().getCustomers().get(Integer.parseInt(username.getText()));
+				//check if the customer is not in the blacklist
+				if(Restaurant.getInstance().getBlackList().contains(tempCustomer)) {
+					throw new IllegalCustomerException();
+				}
 				String correctPass = tempCustomer.getPassword();
 				
 				//check if it's the correct password
@@ -129,6 +143,9 @@ public class SampleController implements Initializable{
 			}
 			
 			
+		}
+		catch (IllegalCustomerException e1) {
+			failLogin(e1.toString());
 		}
 		catch(EmptyTextFieldException e1) {
 			failLogin(e1.toString());

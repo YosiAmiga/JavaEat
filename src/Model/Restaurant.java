@@ -431,7 +431,7 @@ public class Restaurant implements Serializable {
 		return getDeliveryPersons().remove(dp.getId())!= null && dp.getArea().removeDelPerson(dp);
 	}
 
-	//TODO Ask if i need to delete him from blacklist too
+	
 	public boolean removeCustomer(Customer cust) {
 		if(cust == null || !getCustomers().containsKey(cust.getId()))
 			return false;
@@ -440,7 +440,7 @@ public class Restaurant implements Serializable {
 			blackList.remove(cust);
 		}
 
-		return getCustomers().remove(cust.getId())!=null;
+		return getCustomers().remove(cust.getId()) !=null;
 	}
 
 	public boolean removeDish(Dish dish) {

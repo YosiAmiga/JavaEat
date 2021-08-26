@@ -31,7 +31,7 @@
                         <Font name="Arial Black" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="amount" layoutX="620.0" layoutY="352.0" prefHeight="35.0" prefWidth="54.0" text="0" textFill="RED">
+                  <Label fx:id="amount" layoutX="620.0" layoutY="352.0" prefHeight="35.0" prefWidth="109.0" text="0" textFill="RED">
                      <font>
                         <Font name="Arial Black" size="18.0" />
                      </font>

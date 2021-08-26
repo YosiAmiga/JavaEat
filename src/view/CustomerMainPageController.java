@@ -115,7 +115,6 @@ public class CustomerMainPageController implements Initializable  {
 		}
 	}
 	
-	/*TODO ADD SETTINGS!!!*/
 	
 	public void logOutSys(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);

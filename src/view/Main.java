@@ -37,6 +37,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			programOnSound();
+			
 			Parent root = FXMLLoader.load(getClass().getResource("fxmlFolder\\JavaEatMain.fxml"));
 			Scene scene = new Scene(root,1080,750);
 			scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
@@ -62,6 +63,4 @@ public class Main extends Application {
 	}
 	
 
-
-	
 }

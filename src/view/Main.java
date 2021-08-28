@@ -33,6 +33,8 @@ public class Main extends Application {
 		launch(args);
 	}
 	
+
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -48,6 +50,8 @@ public class Main extends Application {
 			primaryStage.setTitle("JavaEat Restaurant");
 			primaryStage.setResizable(false);
 			primaryStage.show();
+
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

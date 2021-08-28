@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
 <StackPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="653.0" prefWidth="892.0" stylesheets="" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ManagerMainController">
@@ -110,7 +111,10 @@
             </VBox>
          </right>
          <center>
-            <AnchorPane fx:id="rootPane" prefHeight="651.0" prefWidth="746.0" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="rootPane" prefHeight="653.0" prefWidth="763.0" BorderPane.alignment="CENTER">
+               <children>
+                  <MediaView fx:id="video" fitHeight="650.0" fitWidth="763.0" y="100.0" />
+               </children></AnchorPane>
          </center>
       </BorderPane>
    </children>

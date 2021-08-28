@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +32,9 @@ import javafx.scene.image.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import Model.*;
@@ -71,9 +75,22 @@ public class SampleController implements Initializable{
 		mainPane.getChildren().add(pane);
 	}
 	
+	private File file;
+	private Media media;
+	private MediaPlayer mediaPlayer;
+	@FXML
+	private MediaView video;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		file= new File ("vid.mp4");
+		media = new Media (file.toURI().toString());
+		mediaPlayer= new MediaPlayer(media);
+		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+		video.setMediaPlayer(mediaPlayer);
+		mediaPlayer.setMute(true);
+		mediaPlayer.play();
+		
 		
 	}
 	

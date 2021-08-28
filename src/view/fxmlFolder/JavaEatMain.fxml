@@ -6,10 +6,12 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="770.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SampleController">
    <children>
+      <MediaView fx:id="video" x="-750.0" y="-600.0" />
       <TextField fx:id="username" alignment="CENTER" layoutX="512.0" layoutY="449.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user id" />
       <PasswordField fx:id="password" alignment="CENTER" layoutX="512.0" layoutY="515.0" prefHeight="26.0" prefWidth="179.0" promptText="Enter user password" />
       <Button fx:id="login" layoutX="360.0" layoutY="583.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="119.0" text="Log In" textFill="#00a650">
@@ -22,14 +24,19 @@
             <Font name="Arial Black" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="339.0" layoutY="444.0" prefHeight="36.0" prefWidth="162.0" text="User Name:">
+      <Label layoutX="339.0" layoutY="444.0" prefHeight="36.0" prefWidth="162.0" text="User Name:" textFill="WHITE">
          <font>
-            <Font name="Arial" size="28.0" />
+            <Font name="Arial Bold Italic" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="342.0" layoutY="505.0" prefHeight="36.0" prefWidth="143.0" text="Password:">
+      <Label layoutX="342.0" layoutY="505.0" prefHeight="36.0" prefWidth="143.0" text="Password:" textFill="WHITE">
          <font>
-            <Font name="Arial" size="28.0" />
+            <Font name="Arial Bold Italic" size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="418.0" layoutY="98.0" prefHeight="65.0" prefWidth="217.0" text="Welcome!" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold Italic" size="36.0" />
          </font>
       </Label>
    </children>

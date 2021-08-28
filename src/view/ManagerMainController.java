@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -16,6 +17,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 public class ManagerMainController implements Initializable {
 	@FXML
@@ -34,10 +38,26 @@ public class ManagerMainController implements Initializable {
 	private ToggleButton db;
 	@FXML
 	private StackPane mainPane;
+	
+	/**Video Section**/
+	private File file;
+	private Media media;
+	private MediaPlayer mediaPlayer;
+	@FXML
+	private MediaView video;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+		/**Start video**/
+		file= new File ("vid.mp4");
+		media = new Media (file.toURI().toString());
+		mediaPlayer= new MediaPlayer(media);
+		mediaPlayer.setCycleCount(mediaPlayer.INDEFINITE);
+		video.setMediaPlayer(mediaPlayer);
+		mediaPlayer.setMute(true);
+		mediaPlayer.play();
+		
+		/*set all tabs to false selection*/
 		queries.setSelected(false);
 		db.setSelected(false);
 		add.setSelected(false);
@@ -53,7 +73,7 @@ public class ManagerMainController implements Initializable {
 		try {
 			if(add.isSelected())
 			{
-				goodSound();
+				goodSound();				
 				queries.setSelected(false);
 				db.setSelected(false);
 				TabPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerAddPage.fxml"));

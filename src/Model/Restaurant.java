@@ -78,6 +78,7 @@ public class Restaurant implements Serializable {
 		}
 		return true;
 	}
+	/*******************a way to save and load data to ser file********************/
 
 	public static void load(String fileName) {
 		restaurant = null;
@@ -239,7 +240,6 @@ public class Restaurant implements Serializable {
 		return deliveryPersons.put(dp.getId() , dp) ==null && da.addDelPerson(dp);
 	}
 
-	/*TODO check IllegalCustomerException*/
 	/* add a Customer to the customers hash map*/
 	public boolean addCustomer(Customer cust) throws SimilarIDInSystemException, IllegalCustomerException {
 		//if this customer is in the black list, throw IllegalCustomerException
@@ -813,6 +813,7 @@ public class Restaurant implements Serializable {
 	}
 	
 	
+	/*****Sound effects******/
 	public void successRemove(String content, String header) {
 		successSound();
 		Alert al = new Alert(Alert.AlertType.INFORMATION);

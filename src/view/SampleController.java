@@ -121,7 +121,8 @@ public class SampleController implements Initializable{
 			if(password.getText().isBlank()) {
 				throw new IllegelPasswordException();
 			}
-			if(username.getText().equals("m") && password.getText().equals("m")) {
+			
+			if(username.getText().equals("manager") && password.getText().equals("manager")) {
 				userType = Manager.getInstance();
 				loginSound();
 				StackPane pane=FXMLLoader.load(getClass().getResource("fxmlFolder\\ManagerMainPage.fxml"));
@@ -160,6 +161,9 @@ public class SampleController implements Initializable{
 			}
 			
 			
+		}
+		catch(NumberFormatException e1) {
+			failLogin("Username must be an Integer (the ID of the user)!");
 		}
 		catch (IllegalCustomerException e1) {
 			failLogin(e1.toString());

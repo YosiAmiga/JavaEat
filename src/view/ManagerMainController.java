@@ -66,7 +66,7 @@ public class ManagerMainController implements Initializable {
 
 	}
 
-	/*enter the manager adding,removing,updating page*/
+	/****Enter the manager adding,removing, and updating page****/
 	//works
 	public void loadAdd(ActionEvent e)
 	{
@@ -88,7 +88,8 @@ public class ManagerMainController implements Initializable {
 		}
 	}
 
-	//works, TODO show all data
+	/****Enter the view database page****/
+
 	public void loadDB(ActionEvent e)
 	{
 		try {
@@ -110,6 +111,7 @@ public class ManagerMainController implements Initializable {
 	}
 
 
+	/****Enter the Queries page****/
 
 	public void loadQueries(ActionEvent e)
 	{
@@ -126,14 +128,13 @@ public class ManagerMainController implements Initializable {
 			}
 
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
+
 			ex.printStackTrace();
 		}
 	}
 
 
 	/*log out from the system and back to the JavaEat main page*/
-	//works
 	public void logOutSys(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
 		al.setHeaderText("Are you sure you want to log out of the system?");
@@ -157,7 +158,6 @@ public class ManagerMainController implements Initializable {
 	}
 
 	/*exit the restaurant program*/
-	//works
 	public void exitProgram(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
 		al.setHeaderText("Are you sure you want to exit the program?");

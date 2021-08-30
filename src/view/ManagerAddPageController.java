@@ -736,7 +736,6 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id does not exists in the customer database!");
 			}
-			System.out.println(Restaurant.getInstance().getCustomers());
 			
 		}		
 		catch(EmptyComboBoxException e1) {
@@ -804,7 +803,6 @@ public class ManagerAddPageController implements Initializable {
 				fail(section,"Could not add customer to system!");
 			}
 
-			System.out.println(Restaurant.getInstance().getCustomers());
 			refreshScreen();
 
 		}
@@ -826,14 +824,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(SimilarIDInSystemException e1) {
 			fail(section,e1.toString());
 		}
-//		catch(NegativeNumberNotPriceException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(ObjectExistException e1) {
-//			badSound();
-//			fail(a, "Person"+e1.toString());
-//		}
 		catch(NumberFormatException e1) {
 			fail(section, "Wrong Input!");
 		}
@@ -998,7 +988,6 @@ public class ManagerAddPageController implements Initializable {
 			//add method in primary controller
 			if(control.addDeliveryPersonGUI(id, fName, lName, localDate, selectedG, selectedV,dArea)) {
 				successAdded(section,"Success");
-				System.out.println(Restaurant.getInstance().getDeliveryPersons().values());
 				Restaurant.save(Input);								
 			}
 			else {
@@ -1173,7 +1162,6 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id already exists in the cooks database!");
 			}
-			System.out.println("cooks: " + Restaurant.getInstance().getCooks());
 			refreshScreen();
 
 		}
@@ -1199,6 +1187,9 @@ public class ManagerAddPageController implements Initializable {
 	public void fillData(ActionEvent e) {
 		try {
 			if(componentID.getText() == null) {
+				throw new IllegelInputException();
+			}
+			if(!Restaurant.getInstance().getComponenets().containsKey(Integer.parseInt(componentID.getText()))) {
 				throw new IllegelInputException();
 			}
 			int id = Integer.parseInt(componentID.getText());
@@ -1269,7 +1260,6 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section, "This id does not exists in the components database!");
 			}
-			System.out.println(Restaurant.getInstance().getComponenets());
 			refreshScreen();
 		}
 		catch(EmptyComboBoxException e1) {
@@ -1295,7 +1285,6 @@ public class ManagerAddPageController implements Initializable {
 			double price = Double.parseDouble(componentPrice.getText());
 			if(control.addComponentGUI(id, cName, lactose, gluten, price)) {
 				successAdded(section,"Success");
-				System.out.println(Restaurant.getInstance().getComponenets());
 				Restaurant.save(Input);				
 			}
 			else {
@@ -1333,16 +1322,13 @@ public class ManagerAddPageController implements Initializable {
 			dishName.setText(temp.getDishName());
 			timeToMake.setText(String.valueOf(temp.getTimeToMake()));
 			TypeOfTheDish.setValue(String.valueOf(temp.getType()));
-//			
-//			componentsInDishList.removeAll(componentsInDishList);
-//			componentsInDishToShow.removeAll(componentsInDishToShow);
+
 
 			for(Component c : temp.getComponenets()) {
 				
 				String str = "ID: "+c.getId() + " Name: " + c.getComponentName();
 				componentsInDishToShow.add(str);
-//				String numberOnly= str.replaceAll("[^0-9]", "");		
-//				componentsInDishList.add(Integer.parseInt(numberOnly));
+
 			}
 
 			String list="";		
@@ -1465,7 +1451,6 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section, "This id already exists in the dishes database!");
 			}			
-			System.out.println(Restaurant.getInstance().getDishes().values());
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());
@@ -1584,9 +1569,7 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id already exists in the orders database!");
 			}
-//			for(Order or : Restaurant.getInstance().getOrders().values()) {
-//				System.out.println(or.getDelivery());
-//			}
+
 			refreshScreen();
 
 		}
@@ -1827,36 +1810,8 @@ public class ManagerAddPageController implements Initializable {
 			else {
 				fail(section,"This id already exists in the deliveries database!");
 			}
-//			boolean isEXP = isExpress.isSelected();
-//			//if the combo box of express delivery is selected, then use the express delivery method
-//			if(isEXP) {
-//
-//				//if no new postage was entered, use default 5.0
-//				if(customPostage.getText() != null) {				
-//					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, 5, ordersListToDelivery)) {
-//						successAdded(section, "Success");
-//						Restaurant.save(Input);	
-//					}
-//					else {
-//						fail(section,"This id already exists in the deliveries database!");
-//					}
-//					
-//				}
-//				else {	
-//					double custPost = Double.parseDouble(customPostage.getText());
-//					if(control.addDeliveryFromGUI(id, dpID, dArea, isSent, delDate, isEXP, custPost, ordersListToDelivery)) {
-//						successAdded(section, "Success");
-//						Restaurant.save(Input);	
-//					}
-//					else {
-//						fail(section,"This id already exists in the deliveries database!");
-//					}				
-//				}
-//			}
-			//if the combo box of express delivery is NOT selected, then use the regular delivery method
-				
+
 			
-			System.out.println(Restaurant.getInstance().getDeliveries().values());
 			refreshScreen();
 
 		}
@@ -2075,6 +2030,9 @@ public class ManagerAddPageController implements Initializable {
 			if(delAreaID.getText().isBlank()) {
 				throw new IllegelInputException();
 			}
+			if(!Restaurant.getInstance().getAreas().containsKey(Integer.parseInt(delAreaID.getText()))) {
+				throw new IllegelInputException();
+			}
 			int id = Integer.parseInt(delAreaID.getText());
 			
 			DeliveryArea temp = Restaurant.getInstance().getRealDeliveryArea(id);
@@ -2138,7 +2096,6 @@ public class ManagerAddPageController implements Initializable {
 				fail(section, "This id already exists in the delivery areas database!");
 			}
 			
-			System.out.println(Restaurant.getInstance().getAreas().values());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
@@ -2207,7 +2164,6 @@ public class ManagerAddPageController implements Initializable {
 		catch(Exception e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(Restaurant.getInstance().getBlackList());
 		refreshScreen();
 	}
 	
@@ -2233,7 +2189,6 @@ public class ManagerAddPageController implements Initializable {
 			//Extract only the component ID in order to add him to the dish
 			String numberOnly= str.replaceAll("[^0-9]", "");		
 			ordersListToDelivery.add(Integer.parseInt(numberOnly));
-			System.out.println(ordersListToDelivery);
 			String list="";		
 			for(String i : ordersListShow) {
 				list += i+"\n";

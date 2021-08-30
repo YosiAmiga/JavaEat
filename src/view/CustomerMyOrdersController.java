@@ -250,7 +250,6 @@ public class CustomerMyOrdersController implements Initializable {
 				fail(section,"This id already exists in the orders database!");
 			}
 			for(Order or : Restaurant.getInstance().getOrders().values()) {
-				System.out.println(or.getDelivery());
 			}
 
 
@@ -315,7 +314,6 @@ public class CustomerMyOrdersController implements Initializable {
 			for(String compData : compList.getText().split("\\n")) {
 				componentsInDishesStrings.add(compData);
 			}
-			System.out.println("\nshow comps: " + componentsInDishesStrings);
 
 			
 			//componentsInDishes AL of the components to be added to dish
@@ -335,14 +333,11 @@ public class CustomerMyOrdersController implements Initializable {
 
 			Dish customDish = Restaurant.getInstance().getRealDish(Integer.parseInt(dishIDOnly));
 			//before comp change
-			System.out.println("\ncomps in dish before change: " + customDish.getComponenets());
 
 			Dish blalal = new Dish(customDish.getId(),customDish.getDishName(),customDish.getType(),compsInDish,customDish.getTimeToMake());
 			
 			//after comp change
-			System.out.println("\ncomps in dish after change: " + blalal.getComponenets());
 			customMadeDishes.add(blalal);
-			System.out.println("\ncustom dishes AL: "+customMadeDishes);
 
 		}
 		catch(NoComponentsExceptions e1) {
@@ -440,7 +435,6 @@ public class CustomerMyOrdersController implements Initializable {
 				fail(section,"This id already exists in the orders database!");
 			}
 			for(Order or : Restaurant.getInstance().getOrders().values()) {
-				System.out.println(or.getDelivery());
 			}
 
 
@@ -590,7 +584,6 @@ public class CustomerMyOrdersController implements Initializable {
 				list += s+"\n";
 			}
 			dishesInOrderShow.setText(list);
-			System.out.println(dishesInOrderList);
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection(section,e1.toString());
@@ -627,7 +620,6 @@ public class CustomerMyOrdersController implements Initializable {
 				list += s+"\n";
 			}
 			dishesInOrderShow.setText(list);
-			System.out.println(dishesInOrderList);
 
 		}
 		catch(EmptyComboBoxException e1) {

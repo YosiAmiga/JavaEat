@@ -117,6 +117,8 @@ public class ManagerDataBaseController implements Initializable {
 	@FXML
 	private TableColumn<Dish, ArrayList<Component>> dishComponents;
 	@FXML
+	private TableColumn<Dish, Double> dishPrice;
+	@FXML
 	private TableColumn<Dish, Integer> dishTime;
 	
 	/*******************Orders Table********************/
@@ -264,6 +266,7 @@ public class ManagerDataBaseController implements Initializable {
 		dishName.setCellValueFactory(new PropertyValueFactory<Dish, String>("dishName"));
 		dishType.setCellValueFactory(new PropertyValueFactory<Dish, DishType>("type"));
 		dishComponents.setCellValueFactory(new PropertyValueFactory<Dish, ArrayList<Component>>("componenets"));
+		dishPrice.setCellValueFactory(new PropertyValueFactory<Dish, Double>("price"));
 		dishTime.setCellValueFactory(new PropertyValueFactory<Dish, Integer>("timeToMake"));
 		dishesTable.setItems(getDishes());
 		

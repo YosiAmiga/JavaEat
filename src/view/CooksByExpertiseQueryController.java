@@ -52,7 +52,6 @@ public class CooksByExpertiseQueryController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		/*set in the table all the cooks data from database for each of their fields*/
-		//TODO FIX BOOLEAN
 		cookID.setCellValueFactory(new PropertyValueFactory<Cook, Integer>("id"));
 		cookFirstName.setCellValueFactory(new PropertyValueFactory<Cook, String>("firstName"));
 		cookLastName.setCellValueFactory(new PropertyValueFactory<Cook, String>("lastName"));

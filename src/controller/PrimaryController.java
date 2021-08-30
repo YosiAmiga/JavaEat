@@ -28,12 +28,18 @@ public class PrimaryController {
 	/**************************************Customer Page*****************************************/
 	/**
 	 * a method to update the data of an existing Customer
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
-	 * @return
+	 *
+	 * @param id The id of the customer.
+	 * @param firstName The first name of the customer.
+	 * @param LastName The LastName of the customer.
+	 * @param birthday The customer's birthday.
+	 * @param gender The gender of the customer.
+	 * @param password the password of the customer.
+	 * @param verifyPass another password to verify the password entered by the user.
+	 * @param hood The neighborhood at which the customer lives.
+	 * @param lactose is the customer allergic to lactose.
+	 * @param gluten is the customer allergic to gluten.
+	 * @return true if successfully added.
 	 * @throws IllegelInputException
 	 */
 	public boolean updateCustomerGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender,String password,String verifyPass, Neighberhood hood, boolean lactose, boolean gluten) throws IllegelInputException {
@@ -136,7 +142,6 @@ public class PrimaryController {
 		//create customer object
 
 		Customer customer = new Customer(id,firstName,LastName,birthday,gender,password,hood,lactose,gluten);
-		System.out.println(customer);
 		// add the customer to the user confirmation system
 
 		//add
@@ -146,12 +151,14 @@ public class PrimaryController {
 	/**************************************Delivery Person Page****************************************/
 	/**
 	 * a method to update the data of an existing delivery person
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
-	 * @return
+	 * @param id - the id of the delivery person
+	 * @param fName - first name of the delivery person
+	 * @param lName - last name of the delivery person
+	 * @param bDay - birthday of the delivery person
+	 * @param g - gender of the the delivery person
+	 * @param v - vehicle of the delivery person
+	 * @param da - delivery area of the delivery person
+	 * @return true if added successfully, false if not
 	 * @throws IllegelInputException
 	 */
 	public boolean updateDeliveryPersonGUI(int id,String fName, String lName, LocalDate bDay, Gender g, Vehicle v ,String da) throws IllegelInputException {
@@ -254,12 +261,14 @@ public class PrimaryController {
 	/**************************************Cook Page*****************************************/
 	/**
 	 * a method to update the data of an existing Cook
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
-	 * @return
+	 * @param id - the id of the cook
+	 * @param firstName - first name of the cook
+	 * @param LastName - last name of the cook
+	 * @param birthday - birth date of the cook
+	 * @param gender - gender of the cook
+	 * @param expert - expertise of the cook
+	 * @param isChef - is the cook a chef
+	 * @return  true if success, false if failed.
 	 * @throws IllegelInputException
 	 */
 	public boolean updateCookGUI(int id, String firstName, String LastName, LocalDate birthday,Gender gender, Expertise expert,boolean isChef) throws IllegelInputException {
@@ -349,11 +358,11 @@ public class PrimaryController {
 	
 	/**
 	 * a method to update the data of an existing component
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
+	 * @param id - id of the component
+	 * @param cName - name of the component
+	 * @param lactose - does it contains lactose
+	 * @param gluten - does it contains gluten
+	 * @param price - price of the component
 	 * @return
 	 * @throws IllegelInputException
 	 */
@@ -429,11 +438,11 @@ public class PrimaryController {
 
 	/**
 	 * a method to update the data of an existing Dish
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
+	 * @param id - the id of the dish
+	 * @param dName - the name of the dish
+	 * @param type - the type of the dish
+	 * @param componentsInDishList - the components of the dish
+	 * @param toMake - time to make the dish
 	 * @return
 	 * @throws IllegelInputException
 	 */
@@ -477,6 +486,8 @@ public class PrimaryController {
 		for(Component c : components) {
 			dishUpdate.addComponent(c);
 		}
+		
+		
 
 		
 		
@@ -527,7 +538,6 @@ public class PrimaryController {
 		}
 				
 		Dish newDish = new Dish(id,dName,type,components,toMake);	
-		System.out.println(newDish);
 		return Restaurant.getInstance().addDish(newDish);
 	}
 	
@@ -553,15 +563,14 @@ public class PrimaryController {
 		return Restaurant.getInstance().addCustomOrder(order);
 	}
 	
+	
 	/**
 	 * a method to update the data of an existing Order
-	 * @param id
-	 * @param cName
-	 * @param lactose
-	 * @param gluten
-	 * @param price
+	 * @param custForOrder - the customer for the order
+	 * @param dishesInOrderList - the custom made dishes for the order
+	 * @throws IllegelInputException 
+	 * @throws SensitiveException 
 	 * @return
-	 * @throws IllegelInputException
 	 */
 	public boolean updateOrderGUI(int id,int custForOrder, ArrayList<Integer> dishesInOrderList) throws IllegelInputException {
 		boolean validate = (requireNotZeroOrNegative(id,custForOrder) );
@@ -576,7 +585,6 @@ public class PrimaryController {
 		//if new customer to the updated order was entered, set him
 		//works
 		if(custForOrder != orderUpdate.getCustomer().getId() && require(custForOrder)) {
-			System.out.println(custForOrder);
 			orderUpdate.setCustomer(Restaurant.getInstance().getRealCustomer(custForOrder));
 		}
 
@@ -592,14 +600,12 @@ public class PrimaryController {
 			}
 		}
 		
-		System.out.println("the new dishes " + dishes);
 
 		//add new dishes after change
 		for(Dish d2 : dishes) {			
 			orderUpdate.addDish(d2);
 		}
 
-		System.out.println("dishes after update before delete " + orderUpdate.getDishes());
 
 		//first remove all current dishes so no duplicates will be added
 		for(Dish d : orderUpdate.getDishes()) {
@@ -607,7 +613,6 @@ public class PrimaryController {
 				orderUpdate.removeDish(d);
 			}
 		}
-		System.out.println("dishes after delete " + orderUpdate.getDishes());
 		
 		//after all changes were checked, update the Cook in the database
 		return Restaurant.getInstance().getOrders().put(orderUpdate.getId(), orderUpdate) != null;
@@ -671,7 +676,7 @@ public class PrimaryController {
 	
 	/************************************Regular and Express Delivery Page *******************************************/
 	
-	//TODO add updateDelivery
+	
 	
 	/**
 	 * a method to remove a delivery (does not matter if regular or express) from the database
@@ -741,19 +746,18 @@ public class PrimaryController {
 		}
 		
 		RegularDelivery deliveryToAdd = new RegularDelivery(id,ordersForRegular,delPer,tempArea,isDelivered,diliveredDate);			
-		System.out.println(deliveryToAdd.getOrders());		
 		return Restaurant.getInstance().addDelivery(deliveryToAdd);
 		
 	}
 	
 	/**
 	 * a method to update a regular delivery
-	 * @param id
-	 * @param dpID
-	 * @param dArea
-	 * @param isDelivered
-	 * @param diliveredDate
-	 * @param orders
+	 * @param id - the id of the regular delivery
+	 * @param dpID - the delivery person of the regular delivery
+	 * @param dArea - the delivery area of the regular delivery
+	 * @param isDelivered - is the regular delivery delivered
+	 * @param diliveredDate - the date of the regular delivery
+	 * @param orders - the orders of the regular delivery
 	 * @return
 	 * @throws Exception
 	 */
@@ -786,13 +790,10 @@ public class PrimaryController {
 			for(DeliveryArea d : Restaurant.getInstance().getAreas().values()) {
 				if(d.getAreaName().equals(dArea)) {
 					areaID = d.getId();
-					System.out.println(areaID);
 				}
 			}
 			tempArea = Restaurant.getInstance().getRealDeliveryArea(areaID);
-			System.out.println(tempArea);
 			delToUpdate.setArea(tempArea);		
-			System.out.println(delToUpdate.getArea());
 
 		}
 		if(delToUpdate.getDeliveredDate() != diliveredDate) {
@@ -871,13 +872,14 @@ public class PrimaryController {
 	
 	/**
 	 * a method to update an express delivery
-	 * @param id
-	 * @param dpID
-	 * @param dArea
-	 * @param isDelivered
-	 * @param diliveredDate
-	 * @param postage
-	 * @param order
+	 * @param id - the id of the express delivery
+	 * @param dpID - the delivery person of the express delivery
+	 * @param dArea - the delivery area of the express delivery
+	 * @param isDelivered - is express delivery delivered
+	 * @param diliveredDate - the date of the express delivery
+	 * @param isEXP - is it an express delivery
+	 * @param postage - the extra fee (postage) of the express delivery
+	 * @param orders - the order of the express delivery
 	 * @return
 	 * @throws Exception
 	 */
@@ -960,7 +962,6 @@ public class PrimaryController {
 		for(Neighberhood n : aHoods) {
 			//if a new hood was added
 			if(!oldArea.getNeighberhoods().contains(n)) {
-				System.out.println("im ok");
 				oldArea.addNeighberhood(n);
 			}
 		}
@@ -1036,6 +1037,12 @@ public class PrimaryController {
 	/*************************************Blacklist Page*************************************/
 
 
+	/**
+	 * a method to add a customer to the blacklist from the GUI
+	 * @param id - the id of the customer to add to the blacklist
+	 * @return
+	 * @throws IllegelInputException
+	 */
 	public boolean addToBlacklistFromGUI(int id) throws IllegelInputException{
 		boolean validate = requireNotZeroOrNegative(id);
 		if(!validate) {

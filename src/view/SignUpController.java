@@ -161,15 +161,10 @@ public class SignUpController implements Initializable {
 			else {
 				fail(section,"Could not add customer to system!");
 			}
-//			Customer custToAdd = new Customer(firstName,LastName,localDate,selectedG,selectedN,lactose,gluten);
-//			if(Restaurant.getInstance().addCustomer(custToAdd)) {
-//			}
 
-			System.out.println(Restaurant.getInstance().getCustomers());
+
 			refreshScreen();
 
-			//pop up with success
-			//exception-Customer adding failed,Customer already exists/illegal input
 		}
 		catch(EmptyComboBoxException e1) {
 			failSelection("Gender/Neighborhood",e1.toString());
@@ -189,14 +184,6 @@ public class SignUpController implements Initializable {
 		catch(SimilarIDInSystemException e1) {
 			fail(section,e1.toString());
 		}
-//		catch(NegativeNumberNotPriceException e1) {
-//			badSound();
-//			fail(a, e1.toString());
-//		}
-//		catch(ObjectExistException e1) {
-//			badSound();
-//			fail(a, "Person"+e1.toString());
-//		}
 		catch(NumberFormatException e1) {
 			fail(section, "Wrong Input!");
 		}
@@ -211,7 +198,6 @@ public class SignUpController implements Initializable {
 	
 	public void refreshScreen(){}
 	/*log out from the system and back to the JavaEat main page*/
-	//works
 	public void goBack(ActionEvent e) {
 		Alert al = new Alert(Alert.AlertType.CONFIRMATION);
 		al.setHeaderText("Are you sure you want to return to the main page");

@@ -94,11 +94,12 @@
                <children>
                   <TableView fx:id="dishesTable" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="653.6" prefWidth="871.2" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="dishID" prefWidth="40.00002896785736" text="ID" />
-                        <TableColumn fx:id="dishName" prefWidth="96.79998779296875" text="Dish Name" />
-                        <TableColumn fx:id="dishType" prefWidth="127.19998168945312" text="Dish Type" />
-                        <TableColumn fx:id="dishComponents" prefWidth="332.79998779296875" text="Dish Components" />
-                        <TableColumn fx:id="dishTime" prefWidth="258.4000244140625" text="Time to make" />
+                        <TableColumn fx:id="dishID" prefWidth="59.20001220703125" text="ID" />
+                        <TableColumn fx:id="dishName" prefWidth="102.39999389648438" text="Dish Name" />
+                        <TableColumn fx:id="dishType" prefWidth="174.39999389648438" text="Dish Type" />
+                        <TableColumn fx:id="dishComponents" prefWidth="224.79998779296875" text="Dish Components" />
+                        <TableColumn fx:id="dishTime" prefWidth="139.199951171875" text="Time to make" />
+                        <TableColumn fx:id="dishPrice" prefWidth="235.99993896484375" text="Price" />
                      </columns>
                   </TableView>
                </children>

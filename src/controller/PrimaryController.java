@@ -708,6 +708,7 @@ public class PrimaryController {
 	 */
 	public boolean addRegularDeliveryFromGUI(int id, int dpID, String dArea, boolean isDelivered, LocalDate diliveredDate, HashSet<Integer> orders) throws Exception{
 
+
 		//check for parameters of class delivery and validate id
 		boolean validate = (require(id,dpID,dArea,isDelivered,diliveredDate,orders) && (requireNotZeroOrNegative(id,dpID)));
 

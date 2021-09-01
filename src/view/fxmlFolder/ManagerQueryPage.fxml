@@ -97,6 +97,11 @@
                         <Font name="Arial Black" size="24.0" />
                      </font>
                   </Label>
+                  <Label layoutX="599.0" layoutY="86.0" prefHeight="51.0" prefWidth="41.0" text="₪" textFill="#009c3e">
+                     <font>
+                        <Font name="Arial Black" size="24.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
         </content>
       </Tab>

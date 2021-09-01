@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import Exceptions.ConvertToExpressException;
 import Exceptions.EmptyComboBoxException;
 import Exceptions.EmptyTextFieldException;
 import Exceptions.IllegalCustomerException;
@@ -1792,6 +1793,9 @@ public class ManagerAddPageController implements Initializable {
 			if(deliveryDate.getValue() == null) {
 				throw new EmptyComboBoxException();
 			}
+			if(ordersListToDelivery.size() < 2) {
+				throw new ConvertToExpressException();
+			}
 			String delPerId = deliveryPersonInDelivery.getValue();
 			//Extract only the delivery person ID 
 			String numberOnlyDelPer= delPerId.replaceAll("[^0-9]", "");	
@@ -1814,6 +1818,9 @@ public class ManagerAddPageController implements Initializable {
 			
 			refreshScreen();
 
+		}
+		catch(ConvertToExpressException e1) {
+			fail(section, e1.toString());
 		}
 		catch(IllegelInputException e1) {
 			fail(section, e1.toString());
